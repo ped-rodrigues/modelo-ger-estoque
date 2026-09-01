@@ -1,0 +1,384 @@
+/* ==========================================================================
+   style.css — ESTILOS BASE E COMPARTILHADOS
+   --------------------------------------------------------------------------
+   Contém o que se repete em todas as telas: variáveis de cor, reset,
+   cabeçalho, navegação, botões, formulários, tabelas, avisos e rodapé.
+   Estilos específicos de cada tela ficam em produtos.css e historico.css.
+
+   Atende: RNF03 (responsiva), RNF05 (contraste), RNF10 (consistência visual).
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Variáveis (tokens) — mudar aqui muda o sistema inteiro
+   -------------------------------------------------------------------------- */
+:root {
+  --cor-fundo: #f4f6f8;
+  --cor-superficie: #ffffff;
+  --cor-borda: #d5dbe1;
+  --cor-texto: #1c2733;
+  --cor-texto-suave: #55636f;
+
+  --cor-primaria: #1b4f8a;
+  --cor-primaria-escura: #143b68;
+
+  /* Cores de estado. Nunca são usadas sozinhas: sempre acompanham um texto
+     ou um símbolo, para não comunicar apenas por cor (acessibilidade). */
+  --cor-sucesso: #1c6b3c;
+  --cor-sucesso-fundo: #e4f4ea;
+  --cor-alerta: #8a5a00;
+  --cor-alerta-fundo: #fdf1dc;
+  --cor-erro: #a12626;
+  --cor-erro-fundo: #fbe6e6;
+
+  --raio: 8px;
+  --sombra: 0 1px 3px rgba(20, 35, 50, 0.12);
+  --espaco: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset leve e tipografia
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--cor-texto);
+  background-color: var(--cor-fundo);
+}
+
+h1, h2, h3 {
+  margin: 0 0 12px;
+  line-height: 1.25;
+}
+
+h1 { font-size: 1.5rem; }
+h2 { font-size: 1.2rem; }
+
+/* Foco sempre visível: exigido para navegação por teclado (RNF04). */
+:focus-visible {
+  outline: 3px solid var(--cor-primaria);
+  outline-offset: 2px;
+}
+
+/* Link para pular direto ao conteúdo, útil para leitores de tela. */
+.pular-para-conteudo {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--cor-primaria);
+  color: #fff;
+  padding: 10px 16px;
+  z-index: 10;
+}
+.pular-para-conteudo:focus {
+  left: 8px;
+  top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Cabeçalho e navegação
+   -------------------------------------------------------------------------- */
+.cabecalho {
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  padding: 12px var(--espaco);
+}
+
+.cabecalho__conteudo {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px var(--espaco);
+}
+
+.cabecalho__titulo {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.navegacao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.navegacao a {
+  color: #ffffff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: var(--raio);
+  font-weight: 500;
+}
+
+.navegacao a:hover {
+  background-color: var(--cor-primaria-escura);
+}
+
+/* A página atual é marcada por cor E por sublinhado, não só por cor. */
+.navegacao a[aria-current="page"] {
+  background-color: var(--cor-primaria-escura);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Estrutura da página
+   -------------------------------------------------------------------------- */
+.conteudo {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px var(--espaco) 48px;
+}
+
+.secao {
+  margin-bottom: 32px;
+}
+
+.cartao {
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  box-shadow: var(--sombra);
+  padding: var(--espaco);
+}
+
+.rodape {
+  border-top: 1px solid var(--cor-borda);
+  padding: 16px;
+  text-align: center;
+  color: var(--cor-texto-suave);
+  font-size: 0.875rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Botões
+   -------------------------------------------------------------------------- */
+.botao {
+  display: inline-block;
+  font: inherit;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.botao:hover {
+  background-color: var(--cor-primaria-escura);
+}
+
+.botao--secundario {
+  background-color: var(--cor-superficie);
+  color: var(--cor-primaria);
+  border-color: var(--cor-primaria);
+}
+
+.botao--secundario:hover {
+  background-color: #eaf0f7;
+}
+
+.botao--perigo {
+  background-color: var(--cor-erro);
+}
+
+.botao--perigo:hover {
+  background-color: #7f1d1d;
+}
+
+.botao--pequeno {
+  padding: 5px 10px;
+  font-size: 0.875rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. Formulários
+   -------------------------------------------------------------------------- */
+.campo {
+  margin-bottom: 14px;
+}
+
+.campo label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  font: inherit;
+  padding: 8px 10px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio);
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto);
+}
+
+.campo input:disabled {
+  background-color: #eef1f4;
+  color: var(--cor-texto-suave);
+}
+
+.campo__ajuda {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+  margin-top: 4px;
+}
+
+/* Mensagem de erro do campo: texto explícito, nunca apenas a borda vermelha. */
+.campo__erro {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--cor-erro);
+  margin-top: 4px;
+  min-height: 1px;
+}
+
+.campo input[aria-invalid="true"],
+.campo select[aria-invalid="true"] {
+  border-color: var(--cor-erro);
+  border-width: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   7. Tabelas
+   -------------------------------------------------------------------------- */
+.tabela-rolagem {
+  overflow-x: auto; /* em telas pequenas a tabela rola sozinha (RNF03) */
+}
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+
+.tabela caption {
+  text-align: left;
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+  padding-bottom: 8px;
+}
+
+.tabela th,
+.tabela td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabela th {
+  background-color: #eef1f4;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tabela tbody tr:hover {
+  background-color: #f7f9fb;
+}
+
+.tabela .numero {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------------------
+   8. Etiquetas de situação (status)
+   -------------------------------------------------------------------------- */
+.etiqueta {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.etiqueta--normal {
+  background-color: var(--cor-sucesso-fundo);
+  color: var(--cor-sucesso);
+  border-color: var(--cor-sucesso);
+}
+
+.etiqueta--baixo {
+  background-color: var(--cor-alerta-fundo);
+  color: var(--cor-alerta);
+  border-color: var(--cor-alerta);
+}
+
+.etiqueta--esgotado {
+  background-color: var(--cor-erro-fundo);
+  color: var(--cor-erro);
+  border-color: var(--cor-erro);
+}
+
+/* --------------------------------------------------------------------------
+   9. Mensagens e estados vazios
+   -------------------------------------------------------------------------- */
+.aviso {
+  padding: 12px 14px;
+  border-radius: var(--raio);
+  border: 1px solid var(--cor-borda);
+  margin-bottom: var(--espaco);
+}
+
+.aviso--sucesso {
+  background-color: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+  color: var(--cor-sucesso);
+}
+
+.aviso--erro {
+  background-color: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  color: var(--cor-erro);
+}
+
+.estado-vazio {
+  text-align: center;
+  color: var(--cor-texto-suave);
+  padding: 32px 16px;
+}
+
+/* Esconde visualmente, mas mantém o texto para leitores de tela. */
+.apenas-leitor-tela {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsividade
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .cabecalho__conteudo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navegacao {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .conteudo {
+    padding: 16px 12px 32px;
+  }
+}
