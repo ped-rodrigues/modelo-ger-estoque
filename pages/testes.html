@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Testes automatizados | Gerenciador de Estoque</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="cabecalho">
+    <div class="cabecalho__conteudo">
+      <h1 class="cabecalho__titulo">Gerenciador de Estoque &middot; Testes</h1>
+    </div>
+  </header>
+
+  <main class="conteudo" id="conteudo">
+    <section class="secao">
+      <h2>Casos de teste automatizados</h2>
+      <p>
+        Esta página executa os casos de teste CT01 a CT14 sobre as regras de negócio
+        do sistema. Os testes rodam em um estoque vazio e, ao final, os dados que
+        estavam salvos no navegador são restaurados automaticamente.
+      </p>
+
+      <p>
+        <button type="button" class="botao" id="botao-executar">Executar testes</button>
+      </p>
+
+      <!-- aria-live faz o leitor de tela anunciar o resumo assim que ele aparece. -->
+      <div id="resumo" role="status" aria-live="polite"></div>
+
+      <div class="tabela-rolagem">
+        <table class="tabela">
+          <caption>Resultado da última execução</caption>
+          <thead>
+            <tr>
+              <th scope="col">Código</th>
+              <th scope="col">Caso de teste</th>
+              <th scope="col">Situação</th>
+              <th scope="col">Detalhe</th>
+            </tr>
+          </thead>
+          <tbody id="corpo-resultados">
+            <tr>
+              <td colspan="4" class="estado-vazio">Clique em "Executar testes" para começar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque
+  </footer>
+
+  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/testes.js"></script>
+
+  <script>
+    /*
+      Script exclusivo desta página: apenas exibe na tela o resultado que
+      Testes.executar() devolve. A lógica dos testes fica em js/testes.js,
+      que não depende do DOM.
+    */
+    const botaoExecutar = document.getElementById('botao-executar');
+    const corpoResultados = document.getElementById('corpo-resultados');
+    const resumo = document.getElementById('resumo');
+
+    botaoExecutar.addEventListener('click', () => {
+      const relatorio = Testes.executar();
+
+      resumo.className = 'aviso ' + (relatorio.reprovados === 0 ? 'aviso--sucesso' : 'aviso--erro');
+      resumo.textContent = relatorio.reprovados === 0
+        ? 'Todos os ' + relatorio.total + ' casos de teste passaram.'
+        : relatorio.reprovados + ' de ' + relatorio.total + ' casos de teste falharam.';
+
+      corpoResultados.innerHTML = '';
+
+      relatorio.resultados.forEach((item) => {
+        const linha = document.createElement('tr');
+
+        const colunaCodigo = document.createElement('td');
+        colunaCodigo.textContent = item.codigo;
+
+        const colunaDescricao = document.createElement('td');
+        colunaDescricao.textContent = item.descricao;
+
+        // A situação usa texto ("Passou" ou "Falhou") além da cor, para não
+        // depender apenas de cor na comunicação do estado.
+        const colunaSituacao = document.createElement('td');
+        const etiqueta = document.createElement('span');
+        etiqueta.className = 'etiqueta ' + (item.passou ? 'etiqueta--normal' : 'etiqueta--esgotado');
+        etiqueta.textContent = item.passou ? 'Passou' : 'Falhou';
+        colunaSituacao.appendChild(etiqueta);
+
+        const colunaDetalhe = document.createElement('td');
+        colunaDetalhe.textContent = item.passou ? '-' : item.mensagem;
+
+        linha.append(colunaCodigo, colunaDescricao, colunaSituacao, colunaDetalhe);
+        corpoResultados.appendChild(linha);
+      });
+    });
+  </script>
+</body>
+</html>
