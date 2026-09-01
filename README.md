@@ -49,6 +49,10 @@ Não é necessário instalar nada nem subir servidor.
 1. Baixe ou clone o repositório.
 2. Abra o arquivo `index.html` com um duplo clique (ou arraste para o navegador).
 
+> **Enquanto o dashboard não fica pronto:** `index.html` ainda não existe. Abra
+> `pages/produtos.html`, que já contém o cadastro, a consulta, a edição, a exclusão, a pesquisa,
+> os filtros e as movimentações de estoque.
+
 > **Por que funciona sem servidor?** O projeto usa tags `<script>` clássicas em vez de módulos ES
 > (`import`/`export`). Módulos ES são bloqueados pela política de segurança do navegador quando a
 > página é aberta pelo protocolo `file://`. Essa foi a decisão D1 do projeto, registrada em
