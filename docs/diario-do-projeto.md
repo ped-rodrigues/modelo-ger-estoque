@@ -12,7 +12,7 @@ trabalho. **É atualizado a cada nova conversa**, sempre acrescentando ao final 
 
 ## 1. Estado atual do projeto
 
-**Etapa atual:** Semana 1 concluída (análise, planejamento e núcleo do sistema).
+**Etapa atual:** Semana 2 em andamento (tela de produtos concluída).
 
 ### O que já existe
 
@@ -24,6 +24,8 @@ trabalho. **É atualizado a cada nova conversa**, sempre acrescentando ao final 
 | Regras de negócio e operações | `js/estoque.js` | Pronto e testado |
 | Testes automatizados CT01 a CT14 | `js/testes.js`, `pages/testes.html` | 14 de 14 aprovados |
 | Estilos base | `css/style.css` | Pronto |
+| Funções auxiliares de tela | `js/ui.js` | Pronto |
+| Tela de produtos (CRUD, pesquisa, filtros, movimentações) | `pages/produtos.html`, `js/produtos.js`, `css/produtos.css` | Pronto e verificado no navegador |
 | Documentação de requisitos | `docs/requisitos.md` | Pronto |
 | Roteiro de casos de teste | `docs/casos-de-teste.md` | Pronto (parte manual a executar) |
 | README | `README.md` | Pronto (equipe a preencher) |
@@ -32,12 +34,10 @@ trabalho. **É atualizado a cada nova conversa**, sempre acrescentando ao final 
 
 | Item | Etapa prevista |
 |------|----------------|
-| `index.html` (dashboard) e `js/dashboard.js` | Semana 2 e 3 |
-| `pages/produtos.html` e `js/produtos.js` (CRUD, pesquisa, filtros) | Semana 2 |
+| `index.html` (dashboard) e `js/dashboard.js` | Semana 3 |
 | `pages/historico.html` e `js/historico.js` | Semana 3 |
-| `js/ui.js` (funções auxiliares de tela) | Semana 2 |
-| Modal de entrada e saída de estoque | Semana 3 |
-| Wireframes em `docs/wireframes/` | Semana 1 e 2 |
+| Link do dashboard e do histórico na navegação | Semana 3 |
+| Wireframes em `docs/wireframes/` | Semana 2 e 3 |
 | Execução dos testes manuais CTM01 a CTM07 | Semana 4 |
 | Preenchimento da equipe no README | Qualquer momento |
 
@@ -110,8 +110,8 @@ comportamento real e que podem ser demonstrados ao vivo na apresentação.
 | Semana | Foco | Situação |
 |--------|------|----------|
 | 1 | Análise, planejamento, arquitetura, núcleo do sistema e testes | Concluída |
-| 2 | Telas de produtos e dashboard: HTML, CSS e CRUD completo | A fazer |
-| 3 | Entradas, saídas, histórico, indicadores, pesquisa e filtros na interface | A fazer |
+| 2 | Tela de produtos: HTML, CSS, CRUD completo, pesquisa, filtros e movimentações | Concluída |
+| 3 | Dashboard e histórico na interface | A fazer |
 | 4 | Integração, testes manuais, correções, responsividade, acessibilidade e documentação final | A fazer |
 
 ---
@@ -170,3 +170,69 @@ recomendações apresentadas.
 1. Nomes dos integrantes para o `README.md`.
 2. Se o repositório será publicado no GitHub agora (o repositório local já está pronto para
    receber o `git remote add origin`).
+
+---
+
+### Sessão 2 — 01/09/2026
+
+**Pedido:** construir a tela de produtos e publicar os commits no GitHub.
+
+**Escopo da sessão**
+
+A tela de produtos foi construída com listagem dinâmica, cadastro, edição, exclusão com
+confirmação, pesquisa por nome e filtros por categoria e situação. As movimentações de entrada e
+saída, previstas originalmente para a Semana 3, foram antecipadas para esta tela: pela decisão D2
+a quantidade só muda por movimentação, então sem elas o estoque ficaria congelado e a tela não
+seria utilizável. A seção 10 do escopo já previa "acesso às movimentações" nesta tela.
+
+**Arquivos criados**
+
+- `js/ui.js` — funções de tela compartilhadas: formatação de moeda e de data, etiqueta de
+  situação, mensagens de feedback, exibição dos erros de validação e estado vazio de tabela.
+- `pages/produtos.html` — listagem, barra de filtros e três janelas (`<dialog>`): produto,
+  movimentação e confirmação de exclusão.
+- `js/produtos.js` — liga a tela às regras de negócio. Usa delegação de eventos na tabela, para
+  não recriar ouvintes a cada renderização.
+- `css/produtos.css` — barra de filtros, botões de ação e estilo das janelas.
+
+**Decisões técnicas menores**
+
+- As janelas usam o elemento `<dialog>` do HTML, que já prende o foco e fecha com Esc. Isso evita
+  o `confirm()` do navegador e melhora a acessibilidade sem código extra.
+- Os botões de ação têm `aria-label` com o nome do produto ("Excluir Mouse Logitech"), senão um
+  leitor de tela ouviria apenas "Excluir" repetido em todas as linhas.
+
+**Correções feitas durante o desenvolvimento**
+
+1. `form.id` devolve o atributo `id` do formulário, não o campo chamado `id`, o que faria
+   `form.id.value` ser `undefined`. Todos os acessos passaram a usar `form.elements.<campo>`.
+2. O preço aparecia como "199,9" no formulário de edição; passou a usar `toFixed(2)`.
+
+**Verificação executada no navegador (Chrome)**
+
+| O que foi testado | Resultado |
+|-------------------|-----------|
+| Formulário vazio | Três mensagens de erro exibidas junto aos campos; nada salvo |
+| Cadastro de 3 produtos | Salvos, com mensagem de sucesso e valor total calculado |
+| Classificação automática | Teclado com 3 unidades e mínimo 5 exibido como "Baixo" |
+| Pesquisa por "mo" | 2 de 3 produtos exibidos |
+| Filtro por situação "Baixo" | 1 de 3 produtos exibido |
+| Saída de 10 com estoque 3 | Recusada, com a mensagem "Disponível: 3"; janela permaneceu aberta |
+| Saída de 3 | Estoque foi a 0 e a situação mudou para "Esgotado" |
+| Entrada de 8 | Estoque foi a 8 e a situação voltou para "Normal" |
+| Edição | Preço alterado, quantidade preservada e campo desabilitado (D2) |
+| Exclusão | Cancelar não alterou nada; confirmar removeu o produto |
+| Histórico após exclusão | A movimentação do produto excluído permaneceu, com o nome preservado (D3) |
+| Recarregar a página | Os dados foram recuperados do `localStorage` |
+| Tecla Esc | Fecha a janela aberta |
+| Console do navegador | Nenhum erro |
+
+A suíte CT01 a CT14 continua com 14 de 14 aprovados.
+
+**Pendências deixadas para a próxima sessão**
+
+- Dashboard (`index.html` e `js/dashboard.js`) com os indicadores, e tela de histórico
+  (`pages/historico.html` e `js/historico.js`).
+- Acrescentar os links de Dashboard e Histórico na navegação das telas (hoje a navegação mostra
+  apenas Produtos e Testes, para não deixar links quebrados).
+- Verificar a responsividade em tela estreita (CTM05) — não foi possível confirmar nesta sessão.
