@@ -1,0 +1,176 @@
+# Gerenciador de Estoque
+
+Aplicação web para controle de estoque, desenvolvida como projeto acadêmico da disciplina de
+Engenharia de Software. Funciona inteiramente no navegador, sem backend e sem banco de dados:
+os dados são persistidos no `localStorage`.
+
+---
+
+## Objetivo
+
+Permitir que um funcionário ou administrador cadastre produtos, controle quantidades, registre
+entradas e saídas de estoque, consulte o histórico de movimentações e acompanhe indicadores do
+estoque em um dashboard.
+
+O projeto também serve como exercício completo de Engenharia de Software: levantamento de
+requisitos, modelagem, arquitetura em camadas, testes, versionamento e documentação.
+
+---
+
+## Funcionalidades
+
+- Dashboard com indicadores calculados a partir dos dados reais
+- Cadastro, consulta, edição e exclusão de produtos
+- Pesquisa por nome e filtros por categoria e situação do estoque
+- Registro de entradas e saídas de estoque
+- Histórico de movimentações com data e hora
+- Controle de estoque mínimo e classificação automática (Normal, Baixo, Esgotado)
+- Persistência no `localStorage`
+- Interface responsiva e com acessibilidade básica
+- Validação de formulários com mensagens de erro claras
+- Página de testes automatizados das regras de negócio
+
+---
+
+## Tecnologias
+
+- HTML5
+- CSS3
+- JavaScript ES6+ (sem frameworks e sem bibliotecas externas)
+- `localStorage` do navegador
+- Git e GitHub para versionamento
+
+---
+
+## Como executar
+
+Não é necessário instalar nada nem subir servidor.
+
+1. Baixe ou clone o repositório.
+2. Abra o arquivo `index.html` com um duplo clique (ou arraste para o navegador).
+
+> **Por que funciona sem servidor?** O projeto usa tags `<script>` clássicas em vez de módulos ES
+> (`import`/`export`). Módulos ES são bloqueados pela política de segurança do navegador quando a
+> página é aberta pelo protocolo `file://`. Essa foi a decisão D1 do projeto, registrada em
+> `docs/diario-do-projeto.md`.
+
+Para rodar os testes automatizados, abra `pages/testes.html` e clique em **Executar testes**.
+
+---
+
+## Estrutura do projeto
+
+```text
+gerenciador-estoque/
+├── index.html              # Dashboard (página inicial)
+├── pages/
+│   ├── produtos.html       # Listagem, cadastro, edição e movimentações
+│   ├── historico.html      # Histórico de entradas e saídas
+│   └── testes.html         # Execução dos casos de teste automatizados
+├── css/
+│   ├── style.css           # Base: variáveis, layout, componentes
+│   ├── produtos.css
+│   └── historico.css
+├── js/
+│   ├── storage.js          # Camada de persistência (único ponto de acesso ao localStorage)
+│   ├── validacao.js        # Validação dos dados informados (funções puras)
+│   ├── estoque.js          # Regras de negócio e operações do estoque
+│   ├── ui.js               # Funções auxiliares de tela compartilhadas
+│   ├── dashboard.js        # Tela do dashboard
+│   ├── produtos.js         # Tela de produtos
+│   ├── historico.js        # Tela de histórico
+│   └── testes.js           # Casos de teste CT01 a CT14
+├── docs/
+│   ├── requisitos.md       # RF, RNF, regras de negócio, casos de uso, modelo de dados
+│   ├── casos-de-teste.md   # Roteiro dos casos de teste
+│   ├── diario-do-projeto.md# Registro das decisões e do andamento
+│   └── wireframes/
+├── assets/
+└── README.md
+```
+
+### Arquitetura em camadas
+
+O projeto separa responsabilidades em três camadas, e a dependência sempre aponta para baixo:
+
+```text
+Telas (dashboard.js, produtos.js, historico.js)   -> conhecem o DOM
+        |
+        v
+Regras (estoque.js, validacao.js)                 -> não conhecem o DOM
+        |
+        v
+Persistência (storage.js)                         -> único arquivo que usa localStorage
+```
+
+Duas regras sustentam essa separação:
+
+1. Nenhum arquivo além de `storage.js` chama `localStorage` diretamente.
+2. `estoque.js` e `validacao.js` nunca acessam o DOM, o que os torna testáveis isoladamente.
+
+---
+
+## Requisitos
+
+A lista completa e numerada está em [`docs/requisitos.md`](docs/requisitos.md):
+18 requisitos funcionais (RF01 a RF18), 12 requisitos não funcionais (RNF01 a RNF12) e
+9 regras de negócio (RN01 a RN09).
+
+---
+
+## Regras de negócio (resumo)
+
+| Código | Regra |
+|--------|-------|
+| RN01 | A quantidade de estoque nunca pode ser negativa |
+| RN02 | Uma saída não pode exceder a quantidade disponível |
+| RN03 | Quantidade igual a zero significa estoque "Esgotado" |
+| RN04 | Quantidade maior que zero e menor ou igual ao estoque mínimo significa "Baixo" |
+| RN05 | Quantidade superior ao estoque mínimo significa "Normal" |
+| RN06 | O valor total de estoque de um produto é `preço × quantidade` |
+| RN07 | Toda entrada ou saída gera uma movimentação no histórico |
+| RN08 | O preço do produto não pode ser negativo |
+| RN09 | Quantidade e estoque mínimo devem ser inteiros maiores ou iguais a zero |
+
+---
+
+## Testes
+
+Os casos de teste estão descritos em [`docs/casos-de-teste.md`](docs/casos-de-teste.md).
+
+Os testes das regras de negócio são automatizados e ficam em `js/testes.js`. Para executá-los,
+abra `pages/testes.html` e clique em **Executar testes**. Os testes rodam em um estoque vazio e
+restauram os dados salvos no navegador ao final.
+
+---
+
+## Equipe
+
+| Nome | Papel |
+|------|-------|
+| _(a preencher)_ | Líder do projeto e desenvolvimento front-end (JavaScript) |
+| _(a preencher)_ | |
+| _(a preencher)_ | |
+| _(a preencher)_ | |
+| _(a preencher)_ | |
+
+---
+
+## Limitações conhecidas
+
+- Os dados ficam salvos apenas no navegador em que foram cadastrados; não há sincronização entre
+  máquinas ou usuários.
+- Limpar os dados de navegação apaga o estoque.
+- Não há autenticação, controle de permissões nem múltiplos usuários simultâneos.
+- Não há backend, banco de dados nem integração com sistemas fiscais ou ERP.
+
+---
+
+## Trabalhos futuros
+
+- Exportação do estoque e do histórico em CSV
+- Gráficos de movimentação no dashboard
+- Modo escuro
+- Relatórios por período
+- Substituição do `localStorage` por uma API real (a arquitetura em camadas já isola essa troca
+  em um único arquivo)

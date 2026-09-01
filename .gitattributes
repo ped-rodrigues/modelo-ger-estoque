@@ -1,0 +1,4 @@
+# Normaliza a quebra de linha no repositorio.
+# Evita que o Git acuse "arquivo inteiro alterado" quando integrantes usam
+# sistemas operacionais ou editores diferentes.
+* text=auto eol=lf
