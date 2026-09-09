@@ -31,7 +31,21 @@
    2. Tabela de produtos
    -------------------------------------------------------------------------- */
 .tabela-produtos {
-  min-width: 900px; /* abaixo disso a tabela rola na horizontal */
+  min-width: 1100px; /* abaixo disso a tabela rola na horizontal */
+}
+
+/* O código da peça é lido caractere a caractere; a fonte monoespaçada evita
+   confundir 0 com O e 1 com l. */
+.codigo-peca {
+  font-family: "Consolas", "Courier New", monospace;
+  white-space: nowrap;
+}
+
+/* A célula da peça mostra o nome e, abaixo, o fabricante em texto menor. */
+.celula-peca__fabricante {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
 }
 
 .tabela-produtos .acoes {
@@ -47,6 +61,8 @@ dialog {
   width: min(480px, calc(100vw - 32px));
   padding: 24px;
   border: 1px solid var(--cor-borda);
+  /* Mesma aresta vermelha dos cartões, para a janela pertencer ao conjunto. */
+  border-top: 3px solid var(--cor-primaria);
   border-radius: var(--raio);
   box-shadow: 0 8px 24px rgba(20, 35, 50, 0.25);
   background-color: var(--cor-superficie);
@@ -60,6 +76,7 @@ dialog::backdrop {
 
 .dialog__resumo {
   background-color: #eef1f4;
+  border-left: 4px solid var(--cor-primaria);
   border-radius: var(--raio);
   padding: 10px 12px;
   margin: 0 0 var(--espaco);

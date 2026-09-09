@@ -9,6 +9,8 @@
  * São funções puras: mesma entrada, mesma saída. Por isso são fáceis de testar.
  *
  * Atende: RNF06 (campos com validação), RN01, RN02, RN08, RN09.
+ * A unicidade do código da peça (RN10) NÃO é verificada aqui: ela depende dos
+ * produtos já cadastrados e por isso mora em `Estoque.codigoEmUso`.
  *
  * Observação sobre a ordem de carregamento: `validarProduto` consulta
  * `Estoque.CATEGORIAS`, mas só no momento da chamada (nunca no carregamento do
@@ -17,6 +19,11 @@
  */
 
 const Validacao = {
+  // Formato aceito para o código da peça: começa com letra ou número e aceita
+  // hífen, ponto, barra e espaço no meio. Cobre códigos como "MB-90.123/A",
+  // "BOSCH 0986BB4324" e "FR-4213".
+  FORMATO_CODIGO: /^[A-Z0-9][A-Z0-9./\- ]*$/,
+
   /**
    * Converte um valor vindo do formulário em número.
    * Aceita vírgula como separador decimal ("12,50" vira 12.5).
@@ -34,13 +41,14 @@ const Validacao = {
   },
 
   /**
-   * Valida os dados de um produto.
+   * Valida os dados de uma peça do estoque.
    *
    * O campo `quantidade` só é validado quando está presente em `dados`.
    * Isso atende à decisão D2 do projeto: na EDIÇÃO a quantidade não é enviada,
    * porque ela só pode mudar por meio de uma movimentação de entrada ou saída.
    *
-   * @param {Object} dados { nome, categoria, preco, quantidade?, estoqueMinimo }
+   * @param {Object} dados { codigo, nome, fabricante, aplicacao?, categoria,
+   *                         preco, quantidade?, estoqueMinimo }
    * @returns {{ valido: boolean, erros: Object, produto: Object }}
    *          `erros` usa o nome do campo como chave e a mensagem como valor.
    */
@@ -49,16 +57,59 @@ const Validacao = {
     const produto = {};
     const entrada = dados || {};
 
+    // --- código da peça (RF19, campo obrigatório) ---------------------------
+    // Guardado sempre em maiúsculas e com um único espaço entre as partes, para
+    // que "fr 4213", "FR  4213" e "Fr 4213" sejam reconhecidos como o mesmo
+    // código, tanto na comparação da RN10 quanto na pesquisa.
+    const codigo = String(entrada.codigo === undefined ? '' : entrada.codigo)
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, ' ');
+
+    if (codigo === '') {
+      erros.codigo = 'Informe o código da peça.';
+    } else if (codigo.length < 2) {
+      erros.codigo = 'O código deve ter pelo menos 2 caracteres.';
+    } else if (codigo.length > 30) {
+      erros.codigo = 'O código deve ter no máximo 30 caracteres.';
+    } else if (!this.FORMATO_CODIGO.test(codigo)) {
+      erros.codigo = 'Use apenas letras, números, hífen, ponto e barra.';
+    } else {
+      produto.codigo = codigo;
+    }
+
     // --- nome (campo obrigatório) -------------------------------------------
     const nome = String(entrada.nome === undefined ? '' : entrada.nome).trim();
     if (nome === '') {
-      erros.nome = 'Informe o nome do produto.';
+      erros.nome = 'Informe o nome da peça.';
     } else if (nome.length < 2) {
       erros.nome = 'O nome deve ter pelo menos 2 caracteres.';
     } else if (nome.length > 60) {
       erros.nome = 'O nome deve ter no máximo 60 caracteres.';
     } else {
       produto.nome = nome;
+    }
+
+    // --- fabricante (RF20, campo obrigatório) -------------------------------
+    const fabricante = String(entrada.fabricante === undefined ? '' : entrada.fabricante).trim();
+    if (fabricante === '') {
+      erros.fabricante = 'Informe o fabricante da peça.';
+    } else if (fabricante.length < 2) {
+      erros.fabricante = 'O fabricante deve ter pelo menos 2 caracteres.';
+    } else if (fabricante.length > 40) {
+      erros.fabricante = 'O fabricante deve ter no máximo 40 caracteres.';
+    } else {
+      produto.fabricante = fabricante;
+    }
+
+    // --- aplicação (RF21, campo opcional) -----------------------------------
+    // Diz em quais veículos a peça serve. É opcional porque itens como óleo e
+    // aditivo não têm aplicação específica; quando vazio, guardamos "".
+    const aplicacao = String(entrada.aplicacao === undefined ? '' : entrada.aplicacao).trim();
+    if (aplicacao.length > 80) {
+      erros.aplicacao = 'A aplicação deve ter no máximo 80 caracteres.';
+    } else {
+      produto.aplicacao = aplicacao;
     }
 
     // --- categoria (campo controlado, decisão D4) ---------------------------

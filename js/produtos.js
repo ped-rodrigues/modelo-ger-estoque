@@ -1,5 +1,5 @@
 /**
- * produtos.js — TELA DE PRODUTOS
+ * produtos.js — TELA DE PEÇAS EM ESTOQUE
  * ---------------------------------------------------------------------------
  * Responsabilidade: ligar a tela `pages/produtos.html` às regras de negócio.
  * Este arquivo cuida do DOM (ler campos, montar a tabela, abrir janelas) e
@@ -15,6 +15,9 @@ const TelaProdutos = {
 
   // Guarda qual produto está aguardando confirmação de exclusão.
   idParaExcluir: null,
+
+  // Quantidade de colunas da tabela, usada pela linha de estado vazio.
+  COLUNAS_DA_TABELA: 10,
 
   // Textos de ajuda do campo quantidade, que muda entre cadastro e edição (D2).
   AJUDA_QUANTIDADE_NOVA: 'Registrada como uma entrada de estoque no histórico.',
@@ -57,7 +60,7 @@ const TelaProdutos = {
       contador: document.getElementById('contador-produtos'),
       mensagem: document.getElementById('mensagem'),
 
-      // janela de produto
+      // janela de peça
       dialogProduto: document.getElementById('dialog-produto'),
       formProduto: document.getElementById('form-produto'),
       tituloDialogProduto: document.getElementById('titulo-dialog-produto'),
@@ -157,17 +160,17 @@ const TelaProdutos = {
     const todos = Estoque.listarProdutos();
     const visiveis = Estoque.filtrarProdutos(todos, this.obterFiltros());
 
-    this.el.contador.textContent = 'Exibindo ' + visiveis.length + ' de ' + todos.length + ' produto(s).';
+    this.el.contador.textContent = 'Exibindo ' + visiveis.length + ' de ' + todos.length + ' peça(s).';
 
     if (todos.length === 0) {
-      UI.mostrarEstadoVazio(this.el.corpoProdutos, 8,
-        'Nenhum produto cadastrado. Clique em "Novo produto" para começar.');
+      UI.mostrarEstadoVazio(this.el.corpoProdutos, this.COLUNAS_DA_TABELA,
+        'Nenhuma peça cadastrada. Clique em "Nova peça" para começar.');
       return;
     }
 
     if (visiveis.length === 0) {
-      UI.mostrarEstadoVazio(this.el.corpoProdutos, 8,
-        'Nenhum produto encontrado com os filtros aplicados.');
+      UI.mostrarEstadoVazio(this.el.corpoProdutos, this.COLUNAS_DA_TABELA,
+        'Nenhuma peça encontrada com os filtros aplicados.');
       return;
     }
 
@@ -186,7 +189,9 @@ const TelaProdutos = {
     const linha = document.createElement('tr');
     const status = Estoque.classificar(produto);
 
-    linha.appendChild(UI.criarCelula(produto.nome));
+    linha.appendChild(UI.criarCelula(produto.codigo || '—', 'codigo-peca'));
+    linha.appendChild(this.criarCelulaDaPeca(produto));
+    linha.appendChild(UI.criarCelula(produto.aplicacao || '—'));
     linha.appendChild(UI.criarCelula(produto.categoria));
     linha.appendChild(UI.criarCelula(UI.formatarMoeda(produto.preco), 'numero'));
     linha.appendChild(UI.criarCelula(String(produto.quantidade), 'numero'));
@@ -200,6 +205,25 @@ const TelaProdutos = {
     linha.appendChild(this.criarCelulaDeAcoes(produto));
 
     return linha;
+  },
+
+  /**
+   * Monta a célula que identifica a peça: o nome e, abaixo, o fabricante.
+   * Os dois juntos em uma célula evitam mais uma coluna em uma tabela que já é
+   * larga, sem esconder uma informação que o balconista usa para conferir o item.
+   * @param {Object} produto
+   * @returns {HTMLTableCellElement}
+   */
+  criarCelulaDaPeca(produto) {
+    const celula = document.createElement('td');
+    celula.textContent = produto.nome;
+
+    const fabricante = document.createElement('span');
+    fabricante.className = 'celula-peca__fabricante';
+    fabricante.textContent = produto.fabricante || '—';
+    celula.appendChild(fabricante);
+
+    return celula;
   },
 
   /**
@@ -228,8 +252,9 @@ const TelaProdutos = {
       botao.dataset.acao = item.acao;
       botao.dataset.id = produto.id;
       // Sem isto, um leitor de tela ouviria apenas "Editar" repetido em todas
-      // as linhas, sem saber de qual produto se trata.
-      botao.setAttribute('aria-label', item.texto + ' ' + produto.nome);
+      // as linhas, sem saber de qual peça se trata. O código entra junto porque
+      // duas peças podem ter o mesmo nome e mudar só de aplicação.
+      botao.setAttribute('aria-label', item.texto + ' ' + produto.nome + ' ' + (produto.codigo || ''));
       celula.appendChild(botao);
     });
 
@@ -246,7 +271,7 @@ const TelaProdutos = {
 
     const produto = Estoque.obterProduto(botao.dataset.id);
     if (!produto) {
-      UI.mostrarMensagem(this.el.mensagem, 'Produto não encontrado. A lista será atualizada.', 'erro');
+      UI.mostrarMensagem(this.el.mensagem, 'Peça não encontrada. A lista será atualizada.', 'erro');
       this.renderizar();
       return;
     }
@@ -272,14 +297,17 @@ const TelaProdutos = {
     UI.limparMensagem(this.el.mensagem);
 
     if (produto === null) {
-      this.el.tituloDialogProduto.textContent = 'Novo produto';
+      this.el.tituloDialogProduto.textContent = 'Nova peça';
       form.elements.id.value = '';
       this.el.campoQuantidade.disabled = false;
       this.el.ajudaQuantidade.textContent = this.AJUDA_QUANTIDADE_NOVA;
     } else {
-      this.el.tituloDialogProduto.textContent = 'Editar produto';
+      this.el.tituloDialogProduto.textContent = 'Editar peça';
       form.elements.id.value = produto.id;
+      form.elements.codigo.value = produto.codigo || '';
       form.elements.nome.value = produto.nome;
+      form.elements.fabricante.value = produto.fabricante || '';
+      form.elements.aplicacao.value = produto.aplicacao || '';
       form.elements.categoria.value = produto.categoria;
       // toFixed(2) garante "199,90" em vez de "199,9" no campo de edição.
       form.elements.preco.value = produto.preco.toFixed(2).replace('.', ',');
@@ -292,7 +320,7 @@ const TelaProdutos = {
     }
 
     this.el.dialogProduto.showModal();
-    form.elements.nome.focus();
+    form.elements.codigo.focus();
   },
 
   /**
@@ -306,7 +334,10 @@ const TelaProdutos = {
     const id = form.elements.id.value;
 
     const dados = {
+      codigo: form.elements.codigo.value,
       nome: form.elements.nome.value,
+      fabricante: form.elements.fabricante.value,
+      aplicacao: form.elements.aplicacao.value,
       categoria: form.elements.categoria.value,
       preco: form.elements.preco.value,
       estoqueMinimo: form.elements.estoqueMinimo.value
@@ -329,11 +360,13 @@ const TelaProdutos = {
     this.el.dialogProduto.close();
     this.renderizar();
 
+    const identificacao = resultado.produto.codigo + ' — ' + resultado.produto.nome;
+
     UI.mostrarMensagem(
       this.el.mensagem,
       id === ''
-        ? 'Produto "' + resultado.produto.nome + '" cadastrado com sucesso.'
-        : 'Produto "' + resultado.produto.nome + '" atualizado com sucesso.',
+        ? 'Peça "' + identificacao + '" cadastrada com sucesso.'
+        : 'Peça "' + identificacao + '" atualizada com sucesso.',
       'sucesso'
     );
   },
@@ -357,7 +390,8 @@ const TelaProdutos = {
 
     this.el.tituloDialogMovimentacao.textContent = entrada ? 'Registrar entrada' : 'Registrar saída';
     this.el.resumoMovimentacao.textContent =
-      produto.nome + ' — estoque atual: ' + produto.quantidade + ' unidade(s).';
+      (produto.codigo ? produto.codigo + ' — ' : '') + produto.nome +
+      ' — estoque atual: ' + produto.quantidade + ' unidade(s).';
 
     form.elements.produtoId.value = produto.id;
     form.elements.tipo.value = tipo;
@@ -414,7 +448,8 @@ const TelaProdutos = {
 
     this.idParaExcluir = produto.id;
     this.el.resumoExclusao.textContent =
-      'Deseja realmente excluir "' + produto.nome + '"? Esta ação não pode ser desfeita.';
+      'Deseja realmente excluir a peça "' + (produto.codigo ? produto.codigo + ' — ' : '') +
+      produto.nome + '"? Esta ação não pode ser desfeita.';
 
     this.el.dialogExclusao.showModal();
     this.el.botaoConfirmarExclusao.focus();
@@ -435,7 +470,7 @@ const TelaProdutos = {
 
     UI.mostrarMensagem(
       this.el.mensagem,
-      'Produto "' + produto.nome + '" excluído. As movimentações continuam no histórico.',
+      'Peça "' + produto.nome + '" excluída. As movimentações continuam no histórico.',
       'sucesso'
     );
   }

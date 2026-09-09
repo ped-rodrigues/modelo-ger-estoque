@@ -50,8 +50,13 @@ Não é necessário instalar nada nem subir servidor.
 2. Abra o arquivo `index.html` com um duplo clique (ou arraste para o navegador).
 
 > **Enquanto o dashboard não fica pronto:** `index.html` ainda não existe. Abra
-> `pages/produtos.html`, que já contém o cadastro, a consulta, a edição, a exclusão, a pesquisa,
-> os filtros e as movimentações de estoque.
+> `pages/login.html`, a tela de acesso, que leva a `pages/produtos.html` — a página principal
+> hoje, com o cadastro, a consulta, a edição, a exclusão, a pesquisa, os filtros e as
+> movimentações de estoque.
+
+> **A tela de acesso é uma demonstração.** Autenticação real está fora do escopo do projeto
+> (seção 1 de `docs/requisitos.md`): não há cadastro de usuários, senha guardada nem sessão.
+> Qualquer usuário e senha preenchidos abrem o sistema.
 
 > **Por que funciona sem servidor?** O projeto usa tags `<script>` clássicas em vez de módulos ES
 > (`import`/`export`). Módulos ES são bloqueados pela política de segurança do navegador quando a
@@ -68,11 +73,13 @@ Para rodar os testes automatizados, abra `pages/testes.html` e clique em **Execu
 gerenciador-estoque/
 ├── index.html              # Dashboard (página inicial)
 ├── pages/
+│   ├── login.html          # Tela de acesso (demonstração, sem autenticação real)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
 │   └── testes.html         # Execução dos casos de teste automatizados
 ├── css/
 │   ├── style.css           # Base: variáveis, layout, componentes
+│   ├── login.css
 │   ├── produtos.css
 │   └── historico.css
 ├── js/
@@ -80,6 +87,7 @@ gerenciador-estoque/
 │   ├── validacao.js        # Validação dos dados informados (funções puras)
 │   ├── estoque.js          # Regras de negócio e operações do estoque
 │   ├── ui.js               # Funções auxiliares de tela compartilhadas
+│   ├── login.js            # Tela de acesso
 │   ├── dashboard.js        # Tela do dashboard
 │   ├── produtos.js         # Tela de produtos
 │   ├── historico.js        # Tela de histórico

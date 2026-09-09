@@ -12,16 +12,23 @@
 
   <header class="cabecalho">
     <div class="cabecalho__conteudo">
-      <p class="cabecalho__titulo">Gerenciador de Estoque</p>
+      <p class="cabecalho__titulo">Gerenciador de Estoque <span class="cabecalho__area">Autopeças</span></p>
       <nav class="navegacao" aria-label="Navegação principal">
         <a href="produtos.html" aria-current="page">Produtos</a>
         <a href="testes.html">Testes</a>
+        <a href="login.html" class="navegacao__sair">Sair</a>
       </nav>
     </div>
   </header>
 
+  <!-- Bandeira de chegada fechando o cabeçalho. Puramente decorativa. -->
+  <div class="faixa-quadriculada" aria-hidden="true"></div>
+
   <main class="conteudo" id="conteudo">
-    <h1>Produtos</h1>
+    <h1>Peças em estoque</h1>
+    <p class="subtitulo-pagina">
+      Cadastro, movimentação e situação das peças do box.
+    </p>
 
     <!-- ================= Filtros e ações ================= -->
     <section class="secao cartao" aria-labelledby="titulo-filtros">
@@ -29,8 +36,8 @@
 
       <div class="barra-filtros">
         <div class="campo">
-          <label for="filtro-texto">Pesquisar por nome</label>
-          <input type="search" id="filtro-texto" placeholder="Ex.: monitor">
+          <label for="filtro-texto">Pesquisar por nome ou código</label>
+          <input type="search" id="filtro-texto" placeholder="Ex.: pastilha ou FR-4213">
         </div>
 
         <div class="campo">
@@ -44,7 +51,7 @@
         </div>
 
         <div class="barra-filtros__acoes">
-          <button type="button" class="botao" id="botao-novo">Novo produto</button>
+          <button type="button" class="botao" id="botao-novo">Nova peça</button>
           <button type="button" class="botao botao--secundario" id="botao-limpar">Limpar filtros</button>
         </div>
       </div>
@@ -55,18 +62,20 @@
 
     <!-- ================= Tabela de produtos ================= -->
     <section class="secao" aria-labelledby="titulo-lista">
-      <h2 id="titulo-lista">Lista de produtos</h2>
+      <h2 id="titulo-lista">Lista de peças</h2>
       <p id="contador-produtos" aria-live="polite"></p>
 
       <div class="tabela-rolagem">
         <table class="tabela tabela-produtos">
           <caption class="apenas-leitor-tela">
-            Produtos cadastrados, com categoria, preço, quantidade, estoque mínimo,
-            situação do estoque e valor total.
+            Peças cadastradas, com código, fabricante, aplicação, categoria, preço,
+            quantidade, estoque mínimo, situação do estoque e valor total.
           </caption>
           <thead>
             <tr>
-              <th scope="col">Produto</th>
+              <th scope="col">Código</th>
+              <th scope="col">Peça</th>
+              <th scope="col">Aplicação</th>
               <th scope="col">Categoria</th>
               <th scope="col">Preço</th>
               <th scope="col">Qtd.</th>
@@ -83,7 +92,7 @@
   </main>
 
   <footer class="rodape">
-    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque
+    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque de Autopeças
   </footer>
 
   <!-- ======================================================================
@@ -93,16 +102,45 @@
        ====================================================================== -->
   <dialog id="dialog-produto" aria-labelledby="titulo-dialog-produto">
     <form id="form-produto" novalidate>
-      <h2 id="titulo-dialog-produto">Novo produto</h2>
+      <h2 id="titulo-dialog-produto">Nova peça</h2>
 
       <!-- Guarda o id do produto durante a edição; fica vazio no cadastro. -->
       <input type="hidden" name="id" id="produto-id">
 
       <div class="campo">
-        <label for="produto-nome">Nome <span aria-hidden="true">*</span></label>
+        <label for="produto-codigo">Código da peça <span aria-hidden="true">*</span></label>
+        <input type="text" id="produto-codigo" name="codigo" maxlength="30"
+               autocomplete="off" spellcheck="false"
+               aria-describedby="ajuda-produto-codigo erro-produto-codigo" aria-invalid="false">
+        <span class="campo__ajuda" id="ajuda-produto-codigo">
+          Código do catálogo do fabricante, único no estoque. Ex.: FR-4213
+        </span>
+        <span class="campo__erro" id="erro-produto-codigo" data-erro-de="codigo"></span>
+      </div>
+
+      <div class="campo">
+        <label for="produto-nome">Nome da peça <span aria-hidden="true">*</span></label>
         <input type="text" id="produto-nome" name="nome" maxlength="60"
                aria-describedby="erro-produto-nome" aria-invalid="false">
         <span class="campo__erro" id="erro-produto-nome" data-erro-de="nome"></span>
+      </div>
+
+      <div class="campo">
+        <label for="produto-fabricante">Fabricante <span aria-hidden="true">*</span></label>
+        <input type="text" id="produto-fabricante" name="fabricante" maxlength="40"
+               aria-describedby="ajuda-produto-fabricante erro-produto-fabricante" aria-invalid="false">
+        <span class="campo__ajuda" id="ajuda-produto-fabricante">Ex.: Bosch, Cofap, Fras-le</span>
+        <span class="campo__erro" id="erro-produto-fabricante" data-erro-de="fabricante"></span>
+      </div>
+
+      <div class="campo">
+        <label for="produto-aplicacao">Aplicação</label>
+        <input type="text" id="produto-aplicacao" name="aplicacao" maxlength="80"
+               aria-describedby="ajuda-produto-aplicacao erro-produto-aplicacao" aria-invalid="false">
+        <span class="campo__ajuda" id="ajuda-produto-aplicacao">
+          Veículos em que a peça serve. Opcional. Ex.: Gol G5 1.0 2008-2014
+        </span>
+        <span class="campo__erro" id="erro-produto-aplicacao" data-erro-de="aplicacao"></span>
       </div>
 
       <div class="campo">
@@ -170,7 +208,7 @@
 
   <!-- ================= Janela de confirmação de exclusão ================= -->
   <dialog id="dialog-exclusao" aria-labelledby="titulo-dialog-exclusao">
-    <h2 id="titulo-dialog-exclusao">Excluir produto</h2>
+    <h2 id="titulo-dialog-exclusao">Excluir peça</h2>
     <p id="exclusao-resumo" class="dialog__resumo"></p>
     <p class="campo__ajuda">
       As movimentações já registradas permanecem no histórico.

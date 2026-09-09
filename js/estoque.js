@@ -1,8 +1,8 @@
 /**
  * estoque.js — NÚCLEO DO SISTEMA (regras de negócio)
  * ---------------------------------------------------------------------------
- * Responsabilidade: aplicar as regras de negócio do estoque e coordenar as
- * operações (cadastrar, editar, excluir, movimentar).
+ * Responsabilidade: aplicar as regras de negócio do estoque de peças
+ * automotivas e coordenar as operações (cadastrar, editar, excluir, movimentar).
  *
  * Este arquivo NÃO acessa o DOM: ele não sabe que existe uma tela.
  * Ele usa `Storage` para persistir e `Validacao` para validar.
@@ -11,12 +11,25 @@
  *   - Formulários de produto: { ok: boolean, erros: { campo: mensagem }, produto }
  *   - Demais operações:       { ok: boolean, erro: string|null, ... }
  *
- * Atende: RF01, RF02, RF06 a RF16, RN01 a RN09.
+ * Atende: RF01, RF02, RF06 a RF16, RF19 a RF21, RN01 a RN10.
  */
 
 const Estoque = {
-  // Lista fixa de categorias (decisão D4: campo controlado, sem entidade própria).
-  CATEGORIAS: ['Eletrônicos', 'Periféricos', 'Escritório', 'Limpeza', 'Outros'],
+  // Lista fixa de categorias de peças automotivas (decisão D4: campo controlado,
+  // sem entidade própria; decisão D6: domínio de autopeças).
+  CATEGORIAS: [
+    'Motor',
+    'Freios',
+    'Suspensão e Direção',
+    'Transmissão',
+    'Filtros',
+    'Elétrica',
+    'Arrefecimento',
+    'Pneus e Rodas',
+    'Lubrificantes e Fluidos',
+    'Acessórios',
+    'Outros'
+  ],
 
   // Situações possíveis do estoque de um produto (RF12).
   STATUS: {
@@ -109,7 +122,7 @@ const Estoque = {
 
   /**
    * Deixa o texto em minúsculas e sem acentos, para a pesquisa funcionar mesmo
-   * quando o usuário digita "periferico" e o produto é "Periférico".
+   * quando o usuário digita "suspensao" e a peça é "Amortecedor de Suspensão".
    * O intervalo ̀-ͯ corresponde aos sinais de acentuação que o método
    * normalize('NFD') separa das letras.
    * @param {string} texto
@@ -124,6 +137,11 @@ const Estoque = {
 
   /**
    * Aplica pesquisa e filtros sobre uma lista de produtos (RF04 e RF05).
+   *
+   * A pesquisa por texto olha o nome da peça E o código da peça: no balcão de
+   * uma autopeça o item costuma ser procurado pelo código impresso na
+   * embalagem, e não pelo nome.
+   *
    * @param {Array<Object>} produtos
    * @param {{ texto?: string, categoria?: string, status?: string }} filtros
    * @returns {Array<Object>}
@@ -133,8 +151,9 @@ const Estoque = {
     const busca = this.normalizarTexto(criterios.texto || '').trim();
 
     return produtos.filter((produto) => {
-      if (busca !== '' && !this.normalizarTexto(produto.nome).includes(busca)) {
-        return false;
+      if (busca !== '') {
+        const alvo = this.normalizarTexto(produto.nome + ' ' + (produto.codigo || ''));
+        if (!alvo.includes(busca)) return false;
       }
       if (criterios.categoria && produto.categoria !== criterios.categoria) {
         return false;
@@ -165,6 +184,22 @@ const Estoque = {
   },
 
   /**
+   * Diz se algum produto já usa o código de peça informado (RN10).
+   *
+   * A checagem fica aqui, e não em `validacao.js`, porque depende dos produtos
+   * já cadastrados — e as funções de validação são puras, sem acesso aos dados.
+   *
+   * @param {string} codigo código já normalizado pela validação
+   * @param {string|null} [idIgnorado] id do produto em edição, que não conta como conflito
+   * @returns {boolean}
+   */
+  codigoEmUso(codigo, idIgnorado) {
+    return this.listarProdutos().some(
+      (produto) => produto.id !== idIgnorado && produto.codigo === codigo
+    );
+  },
+
+  /**
    * @returns {Array<Object>} movimentações da mais recente para a mais antiga (RF14)
    */
   listarMovimentacoes() {
@@ -191,7 +226,8 @@ const Estoque = {
    * no sistema como uma movimentação de ENTRADA. Assim o histórico sempre
    * explica o estoque atual (RN07).
    *
-   * @param {Object} dados { nome, categoria, preco, quantidade, estoqueMinimo }
+   * @param {Object} dados { codigo, nome, fabricante, aplicacao, categoria,
+   *                          preco, quantidade, estoqueMinimo }
    * @returns {{ ok: boolean, erros: Object, produto: Object|null }}
    */
   cadastrarProduto(dados) {
@@ -200,12 +236,24 @@ const Estoque = {
       return { ok: false, erros: resultado.erros, produto: null };
     }
 
+    // RN10: o código identifica a peça no catálogo e não pode se repetir.
+    if (this.codigoEmUso(resultado.produto.codigo, null)) {
+      return {
+        ok: false,
+        erros: { codigo: 'Já existe uma peça cadastrada com este código.' },
+        produto: null
+      };
+    }
+
     const quantidadeInicial = resultado.produto.quantidade;
 
     // O produto nasce com quantidade 0; a carga inicial vira uma ENTRADA.
     const novoProduto = {
       id: this.gerarId('p'),
+      codigo: resultado.produto.codigo,
       nome: resultado.produto.nome,
+      fabricante: resultado.produto.fabricante,
+      aplicacao: resultado.produto.aplicacao,
       categoria: resultado.produto.categoria,
       preco: resultado.produto.preco,
       quantidade: 0,
@@ -229,7 +277,8 @@ const Estoque = {
    * movimentação de entrada ou saída.
    *
    * @param {string} id
-   * @param {Object} dados { nome, categoria, preco, estoqueMinimo }
+   * @param {Object} dados { codigo, nome, fabricante, aplicacao, categoria,
+   *                         preco, estoqueMinimo }
    * @returns {{ ok: boolean, erros: Object, produto: Object|null }}
    */
   editarProduto(id, dados) {
@@ -243,7 +292,10 @@ const Estoque = {
     // Monta os dados a validar SEM a quantidade, garantindo a regra D2 mesmo que
     // a tela envie o campo por engano.
     const resultado = Validacao.validarProduto({
+      codigo: dados.codigo,
       nome: dados.nome,
+      fabricante: dados.fabricante,
+      aplicacao: dados.aplicacao,
       categoria: dados.categoria,
       preco: dados.preco,
       estoqueMinimo: dados.estoqueMinimo
@@ -253,9 +305,21 @@ const Estoque = {
       return { ok: false, erros: resultado.erros, produto: null };
     }
 
+    // RN10: o código continua único; o próprio produto editado não conta.
+    if (this.codigoEmUso(resultado.produto.codigo, id)) {
+      return {
+        ok: false,
+        erros: { codigo: 'Já existe outra peça cadastrada com este código.' },
+        produto: null
+      };
+    }
+
     produtos[indice] = {
       id: produtos[indice].id,
+      codigo: resultado.produto.codigo,
       nome: resultado.produto.nome,
+      fabricante: resultado.produto.fabricante,
+      aplicacao: resultado.produto.aplicacao,
       categoria: resultado.produto.categoria,
       preco: resultado.produto.preco,
       quantidade: produtos[indice].quantidade, // preservada

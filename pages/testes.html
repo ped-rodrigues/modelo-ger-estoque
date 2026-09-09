@@ -11,19 +11,23 @@
 
   <header class="cabecalho">
     <div class="cabecalho__conteudo">
-      <p class="cabecalho__titulo">Gerenciador de Estoque</p>
+      <p class="cabecalho__titulo">Gerenciador de Estoque <span class="cabecalho__area">Autopeças</span></p>
       <nav class="navegacao" aria-label="Navegação principal">
         <a href="produtos.html">Produtos</a>
         <a href="testes.html" aria-current="page">Testes</a>
+        <a href="login.html" class="navegacao__sair">Sair</a>
       </nav>
     </div>
   </header>
+
+  <!-- Bandeira de chegada fechando o cabeçalho. Puramente decorativa. -->
+  <div class="faixa-quadriculada" aria-hidden="true"></div>
 
   <main class="conteudo" id="conteudo">
     <section class="secao">
       <h1>Casos de teste automatizados</h1>
       <p>
-        Esta página executa os casos de teste CT01 a CT14 sobre as regras de negócio
+        Esta página executa os casos de teste CT01 a CT16 sobre as regras de negócio
         do sistema. Os testes rodam em um estoque vazio e, ao final, os dados que
         estavam salvos no navegador são restaurados automaticamente.
       </p>
@@ -57,7 +61,7 @@
   </main>
 
   <footer class="rodape">
-    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque
+    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque de Autopeças
   </footer>
 
   <!-- A ordem importa: as camadas de baixo primeiro. -->

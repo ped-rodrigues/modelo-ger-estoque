@@ -1,0 +1,267 @@
+/* ==========================================================================
+   login.css — ESTILOS DA TELA DE ACESSO
+   --------------------------------------------------------------------------
+   Complementa style.css. Contém apenas o que é específico desta tela: o painel
+   de apresentação à esquerda (asfalto, listras e bandeira quadriculada) e o
+   cartão do formulário à direita.
+
+   A tela é genérica de propósito: não existe autenticação real no sistema
+   (está fora do escopo, seção 1 de docs/requisitos.md). Aqui só há layout,
+   validação de campos preenchidos e a passagem para a tela principal.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Moldura da página
+   -------------------------------------------------------------------------- */
+/* O empilhamento em coluna e a altura de tela inteira já vêm do `body` no
+   style.css; aqui só troca o fundo claro pelo asfalto. */
+.pagina-login {
+  /* Asfalto: base escura com um facho de luz vindo do alto, como o holofote
+     do box sobre a pista. */
+  background-color: var(--cor-asfalto);
+  background-image:
+    radial-gradient(circle at 25% 0%, rgba(193, 18, 31, 0.35), transparent 55%),
+    radial-gradient(circle at 85% 100%, rgba(38, 46, 55, 0.9), transparent 60%),
+    repeating-linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0.03) 0 2px,
+      transparent 2px 22px
+    );
+  background-attachment: fixed;
+}
+
+.login {
+  flex: 1;
+  display: grid;
+  /* Duas colunas de largura igual; viram uma só no celular (RNF03). */
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px var(--espaco);
+}
+
+/* --------------------------------------------------------------------------
+   2. Painel de apresentação
+   -------------------------------------------------------------------------- */
+.login__marca {
+  color: #ffffff;
+}
+
+.login__logotipo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* Placa do número de competição, com a inclinação da lataria. */
+.login__numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 700;
+  font-style: italic;
+  transform: skewX(-8deg);
+}
+
+.login__marca-nome {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #ffffff;
+}
+
+.login__marca-area {
+  display: block;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: #ffb3b8;
+}
+
+.login__titulo {
+  font-size: 2.6rem;
+  line-height: 1.05;
+  margin: 0 0 12px;
+  /* O h1 do style.css é inline-block com traço vermelho embaixo; aqui o traço
+     não cabe no desenho, então ele é removido. */
+  display: block;
+  border-bottom: none;
+  padding-bottom: 0;
+  color: #ffffff;
+}
+
+/* Vermelho mais claro que o da marca: sobre o asfalto escuro, o #c1121f não
+   alcançaria o contraste exigido pela RNF05. */
+.login__titulo em {
+  display: block;
+  font-style: italic;
+  color: #ff5a63;
+}
+
+.login__texto {
+  max-width: 46ch;
+  margin: 0 0 24px;
+  color: #c9d1d9;
+}
+
+/* Lista de destaques com um traço vermelho no lugar do marcador redondo. */
+.login__destaques {
+  list-style: none;
+  margin: 0 0 28px;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.login__destaques li {
+  position: relative;
+  padding-left: 22px;
+  color: #e6ebf0;
+}
+
+.login__destaques li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 12px;
+  height: 3px;
+  background-color: var(--cor-primaria);
+  transform: skewX(-30deg);
+}
+
+/* Faixa quadriculada fechando o painel, como a linha de chegada.
+   Duas fileiras em vez de uma: sobre o asfalto escuro, uma fileira só pareceria
+   um tracejado branco, porque os quadrados escuros somem no fundo. */
+.login__bandeira {
+  max-width: 320px;
+  height: 24px;
+}
+
+/* Velocímetro decorativo desenhado em SVG dentro do HTML. */
+.login__velocimetro {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-top: 24px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Cartão do formulário
+   -------------------------------------------------------------------------- */
+.login__cartao {
+  /* Herda fundo, borda e sombra de .cartao; aqui só o tamanho e o respiro. */
+  width: min(420px, 100%);
+  margin-left: auto;
+  padding: 28px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+}
+
+/* O h2 do cartão é o título de fato do formulário: recebe a inclinação e o
+   traço vermelho que o style.css dá ao h1 das demais telas. */
+.login__cartao h2 {
+  font-size: 1.4rem;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: inline-block;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--cor-primaria);
+}
+
+.login__chamada {
+  margin: 12px 0 20px;
+  color: var(--cor-texto-suave);
+}
+
+/* Linha do "esqueci a senha" alinhada ao lado da marcação "lembrar de mim". */
+.login__linha-opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 4px 0 20px;
+}
+
+.login__linha-opcoes .campo {
+  margin-bottom: 0;
+}
+
+.login__link {
+  color: var(--cor-primaria);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Rodapé do cartão: deixa explícito que a tela é uma demonstração. */
+.login__nota {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 1px dashed var(--cor-borda);
+  font-size: 0.85rem;
+  color: var(--cor-texto-suave);
+}
+
+.login__nota code {
+  font-family: "Consolas", "Courier New", monospace;
+  background-color: #eef1f4;
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Rodapé da página
+   -------------------------------------------------------------------------- */
+.login__rodape {
+  border-top: none;
+  background-color: rgba(0, 0, 0, 0.35);
+  color: #9aa5b1;
+}
+
+/* --------------------------------------------------------------------------
+   5. Responsividade
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .login {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 32px var(--espaco);
+  }
+
+  .login__cartao {
+    margin-left: 0;
+  }
+
+  .login__titulo {
+    font-size: 2rem;
+  }
+
+  /* Em uma coluna o painel já é longo: o velocímetro sai para o formulário
+     aparecer sem rolagem. */
+  .login__velocimetro {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .login__destaques {
+    display: none;
+  }
+}
