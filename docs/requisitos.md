@@ -48,7 +48,7 @@ simultâneos; integração fiscal ou com ERP; emissão de nota fiscal; pagamento
 | RF17 | Armazenar os dados no `localStorage` | Núcleo pronto |
 | RF18 | Recuperar os dados armazenados ao ser iniciado | Núcleo pronto |
 
-> "Núcleo pronto" significa que a regra existe e está testada em `js/estoque.js`; a interface que
+> "Núcleo pronto" significa que a regra existe e está implementada em `js/estoque.js`; a interface que
 > a expõe ao usuário é construída nas etapas seguintes.
 
 ---
@@ -157,4 +157,3 @@ com a justificativa de cada uma, está em `docs/diario-do-projeto.md`.
 | D2 | A quantidade só muda por movimentação; a quantidade inicial do cadastro gera uma ENTRADA |
 | D3 | Ao excluir um produto, suas movimentações permanecem no histórico |
 | D4 | Categoria é um campo controlado do produto, com lista fixa |
-| D5 | Testes automatizados em `pages/testes.html` e roteiro manual em `docs/casos-de-teste.md` |

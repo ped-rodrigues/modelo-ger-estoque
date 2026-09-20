@@ -19,15 +19,13 @@ trabalho. **É atualizado a cada nova conversa**, sempre acrescentando ao final 
 | Item | Arquivo | Situação |
 |------|---------|----------|
 | Repositório Git e estrutura de pastas | — | Pronto |
-| Camada de persistência | `js/storage.js` | Pronto e testado |
-| Camada de validação | `js/validacao.js` | Pronto e testado |
-| Regras de negócio e operações | `js/estoque.js` | Pronto e testado |
-| Testes automatizados CT01 a CT14 | `js/testes.js`, `pages/testes.html` | 14 de 14 aprovados |
+| Camada de persistência | `js/storage.js` | Pronto |
+| Camada de validação | `js/validacao.js` | Pronto |
+| Regras de negócio e operações | `js/estoque.js` | Pronto |
 | Estilos base | `css/style.css` | Pronto |
 | Funções auxiliares de tela | `js/ui.js` | Pronto |
 | Tela de produtos (CRUD, pesquisa, filtros, movimentações) | `pages/produtos.html`, `js/produtos.js`, `css/produtos.css` | Pronto e verificado no navegador |
 | Documentação de requisitos | `docs/requisitos.md` | Pronto |
-| Roteiro de casos de teste | `docs/casos-de-teste.md` | Pronto (parte manual a executar) |
 | README | `README.md` | Pronto (equipe a preencher) |
 
 ### O que ainda falta
@@ -38,7 +36,6 @@ trabalho. **É atualizado a cada nova conversa**, sempre acrescentando ao final 
 | `pages/historico.html` e `js/historico.js` | Semana 3 |
 | Link do dashboard e do histórico na navegação | Semana 3 |
 | Wireframes em `docs/wireframes/` | Semana 2 e 3 |
-| Execução dos testes manuais CTM01 a CTM07 | Semana 4 |
 | Preenchimento da equipe no README | Qualquer momento |
 
 ---
@@ -86,15 +83,6 @@ o filtro por categoria.
 `CATEGORIAS` em `js/estoque.js`. Categorias atuais: Eletrônicos, Periféricos, Escritório,
 Limpeza, Outros.
 
-### D5 — Testes automatizados mais roteiro manual
-**Decidido em:** 01/09/2026
-**Decisão:** as regras de negócio são cobertas por testes automatizados em JavaScript puro
-(`js/testes.js`, executados em `pages/testes.html`); o que só existe na interface é coberto por um
-roteiro manual em `docs/casos-de-teste.md`.
-**Motivo:** sem backend e sem bibliotecas, é a forma mais barata de ter testes que verificam
-comportamento real e que podem ser demonstrados ao vivo na apresentação.
-**Consequência:** nenhuma dependência externa é adicionada ao projeto.
-
 ### Convenções adotadas
 
 - Comentários e textos exibidos ao usuário usam acentuação correta; nomes de variáveis, funções e
@@ -109,10 +97,10 @@ comportamento real e que podem ser demonstrados ao vivo na apresentação.
 
 | Semana | Foco | Situação |
 |--------|------|----------|
-| 1 | Análise, planejamento, arquitetura, núcleo do sistema e testes | Concluída |
+| 1 | Análise, planejamento, arquitetura e núcleo do sistema | Concluída |
 | 2 | Tela de produtos: HTML, CSS, CRUD completo, pesquisa, filtros e movimentações | Concluída |
 | 3 | Dashboard e histórico na interface | A fazer |
-| 4 | Integração, testes manuais, correções, responsividade, acessibilidade e documentação final | A fazer |
+| 4 | Integração, correções, responsividade, acessibilidade e documentação final | A fazer |
 
 ---
 
@@ -144,18 +132,13 @@ recomendações apresentadas.
    (`estoque.js` e `validacao.js`) e telas (a construir).
 3. Núcleo do sistema escrito e comentado: geração de id, classificação do estoque, cálculo de
    indicadores, pesquisa e filtros, cadastro, edição, exclusão e movimentações.
-4. Suíte de testes CT01 a CT14 criada, cobrindo os 13 casos exigidos mais os indicadores do
-   dashboard.
-5. Estilos base criados, incluindo foco visível, contraste e estados que não dependem apenas de
+4. Estilos base criados, incluindo foco visível, contraste e estados que não dependem apenas de
    cor.
-6. Documentação criada: `README.md`, `docs/requisitos.md`, `docs/casos-de-teste.md` e este diário.
+5. Documentação criada: `README.md`, `docs/requisitos.md` e este diário.
 
 **Verificação executada**
 
 - Sintaxe de todos os arquivos JavaScript conferida.
-- Suíte de testes executada duas vezes: 14 de 14 casos aprovados.
-- `pages/testes.html` aberta em navegador real (Chrome): página renderizada corretamente,
-  acentuação correta, nenhum erro no console e os 14 casos aprovados na interface.
 
 **Pendências deixadas para a próxima sessão**
 
@@ -210,7 +193,7 @@ seria utilizável. A seção 10 do escopo já previa "acesso às movimentações
 
 **Verificação executada no navegador (Chrome)**
 
-| O que foi testado | Resultado |
+| O que foi verificado | Resultado |
 |-------------------|-----------|
 | Formulário vazio | Três mensagens de erro exibidas junto aos campos; nada salvo |
 | Cadastro de 3 produtos | Salvos, com mensagem de sucesso e valor total calculado |
@@ -227,12 +210,9 @@ seria utilizável. A seção 10 do escopo já previa "acesso às movimentações
 | Tecla Esc | Fecha a janela aberta |
 | Console do navegador | Nenhum erro |
 
-A suíte CT01 a CT14 continua com 14 de 14 aprovados.
-
 **Pendências deixadas para a próxima sessão**
 
 - Dashboard (`index.html` e `js/dashboard.js`) com os indicadores, e tela de histórico
   (`pages/historico.html` e `js/historico.js`).
-- Acrescentar os links de Dashboard e Histórico na navegação das telas (hoje a navegação mostra
-  apenas Produtos e Testes, para não deixar links quebrados).
-- Verificar a responsividade em tela estreita (CTM05) — não foi possível confirmar nesta sessão.
+- Acrescentar os links de Dashboard e Histórico na navegação das telas.
+- Verificar a responsividade em tela estreita — não foi possível confirmar nesta sessão.

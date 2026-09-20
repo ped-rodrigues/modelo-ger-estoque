@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre | Kaisen</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/conteudo.css">
+</head>
+<body data-secao="sobre" data-base="../">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+    <div class="banner" role="presentation"></div>
+
+    <div class="faixa">
+      <section class="abertura">
+        <h1 class="titulo-secao">
+          Sobre a
+          <em>Kaisen</em>
+        </h1>
+        <p class="abertura__texto">
+          O Kaisen é um gerenciador de estoque de autopeças feito como projeto
+          acadêmico da disciplina de Engenharia de Software. Ele funciona
+          inteiramente no navegador: não há servidor, banco de dados nem
+          instalação.
+        </p>
+        <hr class="abertura__filete">
+      </section>
+
+      <section class="secao">
+        <div class="texto">
+          <h2>O que o sistema faz</h2>
+          <ul>
+            <li>Cadastra, edita e exclui peças, com código, fabricante e aplicação.</li>
+            <li>Registra entradas e saídas de estoque, cada uma com data e hora.</li>
+            <li>Classifica sozinho cada peça como normal, baixa ou esgotada.</li>
+            <li>Pesquisa por nome ou código e filtra por categoria e situação.</li>
+            <li>Calcula os indicadores do estoque e o valor total imobilizado.</li>
+            <li>Guarda tudo no navegador, e os dados continuam lá ao reabrir.</li>
+          </ul>
+
+          <h2>Como ele é construído</h2>
+          <p>
+            O projeto usa apenas HTML5, CSS3 e JavaScript, sem framework e sem
+            biblioteca externa. As responsabilidades ficam separadas em três
+            camadas, e a dependência sempre aponta para baixo: as telas
+            conhecem o DOM, as regras de negócio não conhecem tela nenhuma, e
+            só a camada de persistência conversa com o armazenamento do
+            navegador.
+          </p>
+          <p>
+            Duas regras sustentam essa separação: nenhum arquivo além de
+            <code>storage.js</code> acessa o <code>localStorage</code>, e os
+            arquivos de regra nunca tocam o DOM — o que permite alterar a
+            interface sem mexer nas regras, e trocar o armazenamento sem mexer
+            em nenhuma tela.
+          </p>
+
+          <h2>As regras que governam o estoque</h2>
+          <p>
+            Nove regras de negócio decidem o comportamento do sistema. Elas
+            valem em qualquer tela, porque vivem na camada de regras e não na
+            interface.
+          </p>
+
+          <div class="regras">
+            <div class="regra">
+              <span class="regra__codigo">RN01</span>
+              <p>A quantidade de estoque nunca pode ser negativa.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN02</span>
+              <p>Uma saída não pode exceder a quantidade disponível.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN03</span>
+              <p>Quantidade igual a zero significa estoque esgotado.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN04</span>
+              <p>Quantidade entre 1 e o estoque mínimo significa estoque baixo.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN05</span>
+              <p>Quantidade acima do estoque mínimo significa estoque normal.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN06</span>
+              <p>O valor total de uma peça é o preço multiplicado pela quantidade.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN07</span>
+              <p>Toda entrada ou saída gera uma movimentação no histórico.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN08</span>
+              <p>O preço da peça não pode ser negativo.</p>
+            </div>
+            <div class="regra">
+              <span class="regra__codigo">RN09</span>
+              <p>Quantidade e estoque mínimo são inteiros maiores ou iguais a zero.</p>
+            </div>
+          </div>
+
+          <h2>Limitações conhecidas</h2>
+          <ul>
+            <li>
+              Os dados ficam no navegador em que foram cadastrados; não há
+              sincronização entre máquinas ou usuários.
+            </li>
+            <li>Limpar os dados de navegação apaga o estoque.</li>
+            <li>
+              A tela de acesso é uma demonstração: não há autenticação real,
+              controle de permissões nem sessão.
+            </li>
+            <li>
+              Não há backend, banco de dados nem integração com sistemas
+              fiscais ou ERP.
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Esta tela é só texto: ela não lê nem grava nada do estoque. -->
+  <script src="../js/layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garagem | Kaisen</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/conteudo.css">
+</head>
+<body data-secao="garagem" data-base="../">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+    <div class="banner" role="presentation"></div>
+
+    <div class="faixa">
+      <section class="abertura">
+        <h1 class="titulo-secao">
+          Peças
+          <em>Personalizadas</em>
+        </h1>
+        <p class="abertura__texto">
+          A garagem reúne o que exige atenção agora: as peças que estão abaixo
+          do estoque mínimo, as que acabaram e as de maior valor parado. É a
+          leitura rápida de onde o estoque pede uma decisão.
+        </p>
+        <hr class="abertura__filete">
+      </section>
+
+      <section class="secao" aria-labelledby="titulo-destaques">
+        <h2 id="titulo-destaques" class="apenas-leitor-tela">Resumo da garagem</h2>
+
+        <!-- Os números vêm de Estoque.calcularIndicadores; nada é fixo aqui. -->
+        <div class="destaques" id="destaques" aria-live="polite">
+          <div class="destaque">
+            <p class="destaque__rotulo">Peças em atenção</p>
+            <p class="destaque__valor" id="destaque-atencao">—</p>
+            <p class="destaque__nota">Estoque baixo ou esgotado</p>
+          </div>
+          <div class="destaque">
+            <p class="destaque__rotulo">Valor parado</p>
+            <p class="destaque__valor" id="destaque-valor">—</p>
+            <p class="destaque__nota">Soma de preço × quantidade</p>
+          </div>
+          <div class="destaque">
+            <p class="destaque__rotulo">Categorias em uso</p>
+            <p class="destaque__valor" id="destaque-categorias">—</p>
+            <p class="destaque__nota">De 11 categorias disponíveis</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="secao" aria-labelledby="titulo-garagem">
+        <div class="lista__topo">
+          <h2 id="titulo-garagem">Peças que pedem atenção</h2>
+          <p class="lista__contador" id="contador-garagem" aria-live="polite"></p>
+        </div>
+
+        <!-- ================= Filtro ================= -->
+        <div class="barra-filtros">
+          <div class="campo">
+            <label for="filtro-texto">Pesquisar por nome ou código</label>
+            <input type="search" id="filtro-texto" placeholder="Nome ou código da peça"
+                   autocomplete="off">
+          </div>
+
+          <div class="campo">
+            <label for="filtro-situacao">Mostrar</label>
+            <select id="filtro-situacao">
+              <option value="ATENCAO">Baixo e esgotado</option>
+              <option value="BAIXO">Somente estoque baixo</option>
+              <option value="ESGOTADO">Somente esgotadas</option>
+              <option value="TODOS">Todas as peças</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="filtro-ordem">Ordenar por</label>
+            <select id="filtro-ordem">
+              <option value="VALOR">Maior valor em estoque</option>
+              <option value="QUANTIDADE">Menor quantidade</option>
+              <option value="NOME">Nome da peça</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grade-cartoes" id="grade-garagem"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/garagem.js"></script>
+</body>
+</html>

@@ -3,17 +3,17 @@
    --------------------------------------------------------------------------
    Contém o que se repete em todas as telas: variáveis de cor, reset,
    cabeçalho, navegação, botões, formulários, tabelas, avisos e rodapé.
-   Estilos específicos de cada tela ficam em login.css, produtos.css e
-   historico.css.
+   Estilos específicos de cada tela ficam em login.css, estoque.css,
+   home.css e conteudo.css.
 
-   Identidade visual: automobilismo. O sistema atende uma autopeça, então a
-   linguagem visual é a de box de corrida — asfalto escuro, vermelho de
-   competição, bandeira quadriculada e títulos inclinados, como as inscrições
-   aplicadas na lataria de um carro de prova.
+   Identidade visual: KAISEN — tema escuro com acento laranja, conforme as
+   telas de alta fidelidade do Figma. Fundo quase preto, cartões em grafite,
+   laranja como cor de ação e de destaque, tipografia sem serifa com títulos
+   largos e espaçados.
 
    As cores de estado (verde, âmbar, vermelho) NÃO fazem parte do tema: elas
-   comunicam a situação do estoque e continuam com contraste alto sobre fundo
-   claro (RNF05).
+   comunicam a situação do estoque e foram escolhidas para manter contraste
+   alto sobre o fundo escuro (RNF05).
 
    Atende: RNF03 (responsiva), RNF05 (contraste), RNF10 (consistência visual).
    ========================================================================== */
@@ -22,33 +22,50 @@
    1. Variáveis (tokens) — mudar aqui muda o sistema inteiro
    -------------------------------------------------------------------------- */
 :root {
-  --cor-fundo: #eef1f5;
-  --cor-superficie: #ffffff;
-  --cor-borda: #d3d9e0;
-  --cor-texto: #151a20;
-  --cor-texto-suave: #55636f;
+  /* Superfícies escuras, do mais fundo para o mais próximo do usuário. */
+  --cor-preto: #000000;
+  --cor-fundo: #141414;
+  --cor-fundo-alt: #1a1a1a;
+  --cor-superficie: #2e2e2e;
+  --cor-superficie-alta: #383838;
+  --cor-borda: #3d3d3d;
+  --cor-borda-suave: #2a2a2a;
 
-  /* Vermelho de corrida: cor de ação do sistema. Contraste acima de 6:1 com o
-     texto branco dos botões, folgadamente acima do mínimo exigido (RNF05). */
-  --cor-primaria: #c1121f;
-  --cor-primaria-escura: #8f0d17;
+  --cor-texto: #e9e9e9;
+  --cor-texto-suave: #9e9e9e;
+  --cor-texto-fraco: #6f6f6f;
 
-  /* Asfalto: fundo do cabeçalho, do rodapé e do cabeçalho das tabelas. */
-  --cor-asfalto: #14181d;
-  --cor-asfalto-claro: #262e37;
+  /* Laranja Kaisen: cor de ação do sistema. Sobre o grafite escuro passa
+     folgadamente do mínimo de contraste exigido (RNF05). */
+  --cor-primaria: #e8590c;
+  --cor-primaria-escura: #c2460a;
+  --cor-primaria-clara: #e8963c;  /* títulos e preços dentro dos cartões */
+  --cor-primaria-nav: #e8833a;    /* link ativo da navegação */
 
-  /* Cores de estado. Nunca são usadas sozinhas: sempre acompanham um texto
-     ou um símbolo, para não comunicar apenas por cor (acessibilidade). */
-  --cor-sucesso: #1c6b3c;
-  --cor-sucesso-fundo: #e4f4ea;
-  --cor-alerta: #8a5a00;
-  --cor-alerta-fundo: #fdf1dc;
-  --cor-erro: #a12626;
-  --cor-erro-fundo: #fbe6e6;
+  /* Painel claro: o filtro do estoque é claro de propósito no Figma, para
+     separar o que é ferramenta do que é conteúdo. */
+  --cor-painel: #eef1f5;
+  --cor-painel-superficie: #ffffff;
+  --cor-painel-borda: #dde3ea;
+  --cor-painel-texto: #1f2b3a;
+  --cor-painel-texto-suave: #6b7885;
 
-  --raio: 8px;
-  --sombra: 0 1px 3px rgba(20, 35, 50, 0.12);
+  /* Cores de estado. Nunca são usadas sozinhas: sempre acompanham um texto,
+     para não comunicar apenas por cor (acessibilidade). */
+  --cor-sucesso: #4ade80;
+  --cor-sucesso-fundo: rgba(74, 222, 128, 0.12);
+  --cor-alerta: #fbbf24;
+  --cor-alerta-fundo: rgba(251, 191, 36, 0.12);
+  --cor-erro: #f87171;
+  --cor-erro-fundo: rgba(248, 113, 113, 0.12);
+
+  --raio: 6px;
+  --raio-grande: 10px;
+  --sombra: 0 2px 10px rgba(0, 0, 0, 0.45);
   --espaco: 16px;
+  --largura-maxima: 1280px;
+
+  --fonte: "Segoe UI", "Poppins", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* --------------------------------------------------------------------------
@@ -60,49 +77,36 @@
 
 body {
   margin: 0;
-  /* Coluna que ocupa a tela toda: com pouco conteúdo, o rodapé escuro fica
-     colado embaixo em vez de flutuar no meio da página. */
+  /* Coluna que ocupa a tela toda: com pouco conteúdo, o rodapé fica colado
+     embaixo em vez de flutuar no meio da página. */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: var(--fonte);
   font-size: 16px;
   line-height: 1.5;
   color: var(--cor-texto);
   background-color: var(--cor-fundo);
-  /* Faixas diagonais bem suaves, na direção das listras de capô. Ficam quase
-     invisíveis para não competir com o conteúdo da tabela. */
-  background-image: repeating-linear-gradient(
-    115deg,
-    rgba(20, 24, 29, 0.025) 0 2px,
-    transparent 2px 26px
-  );
 }
 
 h1, h2, h3 {
   margin: 0 0 12px;
-  line-height: 1.25;
+  line-height: 1.2;
+  font-weight: 600;
 }
 
-h1 { font-size: 1.5rem; }
-h2 { font-size: 1.2rem; }
+h1 { font-size: 2.5rem; letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.1rem; }
 
-/* O título da página leva a inclinação e o caixa-alta das inscrições de carro
-   de corrida, com um traço vermelho embaixo fazendo as vezes de faixa de
-   lataria. A borda acompanha o texto, e não a largura da página. */
-h1 {
-  display: inline-block;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding-bottom: 10px;
-  border-bottom: 3px solid var(--cor-primaria);
+a {
+  color: var(--cor-primaria-nav);
 }
 
 /* Foco sempre visível: exigido para navegação por teclado (RNF04). */
 :focus-visible {
-  outline: 3px solid var(--cor-primaria);
-  outline-offset: 2px;
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 3px;
 }
 
 /* Link para pular direto ao conteúdo, útil para leitores de tela. */
@@ -113,7 +117,7 @@ h1 {
   background: var(--cor-primaria);
   color: #fff;
   padding: 10px 16px;
-  z-index: 10;
+  z-index: 100;
 }
 .pular-para-conteudo:focus {
   left: 8px;
@@ -121,101 +125,93 @@ h1 {
 }
 
 /* --------------------------------------------------------------------------
-   3. Faixa quadriculada reutilizável
+   3. Marca (logotipo desenhado em SVG dentro do HTML)
    --------------------------------------------------------------------------
-   Bandeira de chegada desenhada apenas com gradiente, sem imagem e sem
-   requisição de rede (RNF09). O `repeating-conic-gradient` divide cada
-   quadrado de 24px em quatro de 12px, alternando preto e branco; a altura de
-   12px deixa exatamente uma fileira visível.
-
-   Aplique a classe em um elemento vazio; ela é decorativa, nenhuma informação
-   depende dela.
+   O contorno do carro e o nome "Kaisen" são desenhados em SVG para não
+   depender de imagem externa nem de requisição de rede (RNF09).
    -------------------------------------------------------------------------- */
-.faixa-quadriculada {
-  height: 12px;
-  background-color: #101418;
-  background-image: repeating-conic-gradient(#ffffff 0% 25%, #101418 0% 50%);
-  background-size: 24px 24px;
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.marca__simbolo {
+  display: block;
+  width: 116px;
+  height: 34px;
 }
 
 /* --------------------------------------------------------------------------
    4. Cabeçalho e navegação
    -------------------------------------------------------------------------- */
 .cabecalho {
-  background-color: var(--cor-asfalto);
-  background-image: linear-gradient(180deg, var(--cor-asfalto-claro), var(--cor-asfalto));
-  color: #ffffff;
-  padding: 12px var(--espaco);
-  /* Listra vermelha lateral, como a que corre pela lateral do carro. */
-  border-left: 6px solid var(--cor-primaria);
+  background-color: var(--cor-preto);
+  color: var(--cor-texto);
+  position: sticky;
+  top: 0;
+  z-index: 50;
 }
 
 .cabecalho__conteudo {
-  max-width: 1100px;
+  max-width: var(--largura-maxima);
   margin: 0 auto;
+  padding: 12px var(--espaco);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px var(--espaco);
+  gap: 12px;
 }
 
-.cabecalho__titulo {
+/* Nome da seção atual, à direita do logotipo e separado por um filete. */
+.cabecalho__secao {
   margin: 0;
-  font-size: 1.15rem;
-  font-weight: 700;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-/* Etiqueta com o segmento atendido pelo sistema, ao lado do nome do projeto. */
-.cabecalho__area {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background-color: var(--cor-primaria);
-  color: #ffffff;
-  font-size: 0.8rem;
+  padding-left: 18px;
+  border-left: 1px solid #3a3a3a;
+  color: var(--cor-primaria-nav);
+  font-size: 1.05rem;
   font-weight: 600;
-  font-style: normal;
-  letter-spacing: 0.04em;
-  vertical-align: 2px;
 }
 
 .navegacao {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 4px;
   margin-left: auto;
 }
 
 .navegacao a {
-  color: #ffffff;
+  color: #d5d5d5;
   text-decoration: none;
-  padding: 8px 12px;
+  padding: 8px 14px;
   border-radius: var(--raio);
-  font-weight: 600;
-  font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .navegacao a:hover {
-  background-color: var(--cor-primaria-escura);
+  color: #ffffff;
+  background-color: #1e1e1e;
 }
 
-/* A página atual é marcada por cor E por sublinhado, não só por cor. */
+/* A página atual é marcada por cor E por negrito, não só por cor. */
 .navegacao a[aria-current="page"] {
-  background-color: var(--cor-primaria);
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  color: var(--cor-primaria-nav);
+  font-weight: 600;
 }
 
-/* Link de saída: contornado, para não ser confundido com as telas do sistema. */
+/* Link de saída: contornado, para não ser confundido com as seções do site. */
 .navegacao__sair {
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid #3a3a3a;
   margin-left: 8px;
+}
+
+.navegacao__sair:hover {
+  border-color: var(--cor-primaria);
 }
 
 /* --------------------------------------------------------------------------
@@ -224,52 +220,106 @@ h1 {
 .conteudo {
   flex: 1; /* empurra o rodapé para o fim da tela */
   width: 100%;
-  max-width: 1100px;
+}
+
+/* Faixa central usada dentro das seções. */
+.faixa {
+  width: 100%;
+  max-width: var(--largura-maxima);
   margin: 0 auto;
-  padding: 24px var(--espaco) 48px;
+  padding: 0 var(--espaco);
 }
 
 .secao {
-  margin-bottom: 32px;
+  padding: 56px 0;
 }
 
-.cartao {
-  background-color: var(--cor-superficie);
-  border: 1px solid var(--cor-borda);
-  border-top: 3px solid var(--cor-primaria);
-  border-radius: var(--raio);
-  box-shadow: var(--sombra);
-  padding: var(--espaco);
+/* --------------------------------------------------------------------------
+   5.1 Banner de topo das páginas internas
+   --------------------------------------------------------------------------
+   Faixa larga com uma fotografia esmaecida atrás, como nas telas Estoque,
+   Garagem e Contato do Figma. A imagem é opcional: sem ela, o degradê
+   sozinho já sustenta o banner (RNF09).
+   -------------------------------------------------------------------------- */
+.banner {
+  height: 300px;
+  background-color: #0d0d0d;
+  background-image: linear-gradient(120deg, #1d1d1d 0%, #2b2b2b 45%, #121212 100%);
+  background-size: cover;
+  background-position: center;
+  position: relative;
 }
 
-/* Linha de apoio logo abaixo do título da página. */
-.subtitulo-pagina {
-  margin: 8px 0 24px;
+.banner::after {
+  /* Véu escuro: garante que o texto branco por cima continue legível
+     qualquer que seja a fotografia usada de fundo (RNF05). */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(20, 20, 20, 0.85));
+}
+
+/* Título grande de seção, no padrão "palavra clara + palavra laranja". */
+.titulo-secao {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: #b9b9b9;
+}
+
+.titulo-secao em {
+  display: block;
+  font-style: normal;
+  color: var(--cor-primaria-nav);
+}
+
+/* Variante centralizada, usada no Contato e no "Últimos lançamentos". */
+.titulo-centro {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 400;
+  color: #b9b9b9;
+  margin: 0 0 12px;
+}
+
+.titulo-centro--laranja {
+  color: var(--cor-primaria-nav);
+}
+
+.subtitulo-centro {
+  text-align: center;
   color: var(--cor-texto-suave);
+  max-width: 62ch;
+  margin: 0 auto 40px;
 }
 
 .rodape {
-  background-color: var(--cor-asfalto);
-  color: #c9d1d9;
-  border-top: 3px solid var(--cor-primaria);
-  padding: 16px;
+  background-color: var(--cor-preto);
+  color: var(--cor-texto-fraco);
+  border-top: 1px solid #222;
+  padding: 28px 16px;
   text-align: center;
   font-size: 0.875rem;
+}
+
+.rodape a {
+  color: var(--cor-texto-suave);
 }
 
 /* --------------------------------------------------------------------------
    6. Botões
    -------------------------------------------------------------------------- */
 .botao {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 0.95rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 9px 18px;
+  padding: 10px 22px;
   border: 1px solid transparent;
-  border-radius: var(--raio);
+  border-radius: 999px;
   background-color: var(--cor-primaria);
   color: #ffffff;
   cursor: pointer;
@@ -286,75 +336,113 @@ h1 {
 }
 
 .botao--secundario {
-  background-color: var(--cor-superficie);
-  color: var(--cor-primaria);
-  border-color: var(--cor-primaria);
+  background-color: transparent;
+  color: var(--cor-primaria-nav);
+  border-color: #4a4a4a;
 }
 
 .botao--secundario:hover {
-  background-color: #fbecec;
+  background-color: #262626;
+  border-color: var(--cor-primaria);
 }
 
 .botao--perigo {
-  background-color: var(--cor-erro);
+  background-color: transparent;
+  color: var(--cor-erro);
+  border-color: var(--cor-erro);
 }
 
 .botao--perigo:hover {
-  background-color: #7f1d1d;
+  background-color: var(--cor-erro-fundo);
 }
 
 .botao--pequeno {
-  padding: 5px 10px;
+  padding: 6px 14px;
   font-size: 0.8rem;
 }
 
 /* Ocupa a largura toda do contêiner. Usado no botão de entrar do login. */
 .botao--largo {
-  display: block;
+  display: flex;
   width: 100%;
-  padding: 12px 18px;
-  text-align: center;
+  padding: 12px 22px;
+}
+
+/* Botão retangular vazado, como o "Acessar estoque" da home. */
+.botao--vazado {
+  border-radius: 0;
+  background-color: transparent;
+  border-color: #5a4326;
+  color: var(--cor-primaria-nav);
+  padding: 14px 40px;
+  font-weight: 400;
+  gap: 40px;
+}
+
+.botao--vazado:hover {
+  background-color: #1f1a15;
+  border-color: var(--cor-primaria);
 }
 
 /* --------------------------------------------------------------------------
    7. Formulários
    -------------------------------------------------------------------------- */
 .campo {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .campo label {
   display: block;
-  font-weight: 600;
-  margin-bottom: 4px;
-}
-
-.campo input,
-.campo select {
-  width: 100%;
-  font: inherit;
-  padding: 8px 10px;
-  border: 1px solid var(--cor-borda);
-  border-radius: var(--raio);
-  background-color: var(--cor-superficie);
+  font-weight: 400;
+  margin-bottom: 6px;
   color: var(--cor-texto);
 }
 
+.campo input,
+.campo select,
+.campo textarea {
+  width: 100%;
+  font: inherit;
+  padding: 10px 12px;
+  border: 1px solid #4a4a4a;
+  border-radius: var(--raio);
+  background-color: #1f1f1f;
+  color: var(--cor-texto);
+}
+
+.campo textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+  color: var(--cor-texto-fraco);
+}
+
 .campo input:focus,
-.campo select:focus {
+.campo select:focus,
+.campo textarea:focus {
   border-color: var(--cor-primaria);
 }
 
 .campo input:disabled {
-  background-color: #eef1f4;
-  color: var(--cor-texto-suave);
+  background-color: #1a1a1a;
+  color: var(--cor-texto-fraco);
+}
+
+/* O seletor nativo herda o fundo claro do sistema em alguns navegadores;
+   forçar a cor das opções evita texto branco sobre fundo branco. */
+.campo select option {
+  background-color: #1f1f1f;
+  color: var(--cor-texto);
 }
 
 .campo__ajuda {
   display: block;
   font-size: 0.85rem;
   color: var(--cor-texto-suave);
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 /* Mensagem de erro do campo: texto explícito, nunca apenas a borda vermelha. */
@@ -362,12 +450,13 @@ h1 {
   display: block;
   font-size: 0.875rem;
   color: var(--cor-erro);
-  margin-top: 4px;
+  margin-top: 5px;
   min-height: 1px;
 }
 
 .campo input[aria-invalid="true"],
-.campo select[aria-invalid="true"] {
+.campo select[aria-invalid="true"],
+.campo textarea[aria-invalid="true"] {
   border-color: var(--cor-erro);
   border-width: 2px;
 }
@@ -382,11 +471,16 @@ h1 {
 .campo--marcacao input {
   width: auto;
   margin: 0;
+  accent-color: var(--cor-primaria);
 }
 
 .campo--marcacao label {
   margin: 0;
-  font-weight: 400;
+}
+
+/* Campo obrigatório: o asterisco fica laranja, como no Figma. */
+.obrigatorio {
+  color: var(--cor-primaria-nav);
 }
 
 /* --------------------------------------------------------------------------
@@ -395,7 +489,7 @@ h1 {
 .tabela-rolagem {
   overflow-x: auto; /* em telas pequenas a tabela rola sozinha (RNF03) */
   border: 1px solid var(--cor-borda);
-  border-radius: var(--raio);
+  border-radius: var(--raio-grande);
   background-color: var(--cor-superficie);
 }
 
@@ -409,33 +503,32 @@ h1 {
   text-align: left;
   color: var(--cor-texto-suave);
   font-size: 0.9rem;
-  padding-bottom: 8px;
+  padding: 12px 14px;
 }
 
 .tabela th,
 .tabela td {
   text-align: left;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--cor-borda);
 }
 
-/* Cabeçalho da tabela em asfalto, no mesmo tom da barra de navegação. */
 .tabela th {
-  background-color: var(--cor-asfalto);
-  color: #ffffff;
-  font-size: 0.8rem;
+  background-color: #232323;
+  color: var(--cor-primaria-nav);
+  font-size: 0.78rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border-bottom: 3px solid var(--cor-primaria);
+  letter-spacing: 0.08em;
 }
 
 /* Linhas alternadas ajudam a seguir a linha certa numa tabela larga. */
 .tabela tbody tr:nth-child(even) {
-  background-color: #f6f8fa;
+  background-color: #333333;
 }
 
 .tabela tbody tr:hover {
-  background-color: #fbecec;
+  background-color: #3c3229;
 }
 
 .tabela .numero {
@@ -448,11 +541,12 @@ h1 {
    -------------------------------------------------------------------------- */
 .etiqueta {
   display: inline-block;
-  padding: 2px 10px;
+  padding: 3px 12px;
   border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 600;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .etiqueta--normal {
@@ -477,11 +571,12 @@ h1 {
    10. Mensagens e estados vazios
    -------------------------------------------------------------------------- */
 .aviso {
-  padding: 12px 14px;
+  padding: 12px 16px;
   border-radius: var(--raio);
   border: 1px solid var(--cor-borda);
-  border-left-width: 5px;
+  border-left-width: 4px;
   margin-bottom: var(--espaco);
+  background-color: var(--cor-superficie);
 }
 
 .aviso--sucesso {
@@ -499,7 +594,7 @@ h1 {
 .estado-vazio {
   text-align: center;
   color: var(--cor-texto-suave);
-  padding: 32px 16px;
+  padding: 48px 16px;
 }
 
 /* Esconde visualmente, mas mantém o texto para leitores de tela. */
@@ -513,25 +608,124 @@ h1 {
 }
 
 /* --------------------------------------------------------------------------
-   11. Responsividade
+   11. Cartão de item (usado na home, na garagem e no estoque)
+   --------------------------------------------------------------------------
+   Repete o cartão do Figma: faixa de imagem em cima, corpo grafite embaixo
+   com o nome em laranja, um filete, o preço e outro filete.
    -------------------------------------------------------------------------- */
-@media (max-width: 640px) {
+.cartao-item {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cor-superficie);
+  border-radius: 2px;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cartao-item__figura {
+  height: 170px;
+  margin: 0;
+  background-color: #1b1b1b;
+  background-image: linear-gradient(135deg, #262626, #3a3a3a 60%, #1f1f1f);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Sem fotografia, a inicial da peça ocupa o lugar da imagem. */
+.cartao-item__inicial {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #4a4a4a;
+  letter-spacing: 0.05em;
+}
+
+.cartao-item__corpo {
+  padding: 18px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cartao-item__nome {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--cor-primaria-clara);
+  padding-bottom: 14px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.cartao-item__preco {
+  margin: 14px 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cor-primaria-clara);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+/* Rodapé laranja do cartão, como o "Veja mais >" do Figma. */
+.cartao-item__rodape {
+  margin-top: auto;
+  background-color: #8a4a10;
+  color: #ffffff;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.95rem;
+}
+
+.cartao-item:hover .cartao-item__rodape {
+  background-color: var(--cor-primaria);
+}
+
+/* Grade de cartões usada nas listagens. */
+.grade-cartoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 26px;
+}
+
+/* --------------------------------------------------------------------------
+   12. Responsividade
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
   .cabecalho__conteudo {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 10px 12px;
+  }
+
+  .cabecalho__secao {
+    padding-left: 12px;
+    font-size: 0.95rem;
   }
 
   .navegacao {
     margin-left: 0;
     width: 100%;
+    justify-content: flex-start;
+  }
+
+  .navegacao a {
+    padding: 6px 10px;
+    font-size: 0.92rem;
   }
 
   .navegacao__sair {
     margin-left: 0;
   }
 
-  .conteudo {
-    padding: 16px 12px 32px;
+  .secao {
+    padding: 40px 0;
+  }
+
+  .banner {
+    height: 200px;
   }
 }
 

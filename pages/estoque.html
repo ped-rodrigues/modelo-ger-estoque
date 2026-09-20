@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estoque | Kaisen</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/estoque.css">
+</head>
+<body data-secao="estoque" data-base="../">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+    <div class="banner" role="presentation"></div>
+
+    <div class="faixa">
+      <h1 class="apenas-leitor-tela">Peças em estoque</h1>
+
+      <div class="estoque">
+
+        <!-- ================= Painel de filtro e busca =================
+             Coluna clara com a pesquisa, as situações e as categorias.
+             Tudo aqui é filtro: nenhum dado do estoque é alterado a partir
+             deste painel, exceto o botão de cadastrar uma peça nova.
+             ============================================================ -->
+        <form class="painel" id="painel-filtro" aria-labelledby="titulo-filtro">
+
+          <div class="painel__cabecalho">
+            <button type="button" class="painel__recolher" id="botao-recolher"
+                    aria-expanded="true" aria-controls="painel-corpo"
+                    aria-label="Recolher o painel de filtro">&times;</button>
+
+            <h2 class="painel__titulo" id="titulo-filtro">
+              Filtro <span aria-hidden="true">&amp;</span> Busca
+            </h2>
+
+            <button type="button" class="painel__limpar" id="botao-limpar">Limpar</button>
+
+            <p class="painel__subtitulo">ESTOQUE SELECIONADO</p>
+          </div>
+
+          <div class="painel__corpo" id="painel-corpo">
+
+            <!-- ---------- Pesquisa por texto (RF04) ---------- -->
+            <label class="painel__rotulo" for="filtro-texto">Palavra-chave</label>
+            <div class="busca">
+              <svg class="busca__lupa" viewBox="0 0 24 24" role="presentation"
+                   aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+              </svg>
+
+              <input type="search" id="filtro-texto" name="texto"
+                     placeholder="Nome ou código da peça" autocomplete="off"
+                     aria-describedby="ajuda-filtro-texto">
+
+              <button type="button" class="busca__limpar" id="botao-limpar-texto"
+                      aria-label="Limpar a pesquisa" hidden>&times;</button>
+            </div>
+            <span class="campo__ajuda apenas-leitor-tela" id="ajuda-filtro-texto">
+              A lista é atualizada conforme você digita.
+            </span>
+
+            <!-- ---------- Situação do estoque (RF05, RF12) ---------- -->
+            <div class="fichas" role="group" aria-label="Filtrar por situação do estoque">
+              <span class="fichas__rotulo" aria-hidden="true">Situação:</span>
+              <!-- As fichas são criadas por js/tela-estoque.js a partir de
+                   Estoque.STATUS, para não repetir aqui uma lista que já
+                   existe nas regras de negócio. -->
+            </div>
+
+            <hr class="painel__divisor">
+
+            <!-- ---------- Categorias (RF05) ---------- -->
+            <div class="painel__linha-rotulo">
+              <span class="painel__rotulo" id="rotulo-categorias">Categorias</span>
+              <span class="painel__contagem" id="contagem-categorias"></span>
+            </div>
+
+            <div class="categorias" id="categorias" role="group"
+                 aria-labelledby="rotulo-categorias">
+              <!-- Preenchido por js/tela-estoque.js a partir de Estoque.CATEGORIAS. -->
+            </div>
+          </div>
+
+          <div class="painel__rodape">
+            <button type="button" class="painel__botao-icone" id="botao-novo"
+                    aria-label="Cadastrar uma peça nova">
+              <svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </button>
+
+            <a class="painel__acao" href="#lista-pecas">
+              Ver peças
+              <span class="painel__acao-contagem">
+                <span id="contagem-pecas">0</span>
+                <span aria-hidden="true">&gt;</span>
+              </span>
+            </a>
+          </div>
+        </form>
+
+        <!-- ================= Lista de peças ================= -->
+        <section class="lista" aria-labelledby="titulo-lista">
+          <div class="lista__topo">
+            <h2 id="titulo-lista">Peças em estoque</h2>
+            <p class="lista__contador" id="contador-produtos" aria-live="polite"></p>
+          </div>
+
+          <!-- Mensagem de feedback das operações (RNF07). -->
+          <div id="mensagem" role="status" aria-live="polite" hidden></div>
+
+          <div class="grade-cartoes" id="lista-pecas">
+            <!-- Preenchido por js/tela-estoque.js. -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       Janela de cadastro e edição de peça.
+       O elemento <dialog> do HTML já prende o foco dentro da janela e fecha
+       com a tecla Esc, o que ajuda na acessibilidade sem código extra.
+       ====================================================================== -->
+  <dialog id="dialog-produto" aria-labelledby="titulo-dialog-produto">
+    <form id="form-produto" novalidate>
+      <h2 id="titulo-dialog-produto">Nova peça</h2>
+
+      <!-- Guarda o id da peça durante a edição; fica vazio no cadastro. -->
+      <input type="hidden" name="id" id="produto-id">
+
+      <div class="dialog__grade">
+        <div class="campo">
+          <label for="produto-codigo">Código da peça <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="text" id="produto-codigo" name="codigo" maxlength="30"
+                 autocomplete="off" spellcheck="false" placeholder="FR-4213"
+                 aria-describedby="ajuda-produto-codigo erro-produto-codigo" aria-invalid="false">
+          <span class="campo__ajuda" id="ajuda-produto-codigo">
+            Código do catálogo do fabricante, único no estoque.
+          </span>
+          <span class="campo__erro" id="erro-produto-codigo" data-erro-de="codigo"></span>
+        </div>
+
+        <div class="campo">
+          <label for="produto-fabricante">Fabricante <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="text" id="produto-fabricante" name="fabricante" maxlength="40"
+                 placeholder="Bosch, Cofap, Fras-le"
+                 aria-describedby="erro-produto-fabricante" aria-invalid="false">
+          <span class="campo__erro" id="erro-produto-fabricante" data-erro-de="fabricante"></span>
+        </div>
+
+        <div class="campo campo--largo">
+          <label for="produto-nome">Nome da peça <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="text" id="produto-nome" name="nome" maxlength="60"
+                 aria-describedby="erro-produto-nome" aria-invalid="false">
+          <span class="campo__erro" id="erro-produto-nome" data-erro-de="nome"></span>
+        </div>
+
+        <div class="campo campo--largo">
+          <label for="produto-aplicacao">Aplicação</label>
+          <input type="text" id="produto-aplicacao" name="aplicacao" maxlength="80"
+                 placeholder="Gol G5 1.0 2008-2014"
+                 aria-describedby="ajuda-produto-aplicacao erro-produto-aplicacao" aria-invalid="false">
+          <span class="campo__ajuda" id="ajuda-produto-aplicacao">
+            Veículos em que a peça serve. Opcional.
+          </span>
+          <span class="campo__erro" id="erro-produto-aplicacao" data-erro-de="aplicacao"></span>
+        </div>
+
+        <div class="campo campo--largo">
+          <label for="produto-categoria">Categoria <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <select id="produto-categoria" name="categoria"
+                  aria-describedby="erro-produto-categoria" aria-invalid="false"></select>
+          <span class="campo__erro" id="erro-produto-categoria" data-erro-de="categoria"></span>
+        </div>
+
+        <div class="campo">
+          <label for="produto-preco">Preço (R$) <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="text" inputmode="decimal" id="produto-preco" name="preco"
+                 placeholder="89,90"
+                 aria-describedby="ajuda-produto-preco erro-produto-preco" aria-invalid="false">
+          <span class="campo__ajuda" id="ajuda-produto-preco">Use vírgula ou ponto.</span>
+          <span class="campo__erro" id="erro-produto-preco" data-erro-de="preco"></span>
+        </div>
+
+        <div class="campo">
+          <label for="produto-estoque-minimo">Estoque mínimo <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="number" id="produto-estoque-minimo" name="estoqueMinimo" min="0" step="1"
+                 aria-describedby="erro-produto-estoque-minimo" aria-invalid="false">
+          <span class="campo__erro" id="erro-produto-estoque-minimo" data-erro-de="estoqueMinimo"></span>
+        </div>
+
+        <div class="campo campo--largo" id="campo-quantidade">
+          <label for="produto-quantidade">Quantidade inicial <span class="obrigatorio" aria-hidden="true">*</span></label>
+          <input type="number" id="produto-quantidade" name="quantidade" min="0" step="1"
+                 aria-describedby="ajuda-produto-quantidade erro-produto-quantidade" aria-invalid="false">
+          <span class="campo__ajuda" id="ajuda-produto-quantidade">
+            Registrada como uma entrada de estoque no histórico.
+          </span>
+          <span class="campo__erro" id="erro-produto-quantidade" data-erro-de="quantidade"></span>
+        </div>
+      </div>
+
+      <p class="dialog__rodape">
+        <button type="button" class="botao botao--secundario" data-fechar="dialog-produto">Cancelar</button>
+        <button type="submit" class="botao">Salvar</button>
+      </p>
+    </form>
+  </dialog>
+
+  <!-- ================= Janela de entrada e saída de estoque ================= -->
+  <dialog id="dialog-movimentacao" aria-labelledby="titulo-dialog-movimentacao">
+    <form id="form-movimentacao" novalidate>
+      <h2 id="titulo-dialog-movimentacao">Registrar entrada</h2>
+
+      <input type="hidden" name="produtoId" id="movimentacao-produto-id">
+      <input type="hidden" name="tipo" id="movimentacao-tipo">
+
+      <p id="movimentacao-resumo" class="dialog__resumo"></p>
+
+      <div class="campo">
+        <label for="movimentacao-quantidade">Quantidade <span class="obrigatorio" aria-hidden="true">*</span></label>
+        <input type="number" id="movimentacao-quantidade" name="quantidade" min="1" step="1"
+               aria-describedby="erro-movimentacao-quantidade" aria-invalid="false">
+        <span class="campo__erro" id="erro-movimentacao-quantidade" data-erro-de="quantidade"></span>
+      </div>
+
+      <p class="dialog__rodape">
+        <button type="button" class="botao botao--secundario" data-fechar="dialog-movimentacao">Cancelar</button>
+        <button type="submit" class="botao">Registrar</button>
+      </p>
+    </form>
+  </dialog>
+
+  <!-- ================= Janela de confirmação de exclusão ================= -->
+  <dialog id="dialog-exclusao" aria-labelledby="titulo-dialog-exclusao">
+    <h2 id="titulo-dialog-exclusao">Excluir peça</h2>
+    <p id="exclusao-resumo" class="dialog__resumo"></p>
+    <p class="campo__ajuda">
+      As movimentações já registradas permanecem no histórico.
+    </p>
+    <p class="dialog__rodape">
+      <button type="button" class="botao botao--secundario" data-fechar="dialog-exclusao">Cancelar</button>
+      <button type="button" class="botao botao--perigo" id="botao-confirmar-exclusao">Excluir</button>
+    </p>
+  </dialog>
+
+  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/tela-estoque.js"></script>
+</body>
+</html>

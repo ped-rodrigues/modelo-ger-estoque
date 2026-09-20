@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Gerenciador de Estoque</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<!-- data-secao marca o link atual na navegação; data-base é o caminho até a
+     raiz do projeto — aqui a própria pasta, por isso fica vazio. O cabeçalho
+     e o rodapé são montados por js/layout.js. -->
+<body data-secao="inicio" data-base="">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+
+    <!-- ================= Abertura ================= -->
+    <div class="hero" role="presentation"></div>
+
+    <!-- ================= Marca ================= -->
+    <section class="marca-bloco" aria-labelledby="titulo-home">
+      <h1 id="titulo-home" class="apenas-leitor-tela">Kaisen — Gerenciador de Estoque</h1>
+      <p class="marca-bloco__nome" aria-hidden="true">Kaisen</p>
+      <p class="marca-bloco__texto">
+        Controle completo do estoque de peças: cadastro, entradas, saídas,
+        estoque mínimo e histórico de movimentações.
+      </p>
+    </section>
+
+    <!-- ================= Indicadores (RF15, RF16) =================
+         Os números são calculados em tempo real por Estoque.calcularIndicadores
+         a partir dos produtos salvos. Nenhum valor é fixo no HTML.
+         ============================================================ -->
+    <section class="secao" aria-labelledby="titulo-indicadores">
+      <div class="faixa">
+        <h2 id="titulo-indicadores" class="apenas-leitor-tela">Situação do estoque</h2>
+
+        <!-- aria-live: quando os números chegam, o leitor de tela os anuncia. -->
+        <div class="indicadores" id="indicadores" aria-live="polite">
+          <div class="indicador">
+            <p class="indicador__rotulo">Peças cadastradas</p>
+            <p class="indicador__valor" id="indicador-produtos">—</p>
+          </div>
+          <div class="indicador">
+            <p class="indicador__rotulo">Itens em estoque</p>
+            <p class="indicador__valor" id="indicador-itens">—</p>
+          </div>
+          <div class="indicador indicador--alerta">
+            <p class="indicador__rotulo">Estoque baixo</p>
+            <p class="indicador__valor" id="indicador-baixo">—</p>
+          </div>
+          <div class="indicador indicador--erro">
+            <p class="indicador__rotulo">Esgotados</p>
+            <p class="indicador__valor" id="indicador-esgotados">—</p>
+          </div>
+          <div class="indicador">
+            <p class="indicador__rotulo">Valor total</p>
+            <p class="indicador__valor" id="indicador-valor">—</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Cartões de seção ================= -->
+    <section class="secao" aria-labelledby="titulo-secoes">
+      <div class="faixa">
+        <h2 id="titulo-secoes" class="apenas-leitor-tela">Seções do sistema</h2>
+
+        <div class="cartoes-secao">
+          <a class="cartao-secao" href="pages/estoque.html">
+            <p class="cartao-secao__texto">
+              Encontre a peça que precisa, filtre por marca, categoria e
+              situação do estoque do jeito mais rápido possível.
+            </p>
+            <p class="cartao-secao__nome">
+              Estoque
+              <span class="cartao-secao__seta" aria-hidden="true">&gt;</span>
+            </p>
+          </a>
+
+          <a class="cartao-secao" href="pages/sobre.html">
+            <p class="cartao-secao__texto">
+              Saiba mais sobre a Kaisen, sobre o projeto e sobre as regras que
+              governam o controle do estoque.
+            </p>
+            <p class="cartao-secao__nome">
+              Sobre
+              <span class="cartao-secao__seta" aria-hidden="true">&gt;</span>
+            </p>
+          </a>
+
+          <a class="cartao-secao" href="pages/contato.html">
+            <p class="cartao-secao__texto">
+              Entre em contato para esclarecer suas dúvidas e converse com
+              nossos fornecedores.
+            </p>
+            <p class="cartao-secao__nome">
+              Contato
+              <span class="cartao-secao__seta" aria-hidden="true">&gt;</span>
+            </p>
+          </a>
+
+          <a class="cartao-secao" href="pages/garagem.html">
+            <p class="cartao-secao__texto">
+              Acesse nossa garagem e veja as peças mais recentes e as que estão
+              separadas para você.
+            </p>
+            <p class="cartao-secao__nome">
+              Garagem
+              <span class="cartao-secao__seta" aria-hidden="true">&gt;</span>
+            </p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Últimos cadastros ================= -->
+    <section class="secao faixa-lancamentos" aria-labelledby="titulo-lancamentos">
+      <div class="faixa">
+        <h2 id="titulo-lancamentos" class="titulo-centro titulo-centro--laranja">
+          Últimos cadastros
+        </h2>
+        <p class="subtitulo-centro">
+          Confira as peças cadastradas mais recentemente no estoque.
+        </p>
+
+        <div class="grade-lancamentos" id="grade-lancamentos"></div>
+
+        <p class="acao-central">
+          <a class="botao botao--vazado" href="pages/estoque.html">
+            Acessar estoque
+            <span aria-hidden="true">&gt;</span>
+          </a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <script src="js/storage.js"></script>
+  <script src="js/validacao.js"></script>
+  <script src="js/estoque.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/layout.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>

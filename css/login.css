@@ -1,9 +1,16 @@
 /* ==========================================================================
    login.css — ESTILOS DA TELA DE ACESSO
    --------------------------------------------------------------------------
-   Complementa style.css. Contém apenas o que é específico desta tela: o painel
-   de apresentação à esquerda (asfalto, listras e bandeira quadriculada) e o
-   cartão do formulário à direita.
+   Complementa style.css. Contém apenas o que é específico desta tela.
+
+   A tela de acesso é a única do sistema em azul-noite, e não no grafite das
+   demais: é assim no Figma, e faz sentido — ela fica fora da navegação, antes
+   de o sistema começar. O fundo tem a curva de luz que corre sobre a lataria
+   de um carro escuro, desenhada só com degradês (RNF09).
+
+   Em telas largas a tela é um cartão de duas colunas (apresentação à
+   esquerda, formulário à direita). Abaixo de 860px vira uma coluna só,
+   reproduzindo a versão mobile do Figma (RNF03).
 
    A tela é genérica de propósito: não existe autenticação real no sistema
    (está fora do escopo, seção 1 de docs/requisitos.md). Aqui só há layout,
@@ -11,257 +18,346 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. Moldura da página
+   1. Tokens próprios da tela
    -------------------------------------------------------------------------- */
-/* O empilhamento em coluna e a altura de tela inteira já vêm do `body` no
-   style.css; aqui só troca o fundo claro pelo asfalto. */
 .pagina-login {
-  /* Asfalto: base escura com um facho de luz vindo do alto, como o holofote
-     do box sobre a pista. */
-  background-color: var(--cor-asfalto);
+  /* Azul-noite do Figma. Estas variáveis existem só aqui: o resto do sistema
+     continua usando a paleta grafite e laranja do style.css. */
+  --azul-fundo: #0b0f1d;
+  --azul-painel: #272c49;
+  --azul-formulario: #1b2036;
+  --azul-borda: #565d80;
+  --azul-texto: #e8eaf4;
+  --azul-texto-suave: #9aa1c0;
+
+  justify-content: center;
+  color: var(--azul-texto);
+  background-color: var(--azul-fundo);
+  /* Três camadas: o brilho frio da curva, uma sombra à direita e o azul
+     de base. Juntas imitam a luz correndo pela lateral do carro. */
   background-image:
-    radial-gradient(circle at 25% 0%, rgba(193, 18, 31, 0.35), transparent 55%),
-    radial-gradient(circle at 85% 100%, rgba(38, 46, 55, 0.9), transparent 60%),
-    repeating-linear-gradient(
-      115deg,
-      rgba(255, 255, 255, 0.03) 0 2px,
-      transparent 2px 22px
-    );
+    radial-gradient(ellipse 55% 75% at 22% 62%, rgba(150, 178, 255, 0.20), transparent 62%),
+    radial-gradient(ellipse 40% 60% at 8% 92%, rgba(190, 210, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 70% 80% at 92% 12%, rgba(10, 13, 26, 0.9), transparent 60%);
   background-attachment: fixed;
 }
 
+/* --------------------------------------------------------------------------
+   2. Moldura e cartão
+   -------------------------------------------------------------------------- */
 .login {
   flex: 1;
-  display: grid;
-  /* Duas colunas de largura igual; viram uma só no celular (RNF03). */
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  display: flex;
   align-items: center;
-  max-width: 1100px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 48px var(--espaco);
+  justify-content: center;
+  padding: 40px var(--espaco);
+}
+
+.login__cartao {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  width: min(940px, 100%);
+  min-height: 430px;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
 }
 
 /* --------------------------------------------------------------------------
-   2. Painel de apresentação
+   3. Painel de apresentação (coluna da esquerda)
    -------------------------------------------------------------------------- */
 .login__marca {
-  color: #ffffff;
+  background-color: var(--azul-painel);
+  /* A mesma curva de luz do fundo, atravessando o painel. */
+  background-image:
+    radial-gradient(ellipse 60% 90% at 78% 55%, rgba(160, 185, 255, 0.16), transparent 60%);
+  padding: 28px 36px 36px;
+  display: flex;
+  flex-direction: column;
 }
 
 .login__logotipo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  margin: 0 0 auto;
 }
 
-/* Placa do número de competição, com a inclinação da lataria. */
-.login__numero {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border: 3px solid #ffffff;
-  border-radius: 10px;
-  background-color: var(--cor-primaria);
-  color: #ffffff;
-  font-size: 1.6rem;
-  font-weight: 700;
-  font-style: italic;
-  transform: skewX(-8deg);
-}
-
-.login__marca-nome {
-  margin: 0;
-  font-size: 1.05rem;
-  font-weight: 700;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: #ffffff;
-}
-
-.login__marca-area {
-  display: block;
-  font-size: 0.8rem;
-  font-style: normal;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  color: #ffb3b8;
+.login__logotipo .marca__simbolo {
+  width: 132px;
+  height: 38px;
 }
 
 .login__titulo {
-  font-size: 2.6rem;
-  line-height: 1.05;
-  margin: 0 0 12px;
-  /* O h1 do style.css é inline-block com traço vermelho embaixo; aqui o traço
-     não cabe no desenho, então ele é removido. */
-  display: block;
-  border-bottom: none;
-  padding-bottom: 0;
-  color: #ffffff;
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  line-height: 1.12;
+  font-weight: 400;
+  margin: 24px 0 10px;
+  color: var(--azul-texto);
 }
 
-/* Vermelho mais claro que o da marca: sobre o asfalto escuro, o #c1121f não
-   alcançaria o contraste exigido pela RNF05. */
-.login__titulo em {
+/* A segunda linha é a que pesa: "WELCOME !" em negrito, como no Figma. */
+.login__titulo strong {
   display: block;
-  font-style: italic;
-  color: #ff5a63;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
 .login__texto {
-  max-width: 46ch;
-  margin: 0 0 24px;
-  color: #c9d1d9;
-}
-
-/* Lista de destaques com um traço vermelho no lugar do marcador redondo. */
-.login__destaques {
-  list-style: none;
-  margin: 0 0 28px;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.login__destaques li {
-  position: relative;
-  padding-left: 22px;
-  color: #e6ebf0;
-}
-
-.login__destaques li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.62em;
-  width: 12px;
-  height: 3px;
-  background-color: var(--cor-primaria);
-  transform: skewX(-30deg);
-}
-
-/* Faixa quadriculada fechando o painel, como a linha de chegada.
-   Duas fileiras em vez de uma: sobre o asfalto escuro, uma fileira só pareceria
-   um tracejado branco, porque os quadrados escuros somem no fundo. */
-.login__bandeira {
-  max-width: 320px;
-  height: 24px;
-}
-
-/* Velocímetro decorativo desenhado em SVG dentro do HTML. */
-.login__velocimetro {
-  display: block;
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  margin-top: 24px;
+  margin: 0;
+  max-width: 34ch;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--azul-texto-suave);
 }
 
 /* --------------------------------------------------------------------------
-   3. Cartão do formulário
+   4. Coluna do formulário
    -------------------------------------------------------------------------- */
-.login__cartao {
-  /* Herda fundo, borda e sombra de .cartao; aqui só o tamanho e o respiro. */
-  width: min(420px, 100%);
-  margin-left: auto;
-  padding: 28px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+.login__formulario {
+  background-color: var(--azul-formulario);
+  padding: 40px 42px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* O h2 do cartão é o título de fato do formulário: recebe a inclinação e o
-   traço vermelho que o style.css dá ao h1 das demais telas. */
-.login__cartao h2 {
-  font-size: 1.4rem;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  display: inline-block;
-  padding-bottom: 10px;
-  border-bottom: 3px solid var(--cor-primaria);
+/* Mensagem geral do formulário (RNF07). */
+.login__formulario .aviso {
+  background-color: rgba(0, 0, 0, 0.25);
+  border-color: var(--azul-borda);
+  font-size: 0.85rem;
+  padding: 10px 12px;
 }
 
-.login__chamada {
-  margin: 12px 0 20px;
-  color: var(--cor-texto-suave);
+.login__formulario .aviso--sucesso {
+  background-color: var(--cor-sucesso-fundo);
+  border-color: var(--cor-sucesso);
+  color: var(--cor-sucesso);
 }
 
-/* Linha do "esqueci a senha" alinhada ao lado da marcação "lembrar de mim". */
+.login__formulario .aviso--erro {
+  background-color: var(--cor-erro-fundo);
+  border-color: var(--cor-erro);
+  color: var(--cor-erro);
+}
+
+/* --------------------------------------------------------------------------
+   4.1 Campo com o rótulo DENTRO da moldura arredondada
+   --------------------------------------------------------------------------
+   No Figma o rótulo ("Email address") fica pequeno no alto da própria caixa,
+   e o valor digitado logo abaixo. A moldura é a do bloco inteiro, não a do
+   `input` — por isso o input aparece sem borda e sem fundo.
+   -------------------------------------------------------------------------- */
+.campo--caixa {
+  border: 1px solid var(--azul-borda);
+  border-radius: 26px;
+  padding: 8px 20px 10px;
+  margin-bottom: 14px;
+}
+
+.campo--caixa label {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--azul-texto-suave);
+}
+
+.campo--caixa input {
+  padding: 2px 0 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--azul-texto);
+  font-size: 1rem;
+}
+
+/* O contorno de foco vai na moldura inteira, não só no texto: sem isso o
+   usuário de teclado não enxerga onde está (RNF04). */
+.campo--caixa input:focus {
+  outline: none;
+}
+
+.campo--caixa:focus-within {
+  outline: 2px solid #96b2ff;
+  outline-offset: 2px;
+}
+
+/* A borda vermelha do campo inválido também vai na moldura. */
+.campo--caixa input[aria-invalid="true"] {
+  border: none;
+}
+
+.campo--caixa:has(input[aria-invalid="true"]) {
+  border-color: var(--cor-erro);
+  border-width: 2px;
+}
+
+.campo--caixa .campo__erro {
+  margin-top: 2px;
+  font-size: 0.78rem;
+}
+
+/* --------------------------------------------------------------------------
+   4.2 Linha "lembrar de mim" / "esqueci a senha"
+   -------------------------------------------------------------------------- */
 .login__linha-opcoes {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin: 4px 0 20px;
+  gap: 10px;
+  margin: 2px 4px 26px;
+  font-size: 0.82rem;
 }
 
 .login__linha-opcoes .campo {
   margin-bottom: 0;
 }
 
+.login__linha-opcoes label {
+  font-size: 0.82rem;
+  color: var(--azul-texto-suave);
+}
+
 .login__link {
-  color: var(--cor-primaria);
-  font-size: 0.9rem;
-  font-weight: 600;
+  color: var(--azul-texto-suave);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.login__link:hover {
+  color: var(--azul-texto);
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   4.3 Botões
+   -------------------------------------------------------------------------- */
+.login__acoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 26px;
+}
+
+/* Os dois botões do Figma são ardósia, não laranja: esta tela está fora da
+   navegação e não usa a cor de ação do sistema. */
+.login__botao {
+  border-radius: 4px;
+  padding: 9px 16px;
+  font-weight: 400;
+  font-size: 0.95rem;
+  background-color: #2e3455;
+  border: 1px solid var(--azul-borda);
+  color: var(--azul-texto);
+}
+
+.login__botao:hover {
+  background-color: #3a4166;
+}
+
+.login__botao--claro {
+  background-color: #454c72;
+}
+
+.login__botao--claro:hover {
+  background-color: #525a84;
+}
+
+.login__botao:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* --------------------------------------------------------------------------
+   4.4 Rodapé do formulário: "follow" e ícones sociais
+   -------------------------------------------------------------------------- */
+.login__social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--azul-texto-suave);
+  font-size: 0.78rem;
+}
+
+.login__social svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
+  display: block;
+}
+
+.login__social a {
+  color: var(--azul-texto-suave);
+  line-height: 0;
+}
+
+.login__social a:hover {
+  color: var(--azul-texto);
 }
 
 /* Rodapé do cartão: deixa explícito que a tela é uma demonstração. */
 .login__nota {
-  margin: 20px 0 0;
-  padding-top: 16px;
-  border-top: 1px dashed var(--cor-borda);
-  font-size: 0.85rem;
-  color: var(--cor-texto-suave);
+  margin: 22px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--azul-texto-suave);
+  text-align: center;
 }
 
 .login__nota code {
   font-family: "Consolas", "Courier New", monospace;
-  background-color: #eef1f4;
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
   padding: 1px 5px;
 }
 
 /* --------------------------------------------------------------------------
-   4. Rodapé da página
+   5. Responsividade — a versão mobile do Figma
+   --------------------------------------------------------------------------
+   Em uma coluna o painel de apresentação sai e o logotipo sobe para o alto do
+   formulário, centralizado, exatamente como na tela "login mobile".
    -------------------------------------------------------------------------- */
-.login__rodape {
-  border-top: none;
-  background-color: rgba(0, 0, 0, 0.35);
-  color: #9aa5b1;
-}
-
-/* --------------------------------------------------------------------------
-   5. Responsividade
-   -------------------------------------------------------------------------- */
-@media (max-width: 900px) {
+@media (max-width: 860px) {
   .login {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    padding: 32px var(--espaco);
+    padding: 24px 12px;
   }
 
   .login__cartao {
-    margin-left: 0;
+    grid-template-columns: 1fr;
+    width: min(420px, 100%);
+    min-height: 0;
   }
 
-  .login__titulo {
-    font-size: 2rem;
-  }
-
-  /* Em uma coluna o painel já é longo: o velocímetro sai para o formulário
-     aparecer sem rolagem. */
-  .login__velocimetro {
+  /* O painel some, mas o logotipo dele não: ele reaparece no formulário. */
+  .login__marca {
     display: none;
+  }
+
+  .login__formulario {
+    padding: 32px 26px 24px;
+  }
+
+  .login__logotipo-mobile {
+    display: block;
+    margin: 0 auto 34px;
+  }
+
+  .login__acoes {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .login__botao {
+    border-radius: 999px;
+    padding: 11px 16px;
   }
 }
 
-@media (max-width: 640px) {
-  .login__destaques {
+/* Acima de 860px o logotipo do topo é o do painel da esquerda: o do
+   formulário seria repetição. */
+@media (min-width: 861px) {
+  .login__logotipo-mobile {
     display: none;
   }
 }

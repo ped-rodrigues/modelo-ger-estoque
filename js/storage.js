@@ -96,7 +96,7 @@ const Storage = {
     return this.escrever(this.CHAVE_MOVIMENTACOES, movimentacoes);
   },
 
-  /** Apaga TODOS os dados da aplicação (usado nos testes e no reset manual). */
+  /** Apaga TODOS os dados da aplicação (reset manual do estoque). */
   limparTudo() {
     try {
       localStorage.removeItem(this.CHAVE_PRODUTOS);

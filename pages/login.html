@@ -3,124 +3,130 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acesso | Gerenciador de Estoque</title>
+  <title>Acesso | Kaisen</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/login.css">
 </head>
+<!-- Esta tela não tem barra de navegação (ela vem antes do sistema), por isso
+     não declara data-secao e não carrega layout.js. -->
 <body class="pagina-login">
   <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
   <main class="login" id="conteudo">
+    <div class="login__cartao">
 
-    <!-- ================= Painel de apresentação =================
-         Coluna decorativa e informativa. Nada aqui é necessário para entrar
-         no sistema: em tela estreita ela encolhe e o formulário continua
-         completo (RNF03).
-         ========================================================== -->
-    <section class="login__marca" aria-labelledby="titulo-login">
-      <p class="login__logotipo">
-        <span class="login__numero" aria-hidden="true">01</span>
-        <span class="login__marca-nome">
-          Gerenciador de Estoque
-          <span class="login__marca-area">Autopeças &middot; Box de peças</span>
-        </span>
-      </p>
+      <!-- ================= Painel de apresentação =================
+           Coluna decorativa e informativa. Nada aqui é necessário para entrar
+           no sistema: abaixo de 860px ela sai de cena e o formulário continua
+           completo (RNF03).
+           ========================================================== -->
+      <section class="login__marca" aria-labelledby="titulo-login">
+        <p class="login__logotipo">
+          <svg class="marca__simbolo" viewBox="0 0 240 70" role="img"
+               aria-label="Kaisen" focusable="false">
+            <g fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round">
+              <path d="M10 40 C 22 38 30 30 46 22 C 70 10 104 4 138 6 C 172 8 202 18 226 32"></path>
+              <path d="M10 40 C 4 42 2 47 8 49 C 14 51 22 50 28 47"></path>
+            </g>
+            <text x="42" y="60" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif"
+                  font-size="26" font-weight="700" letter-spacing="2.5">Kaisen</text>
+          </svg>
+        </p>
 
-      <h1 class="login__titulo" id="titulo-login">
-        Controle o estoque
-        <em>em ritmo de corrida</em>
-      </h1>
+        <h1 class="login__titulo" id="titulo-login">
+          HELLO,
+          <strong>WELCOME !</strong>
+        </h1>
 
-      <p class="login__texto">
-        Cadastro de peças, entradas e saídas, estoque mínimo e histórico de
-        movimentações — tudo no navegador, sem servidor e sem espera no box.
-      </p>
+        <p class="login__texto">
+          You can sign in to access with your existing account
+        </p>
+      </section>
 
-      <ul class="login__destaques">
-        <li>Peças identificadas pelo código do fabricante</li>
-        <li>Aviso automático de estoque baixo e esgotado</li>
-        <li>Toda entrada e saída registrada com data e hora</li>
-      </ul>
+      <!-- ================= Coluna do formulário ================= -->
+      <section class="login__formulario" aria-labelledby="titulo-acesso">
+        <h2 id="titulo-acesso" class="apenas-leitor-tela">Acesso ao sistema</h2>
 
-      <!-- Bandeira de chegada: elemento puramente decorativo. -->
-      <div class="faixa-quadriculada login__bandeira" aria-hidden="true"></div>
+        <!-- Logotipo da versão mobile: aparece só quando o painel da esquerda
+             sai, abaixo de 860px. -->
+        <p class="login__logotipo-mobile">
+          <svg class="marca__simbolo" viewBox="0 0 240 70" role="img"
+               aria-label="Kaisen" focusable="false">
+            <g fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round">
+              <path d="M10 40 C 22 38 30 30 46 22 C 70 10 104 4 138 6 C 172 8 202 18 226 32"></path>
+              <path d="M10 40 C 4 42 2 47 8 49 C 14 51 22 50 28 47"></path>
+            </g>
+            <text x="42" y="60" fill="#ffffff" font-family="Segoe UI, Arial, sans-serif"
+                  font-size="26" font-weight="700" letter-spacing="2.5">Kaisen</text>
+          </svg>
+        </p>
 
-      <!-- Velocímetro decorativo. Desenhado em SVG para não depender de
-           imagem externa (RNF09). -->
-      <svg class="login__velocimetro" viewBox="0 0 320 170" role="presentation"
-           aria-hidden="true" focusable="false">
-        <!-- mostrador -->
-        <path d="M 40 150 A 120 120 0 0 1 280 150" fill="none"
-              stroke="#3a444f" stroke-width="10" stroke-linecap="round"></path>
-        <!-- faixa vermelha (giro máximo) -->
-        <path d="M 263.9 90 A 120 120 0 0 1 280 150" fill="none"
-              stroke="#c1121f" stroke-width="10" stroke-linecap="round"></path>
-        <!-- marcações -->
-        <g stroke="#8b97a3" stroke-width="4" stroke-linecap="round">
-          <line x1="62" y1="150" x2="80" y2="150"></line>
-          <line x1="77" y1="93" x2="94" y2="102"></line>
-          <line x1="119" y1="52" x2="128" y2="69"></line>
-          <line x1="160" y1="30" x2="160" y2="50"></line>
-          <line x1="201" y1="52" x2="192" y2="69"></line>
-          <line x1="243" y1="93" x2="226" y2="102"></line>
-        </g>
-        <!-- ponteiro -->
-        <line x1="160" y1="150" x2="215" y2="72" stroke="#ffffff"
-              stroke-width="5" stroke-linecap="round"></line>
-        <circle cx="160" cy="150" r="10" fill="#c1121f" stroke="#ffffff" stroke-width="3"></circle>
-      </svg>
-    </section>
+        <!-- Mensagem geral do formulário (RNF07). -->
+        <div id="mensagem-login" role="status" aria-live="polite" hidden></div>
 
-    <!-- ================= Cartão de acesso ================= -->
-    <section class="cartao login__cartao" aria-labelledby="titulo-acesso">
-      <h2 id="titulo-acesso">Acesso ao box</h2>
-      <p class="login__chamada">Informe seus dados para entrar no sistema.</p>
-
-      <!-- Mensagem geral do formulário (RNF07). -->
-      <div id="mensagem-login" role="status" aria-live="polite" hidden></div>
-
-      <form id="form-login" novalidate>
-        <div class="campo">
-          <label for="login-usuario">Usuário <span aria-hidden="true">*</span></label>
-          <input type="text" id="login-usuario" name="usuario" maxlength="40"
-                 autocomplete="username" spellcheck="false" autofocus
-                 aria-describedby="ajuda-login-usuario erro-login-usuario" aria-invalid="false">
-          <span class="campo__ajuda" id="ajuda-login-usuario">
-            Nome de usuário ou matrícula do funcionário.
-          </span>
-          <span class="campo__erro" id="erro-login-usuario" data-erro-de="usuario"></span>
-        </div>
-
-        <div class="campo">
-          <label for="login-senha">Senha <span aria-hidden="true">*</span></label>
-          <input type="password" id="login-senha" name="senha" maxlength="40"
-                 autocomplete="current-password"
-                 aria-describedby="erro-login-senha" aria-invalid="false">
-          <span class="campo__erro" id="erro-login-senha" data-erro-de="senha"></span>
-        </div>
-
-        <div class="login__linha-opcoes">
-          <div class="campo campo--marcacao">
-            <input type="checkbox" id="login-lembrar" name="lembrar">
-            <label for="login-lembrar">Lembrar de mim</label>
+        <form id="form-login" novalidate>
+          <!-- O rótulo fica dentro da moldura arredondada: ver .campo--caixa
+               em login.css. -->
+          <div class="campo campo--caixa">
+            <label for="login-email">Email address</label>
+            <input type="email" id="login-email" name="email" maxlength="60"
+                   autocomplete="username" spellcheck="false" autofocus
+                   aria-describedby="erro-login-email" aria-invalid="false">
+            <span class="campo__erro" id="erro-login-email" data-erro-de="email"></span>
           </div>
-          <a class="login__link" href="#" id="link-senha">Esqueci minha senha</a>
-        </div>
 
-        <button type="submit" class="botao botao--largo">Entrar</button>
-      </form>
+          <div class="campo campo--caixa">
+            <label for="login-senha">Password</label>
+            <input type="password" id="login-senha" name="senha" maxlength="40"
+                   autocomplete="current-password"
+                   aria-describedby="erro-login-senha" aria-invalid="false">
+            <span class="campo__erro" id="erro-login-senha" data-erro-de="senha"></span>
+          </div>
 
-      <p class="login__nota">
-        Tela de demonstração: o sistema não tem autenticação real — ela está
-        fora do escopo do projeto. Qualquer usuário e senha preenchidos levam a
-        <code>produtos.html</code>.
-      </p>
-    </section>
+          <div class="login__linha-opcoes">
+            <div class="campo campo--marcacao">
+              <input type="checkbox" id="login-lembrar" name="lembrar">
+              <label for="login-lembrar">Remember me</label>
+            </div>
+            <a class="login__link" href="#" id="link-senha">Forgot password?</a>
+          </div>
+
+          <div class="login__acoes">
+            <button type="submit" class="botao login__botao">Login</button>
+            <button type="button" class="botao login__botao login__botao--claro"
+                    id="botao-cadastro">Sign up</button>
+          </div>
+        </form>
+
+        <!-- Ícones sociais desenhados em SVG, sem imagem externa (RNF09).
+             São decorativos: não levam a lugar nenhum neste projeto. -->
+        <p class="login__social">
+          <span>follow</span>
+          <a href="#" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
+              <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm4.5-2.8a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"></path>
+            </svg>
+          </a>
+          <a href="#" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
+              <path d="M22 5.9c-.7.3-1.5.5-2.4.6a4.1 4.1 0 0 0 1.8-2.3c-.8.5-1.7.8-2.6 1a4.1 4.1 0 0 0-7 3.7A11.6 11.6 0 0 1 3.4 4.6a4.1 4.1 0 0 0 1.3 5.5c-.7 0-1.3-.2-1.9-.5a4.1 4.1 0 0 0 3.3 4 4.2 4.2 0 0 1-1.9.1 4.1 4.1 0 0 0 3.8 2.9A8.3 8.3 0 0 1 2 18.3a11.6 11.6 0 0 0 6.3 1.8c7.5 0 11.7-6.3 11.7-11.8v-.5c.8-.6 1.5-1.3 2-2z"></path>
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" role="presentation" aria-hidden="true" focusable="false">
+              <path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.25-1.5 1.55-1.5H16.7V4.6c-.29-.04-1.27-.12-2.41-.12-2.39 0-4.03 1.46-4.03 4.14v2.31H7.5V14h2.76v8h3.24z"></path>
+            </svg>
+          </a>
+        </p>
+
+        <p class="login__nota">
+          Tela de demonstração: o sistema não tem autenticação real — ela está
+          fora do escopo do projeto. Qualquer e-mail e senha preenchidos levam a
+          <code>estoque.html</code>.
+        </p>
+      </section>
+    </div>
   </main>
-
-  <footer class="rodape login__rodape">
-    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque de Autopeças
-  </footer>
 
   <!-- A ordem importa: as camadas de baixo primeiro. Esta tela não usa
        Storage nem Estoque: ela não lê nem grava nada do estoque. -->

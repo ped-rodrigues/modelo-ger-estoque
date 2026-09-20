@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Histórico | Kaisen</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/conteudo.css">
+</head>
+<body data-secao="historico" data-base="../">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+    <div class="banner" role="presentation"></div>
+
+    <div class="faixa">
+      <section class="abertura">
+        <h1 class="titulo-secao">
+          Histórico de
+          <em>Movimentações</em>
+        </h1>
+        <p class="abertura__texto">
+          Toda entrada e toda saída de estoque é registrada com data e hora, e
+          nenhuma delas pode ser apagada. Excluir uma peça não remove as
+          movimentações dela: o histórico continua explicando o que aconteceu.
+        </p>
+        <hr class="abertura__filete">
+      </section>
+
+      <section class="secao" aria-labelledby="titulo-historico">
+        <h2 id="titulo-historico" class="apenas-leitor-tela">Movimentações registradas</h2>
+
+        <!-- ================= Filtros (RF14) ================= -->
+        <div class="barra-filtros">
+          <div class="campo">
+            <label for="filtro-texto">Pesquisar por peça</label>
+            <input type="search" id="filtro-texto" placeholder="Nome da peça" autocomplete="off">
+          </div>
+
+          <div class="campo">
+            <label for="filtro-tipo">Tipo de movimentação</label>
+            <select id="filtro-tipo"></select>
+          </div>
+
+          <div class="campo">
+            <label for="filtro-periodo">Período</label>
+            <select id="filtro-periodo">
+              <option value="">Todo o período</option>
+              <option value="7">Últimos 7 dias</option>
+              <option value="30">Últimos 30 dias</option>
+              <option value="90">Últimos 90 dias</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="lista__contador" id="contador-movimentacoes" aria-live="polite"></p>
+
+        <div class="tabela-rolagem">
+          <table class="tabela">
+            <caption class="apenas-leitor-tela">
+              Movimentações de estoque, da mais recente para a mais antiga, com
+              data e hora, peça, tipo e quantidade.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Data e hora</th>
+                <th scope="col">Peça</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Quantidade</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-movimentacoes"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/historico.js"></script>
+</body>
+</html>

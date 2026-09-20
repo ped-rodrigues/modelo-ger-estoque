@@ -11,7 +11,7 @@
  *
  *   - não usa `Storage` (ele guarda estoque, não usuários);
  *   - não usa `Estoque` (nenhuma regra de negócio é aplicada aqui);
- *   - não grava nada no navegador, nem mesmo a marcação "lembrar de mim".
+ *   - não grava nada no navegador, nem mesmo a marcação "Remember me".
  *
  * Como as demais telas, este arquivo conhece o DOM e reaproveita `UI` para as
  * mensagens (RNF11).
@@ -23,17 +23,20 @@ const TelaLogin = {
   // Referências aos elementos da página, preenchidas em iniciar().
   el: {},
 
-  // Para onde o usuário vai depois de entrar. Enquanto o dashboard não existe,
-  // a tela de peças é a página principal do sistema.
-  DESTINO: 'produtos.html',
+  // Para onde o usuário vai depois de entrar: a tela de estoque, que é a
+  // principal do sistema.
+  DESTINO: 'estoque.html',
 
   // Tempo até a troca de página, em milissegundos. Existe para a mensagem de
   // sucesso ser vista e anunciada pelo leitor de tela antes da navegação.
   ESPERA_ATE_ENTRAR: 800,
 
-  // Tamanho mínimo do usuário. Não é regra de negócio: é só uma conferência de
-  // formulário, para o campo não ser enviado com uma letra solta.
-  MINIMO_USUARIO: 3,
+  /**
+   * Formato mínimo de e-mail: algo, arroba, algo, ponto, algo.
+   * Não é validação de e-mail de verdade (isso exigiria enviar uma mensagem),
+   * é só uma conferência de formulário para pegar o engano óbvio.
+   */
+  FORMATO_EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 
   // ==========================================================================
   // INICIALIZAÇÃO
@@ -43,21 +46,38 @@ const TelaLogin = {
     this.el = {
       formulario: document.getElementById('form-login'),
       mensagem: document.getElementById('mensagem-login'),
-      linkSenha: document.getElementById('link-senha')
+      linkSenha: document.getElementById('link-senha'),
+      botaoCadastro: document.getElementById('botao-cadastro')
     };
 
     this.el.formulario.addEventListener('submit', (evento) => this.aoEnviar(evento));
 
-    // O "esqueci minha senha" não tem para onde levar em uma tela sem
+    // O "Forgot password?" não tem para onde levar em uma tela sem
     // autenticação. Em vez de um link quebrado, ele explica isso.
     this.el.linkSenha.addEventListener('click', (evento) => {
       evento.preventDefault();
-      UI.mostrarMensagem(
-        this.el.mensagem,
-        'Recuperação de senha não faz parte deste projeto. Use qualquer usuário e senha para entrar.',
-        'erro'
+      this.avisarForaDoEscopo(
+        'Recuperação de senha não faz parte deste projeto. Use qualquer e-mail e senha para entrar.'
       );
     });
+
+    // O "Sign up" existe no Figma, mas cadastro de usuários está fora do
+    // escopo. O botão continua na tela e explica o porquê.
+    this.el.botaoCadastro.addEventListener('click', () => {
+      this.avisarForaDoEscopo(
+        'Cadastro de usuários não faz parte deste projeto. Use qualquer e-mail e senha para entrar.'
+      );
+    });
+  },
+
+  /**
+   * Mostra um aviso de funcionalidade fora do escopo e limpa os erros de
+   * campo que estivessem na tela, para não misturar as duas coisas.
+   * @param {string} texto
+   */
+  avisarForaDoEscopo(texto) {
+    UI.limparErros(this.el.formulario);
+    UI.mostrarMensagem(this.el.mensagem, texto, 'erro');
   },
 
   // ==========================================================================
@@ -70,17 +90,17 @@ const TelaLogin = {
    * Segue o formato usado por `Validacao`: devolve um objeto de erros com uma
    * mensagem por campo, no mesmo formato que `UI.mostrarErros` já sabe exibir.
    *
-   * @param {string} usuario
+   * @param {string} email
    * @param {string} senha
    * @returns {Object} { campo: mensagem }; vazio quando não há erro
    */
-  validar(usuario, senha) {
+  validar(email, senha) {
     const erros = {};
 
-    if (usuario === '') {
-      erros.usuario = 'Informe o usuário.';
-    } else if (usuario.length < this.MINIMO_USUARIO) {
-      erros.usuario = 'O usuário deve ter pelo menos ' + this.MINIMO_USUARIO + ' caracteres.';
+    if (email === '') {
+      erros.email = 'Informe o e-mail.';
+    } else if (!this.FORMATO_EMAIL.test(email)) {
+      erros.email = 'Informe um e-mail válido. Ex.: nome@empresa.com';
     }
 
     if (senha === '') {
@@ -102,10 +122,10 @@ const TelaLogin = {
     evento.preventDefault();
 
     const formulario = this.el.formulario;
-    const usuario = formulario.elements.usuario.value.trim();
+    const email = formulario.elements.email.value.trim();
     const senha = formulario.elements.senha.value;
 
-    const erros = this.validar(usuario, senha);
+    const erros = this.validar(email, senha);
 
     if (Object.keys(erros).length > 0) {
       UI.limparMensagem(this.el.mensagem);

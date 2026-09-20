@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contato | Kaisen</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/conteudo.css">
+</head>
+<body data-secao="contato" data-base="../">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <main class="conteudo" id="conteudo">
+    <div class="banner" role="presentation"></div>
+
+    <div class="faixa">
+      <section class="secao" aria-labelledby="titulo-contato">
+        <h1 id="titulo-contato" class="titulo-centro">Fale conosco</h1>
+        <p class="subtitulo-centro">
+          Dúvidas, críticas ou sugestões? Entre em contato conosco, preenchendo
+          o formulário abaixo.<br>
+          Os campos com (*) são de preenchimento obrigatório
+        </p>
+
+        <!-- Mensagem geral do formulário (RNF07). -->
+        <div id="mensagem-contato" role="status" aria-live="polite" hidden></div>
+
+        <form class="formulario-contato" id="form-contato" novalidate>
+          <div class="campo">
+            <label for="contato-nome">Nome <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input type="text" id="contato-nome" name="nome" maxlength="60"
+                   autocomplete="name"
+                   aria-describedby="erro-contato-nome" aria-invalid="false">
+            <span class="campo__erro" id="erro-contato-nome" data-erro-de="nome"></span>
+          </div>
+
+          <div class="campo">
+            <label for="contato-email">Email <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input type="email" id="contato-email" name="email" maxlength="60"
+                   autocomplete="email" spellcheck="false"
+                   aria-describedby="erro-contato-email" aria-invalid="false">
+            <span class="campo__erro" id="erro-contato-email" data-erro-de="email"></span>
+          </div>
+
+          <div class="campo">
+            <label for="contato-telefone">Telefone <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <input type="tel" id="contato-telefone" name="telefone" maxlength="20"
+                   autocomplete="tel" placeholder="(11) 90000-0000"
+                   aria-describedby="ajuda-contato-telefone erro-contato-telefone" aria-invalid="false">
+            <span class="campo__ajuda" id="ajuda-contato-telefone">
+              Com DDD. Ex.: (11) 90000-0000
+            </span>
+            <span class="campo__erro" id="erro-contato-telefone" data-erro-de="telefone"></span>
+          </div>
+
+          <div class="campo">
+            <label for="contato-comentarios">Comentários <span class="obrigatorio" aria-hidden="true">*</span></label>
+            <textarea id="contato-comentarios" name="comentarios" maxlength="600"
+                      aria-describedby="ajuda-contato-comentarios erro-contato-comentarios"
+                      aria-invalid="false"></textarea>
+            <span class="campo__ajuda" id="ajuda-contato-comentarios">
+              <span id="contador-caracteres">0</span> de 600 caracteres.
+            </span>
+            <span class="campo__erro" id="erro-contato-comentarios" data-erro-de="comentarios"></span>
+          </div>
+        </form>
+
+        <p class="contato__acoes">
+          <button type="submit" form="form-contato" class="botao botao--enviar">Enviar</button>
+        </p>
+
+        <p class="subtitulo-centro nota-demonstracao">
+          Esta tela é uma demonstração: o projeto não tem servidor, então a
+          mensagem é validada e confirmada na própria página, sem ser enviada a
+          lugar nenhum.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Esta tela não usa Storage nem Estoque: ela não lê nem grava o estoque. -->
+  <script src="../js/ui.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/contato.js"></script>
+</body>
+</html>

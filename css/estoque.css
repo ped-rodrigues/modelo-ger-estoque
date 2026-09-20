@@ -1,0 +1,649 @@
+/* ==========================================================================
+   estoque.css — ESTILOS DA TELA DE ESTOQUE
+   --------------------------------------------------------------------------
+   Complementa style.css. Contém apenas o que é específico desta tela: o painel
+   de filtro claro à esquerda, a grade de peças à direita e as janelas
+   (elemento <dialog>) de cadastro, movimentação e exclusão.
+
+   O painel de filtro é claro de propósito, como no Figma: ele é ferramenta, e
+   o contraste com o grafite do conteúdo deixa isso evidente à primeira vista.
+   Por isso ele tem as suas próprias cores, vindas das variáveis --cor-painel*
+   do style.css, e não das cores escuras do resto do sistema.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Estrutura de duas colunas
+   -------------------------------------------------------------------------- */
+.estoque {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
+  padding: 40px 0 64px;
+}
+
+/* O painel acompanha a rolagem: numa lista longa, os filtros continuam à mão.
+   O topo de 84px deixa espaço para o cabeçalho, que também é fixo. */
+.painel {
+  position: sticky;
+  top: 84px;
+  background-color: var(--cor-painel);
+  color: var(--cor-painel-texto);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 108px);
+}
+
+/* --------------------------------------------------------------------------
+   2. Cabeçalho do painel
+   -------------------------------------------------------------------------- */
+/* Três colunas e duas linhas: o "x" e o "Limpar" ocupam as duas linhas nas
+   pontas, e o título com o subtítulo ficam centralizados no meio. As áreas
+   nomeadas deixam a posição independente da ordem do HTML. */
+.painel__cabecalho {
+  background-color: var(--cor-painel-superficie);
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 26px 1fr 62px;
+  grid-template-areas:
+    "recolher titulo    limpar"
+    "recolher subtitulo limpar";
+  align-items: center;
+  gap: 2px 8px;
+}
+
+.painel__titulo {
+  grid-area: titulo;
+  margin: 0;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--cor-painel-texto);
+}
+
+/* O "&" laranja entre as duas palavras, como no Figma. */
+.painel__titulo span {
+  color: var(--cor-primaria);
+}
+
+.painel__subtitulo {
+  grid-area: subtitulo;
+  margin: 0;
+  text-align: center;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  /* Em uma linha só, como no Figma: quebrado em duas, o subtítulo empurra o
+     cabeçalho e desalinha o "x" e o "Limpar". */
+  white-space: nowrap;
+  color: var(--cor-painel-texto-suave);
+}
+
+/* Botão de recolher o painel (o "x" do canto esquerdo). */
+.painel__recolher {
+  grid-area: recolher;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--cor-painel-texto-suave);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.painel__recolher:hover {
+  background-color: var(--cor-painel-borda);
+  color: var(--cor-painel-texto);
+}
+
+.painel__limpar {
+  grid-area: limpar;
+  justify-self: end;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cor-primaria);
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.painel__limpar:hover {
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   3. Corpo do painel
+   -------------------------------------------------------------------------- */
+.painel__corpo {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.painel__rotulo {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cor-painel-texto-suave);
+}
+
+/* Linha com o rótulo de um lado e um link do outro. */
+.painel__linha-rotulo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.painel__linha-rotulo .painel__rotulo {
+  margin: 0;
+}
+
+.painel__contagem {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--cor-primaria);
+}
+
+/* Filete separando os blocos do painel. */
+.painel__divisor {
+  border: none;
+  border-top: 1px solid var(--cor-painel-borda);
+  margin: 18px 0;
+}
+
+/* --------------------------------------------------------------------------
+   3.1 Campo de busca
+   -------------------------------------------------------------------------- */
+.busca {
+  position: relative;
+}
+
+.busca input {
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 10px 40px 10px 38px;
+  border: 1px solid var(--cor-painel-borda);
+  border-radius: 8px;
+  background-color: var(--cor-painel-superficie);
+  color: var(--cor-painel-texto);
+}
+
+.busca input:focus {
+  border-color: var(--cor-primaria);
+}
+
+.busca input::placeholder {
+  color: #9aa7b4;
+}
+
+/* Lupa à esquerda: decorativa, o campo já tem rótulo. */
+.busca__lupa {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: #7d8a97;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
+/* Botão redondo de limpar o texto, à direita de dentro do campo. */
+.busca__limpar {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  font-size: 0.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.busca__limpar:hover {
+  background-color: var(--cor-primaria-escura);
+}
+
+/* --------------------------------------------------------------------------
+   3.2 Fichas de situação (as "pílulas" da linha "Situação:")
+   -------------------------------------------------------------------------- */
+.fichas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.fichas__rotulo {
+  font-size: 0.75rem;
+  color: var(--cor-painel-texto-suave);
+}
+
+.ficha {
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 5px 12px;
+  border: 1px solid var(--cor-painel-borda);
+  border-radius: 999px;
+  background-color: var(--cor-painel-superficie);
+  color: var(--cor-painel-texto);
+  cursor: pointer;
+}
+
+.ficha:hover {
+  border-color: #b9c4cf;
+}
+
+/* A ficha ativa muda de cor E ganha negrito: nunca só a cor.
+   aria-pressed também informa o estado a quem usa leitor de tela. */
+.ficha[aria-pressed="true"] {
+  background-color: #fff2e8;
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria-escura);
+  font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   3.3 Grade de categorias
+   -------------------------------------------------------------------------- */
+.categorias {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.categoria {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 82px;
+  padding: 10px 6px;
+  font: inherit;
+  border: 1px solid var(--cor-painel-borda);
+  border-radius: 10px;
+  background-color: var(--cor-painel-superficie);
+  color: var(--cor-painel-texto);
+  cursor: pointer;
+  text-align: center;
+}
+
+.categoria:hover {
+  border-color: #b9c4cf;
+}
+
+.categoria__icone {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--cor-painel-texto);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.categoria__nome {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* Categoria escolhida: moldura laranja, fundo aquecido e um visto no canto.
+   O visto é redundante com a cor de propósito (acessibilidade). */
+.categoria[aria-pressed="true"] {
+  background-color: #fff4ec;
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria-escura);
+}
+
+.categoria[aria-pressed="true"] .categoria__icone {
+  stroke: var(--cor-primaria);
+}
+
+.categoria[aria-pressed="true"]::after {
+  content: "\2713";
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  font-size: 0.65rem;
+  line-height: 17px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   3.4 Rodapé do painel
+   -------------------------------------------------------------------------- */
+.painel__rodape {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background-color: var(--cor-painel);
+  border-top: 1px solid var(--cor-painel-borda);
+}
+
+/* Botão quadrado à esquerda, que abre o cadastro de uma peça nova. */
+.painel__botao-icone {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--cor-painel-borda);
+  border-radius: 10px;
+  background-color: var(--cor-painel-superficie);
+  color: var(--cor-painel-texto);
+  cursor: pointer;
+}
+
+.painel__botao-icone:hover {
+  border-color: var(--cor-primaria);
+  color: var(--cor-primaria);
+}
+
+.painel__botao-icone svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+/* Botão laranja largo com a contagem dentro, como o "Ver Veículos" do Figma.
+   Ele rola a página até a lista — útil no celular, onde o painel vem antes. */
+.painel__acao {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 999px;
+  background-color: var(--cor-primaria);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.painel__acao:hover {
+  background-color: var(--cor-primaria-escura);
+}
+
+.painel__acao-contagem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.22);
+  font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   4. Coluna da lista
+   -------------------------------------------------------------------------- */
+.lista__topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lista__contador {
+  margin: 0;
+  color: var(--cor-texto-suave);
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   4.1 Cartão de peça
+   -------------------------------------------------------------------------- */
+.peca {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--cor-superficie);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.peca__figura {
+  position: relative;
+  height: 150px;
+  margin: 0;
+  background-image: linear-gradient(135deg, #262626, #3d3d3d 60%, #1f1f1f);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.peca__inicial {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #4f4f4f;
+}
+
+/* A etiqueta de situação fica sobre a imagem, no canto. */
+.peca__etiqueta {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* O código do fabricante é lido caractere a caractere; a fonte monoespaçada
+   evita confundir 0 com O e 1 com l. */
+.peca__codigo {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #d8d8d8;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.72rem;
+}
+
+.peca__corpo {
+  padding: 16px 20px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.peca__nome {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--cor-primaria-clara);
+  padding-bottom: 12px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+.peca__fabricante {
+  display: block;
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--cor-texto-suave);
+}
+
+.peca__preco {
+  margin: 12px 0 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--cor-primaria-clara);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #4a4a4a;
+}
+
+/* Linha de dados miúdos: quantidade, mínimo e valor total da peça. */
+.peca__dados {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 14px 0 0;
+  padding: 0;
+  font-size: 0.78rem;
+  color: var(--cor-texto-suave);
+}
+
+.peca__dados div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.peca__dados dt {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--cor-texto-fraco);
+}
+
+.peca__dados dd {
+  margin: 0;
+  color: var(--cor-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+.peca__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #3d3d3d;
+}
+
+/* --------------------------------------------------------------------------
+   5. Janelas (elemento <dialog>)
+   -------------------------------------------------------------------------- */
+dialog {
+  width: min(520px, calc(100vw - 32px));
+  padding: 26px;
+  border: 1px solid var(--cor-borda);
+  border-top: 2px solid var(--cor-primaria);
+  border-radius: var(--raio-grande);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  background-color: #262626;
+  color: var(--cor-texto);
+}
+
+dialog h2 {
+  font-size: 1.3rem;
+  color: var(--cor-primaria-nav);
+}
+
+/* Fundo escurecido atrás da janela aberta. */
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.dialog__resumo {
+  background-color: #1f1f1f;
+  border-left: 3px solid var(--cor-primaria);
+  border-radius: var(--raio);
+  padding: 12px 14px;
+  margin: 0 0 var(--espaco);
+  font-size: 0.92rem;
+}
+
+.dialog__rodape {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 22px 0 0;
+}
+
+/* Duas colunas dentro das janelas, para o formulário não virar uma tira
+   comprida demais. */
+.dialog__grade {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+
+.dialog__grade .campo--largo {
+  grid-column: 1 / -1;
+}
+
+/* --------------------------------------------------------------------------
+   6. Responsividade
+   -------------------------------------------------------------------------- */
+@media (max-width: 1040px) {
+  .estoque {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Empilhado, o painel não acompanha mais a rolagem nem limita a altura:
+     ele passa a ser só o primeiro bloco da página. */
+  .painel {
+    position: static;
+    max-height: none;
+  }
+
+  .painel__corpo {
+    overflow-y: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .estoque {
+    padding: 24px 0 40px;
+  }
+
+  .categorias {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  dialog {
+    padding: 18px;
+  }
+
+  .dialog__grade {
+    grid-template-columns: 1fr;
+  }
+}
