@@ -49,10 +49,10 @@ Não é necessário instalar nada nem subir servidor.
 1. Baixe ou clone o repositório.
 2. Abra o arquivo `index.html` com um duplo clique (ou arraste para o navegador).
 
-> **Enquanto o dashboard não fica pronto:** `index.html` ainda não existe. Abra
-> `pages/login.html`, a tela de acesso, que leva a `pages/produtos.html` — a página principal
-> hoje, com o cadastro, a consulta, a edição, a exclusão, a pesquisa, os filtros e as
-> movimentações de estoque.
+> **Site e área interna:** `index.html` é a página inicial do site público (marca Kaisen),
+> com `pages/estoque.html` e `pages/contato.html`, seguindo o design do Figma "Projeto front".
+> A área dos funcionários começa em `pages/login.html`, que leva a `pages/produtos.html` — com o
+> cadastro, a consulta, a edição, a exclusão, a pesquisa, os filtros e as movimentações de estoque.
 
 > **A tela de acesso é uma demonstração.** Autenticação real está fora do escopo do projeto
 > (seção 1 de `docs/requisitos.md`): não há cadastro de usuários, senha guardada nem sessão.
@@ -71,14 +71,17 @@ Para rodar os testes automatizados, abra `pages/testes.html` e clique em **Execu
 
 ```text
 gerenciador-estoque/
-├── index.html              # Dashboard (página inicial)
+├── index.html              # Página inicial do site (design Kaisen)
 ├── pages/
-│   ├── login.html          # Tela de acesso (demonstração, sem autenticação real)
+│   ├── estoque.html        # Vitrine de veículos com filtro (design Kaisen)
+│   ├── contato.html        # Formulário "Fale conosco" (design Kaisen)
+│   ├── login.html          # Acesso de funcionários (demonstração, sem autenticação real)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
 │   └── testes.html         # Execução dos casos de teste automatizados
 ├── css/
 │   ├── style.css           # Base: variáveis, layout, componentes
+│   ├── site.css            # Site público: Início, Estoque e Contato
 │   ├── login.css
 │   ├── produtos.css
 │   └── historico.css

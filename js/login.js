@@ -43,7 +43,8 @@ const TelaLogin = {
     this.el = {
       formulario: document.getElementById('form-login'),
       mensagem: document.getElementById('mensagem-login'),
-      linkSenha: document.getElementById('link-senha')
+      linkSenha: document.getElementById('link-senha'),
+      linkCadastro: document.getElementById('link-cadastro')
     };
 
     this.el.formulario.addEventListener('submit', (evento) => this.aoEnviar(evento));
@@ -55,6 +56,16 @@ const TelaLogin = {
       UI.mostrarMensagem(
         this.el.mensagem,
         'Recuperação de senha não faz parte deste projeto. Use qualquer usuário e senha para entrar.',
+        'erro'
+      );
+    });
+
+    // O mesmo vale para o "Sign up": não há cadastro de usuários.
+    this.el.linkCadastro.addEventListener('click', (evento) => {
+      evento.preventDefault();
+      UI.mostrarMensagem(
+        this.el.mensagem,
+        'Cadastro de usuários não faz parte deste projeto. Use qualquer e-mail e senha para entrar.',
         'erro'
       );
     });
@@ -78,9 +89,9 @@ const TelaLogin = {
     const erros = {};
 
     if (usuario === '') {
-      erros.usuario = 'Informe o usuário.';
+      erros.usuario = 'Informe o e-mail.';
     } else if (usuario.length < this.MINIMO_USUARIO) {
-      erros.usuario = 'O usuário deve ter pelo menos ' + this.MINIMO_USUARIO + ' caracteres.';
+      erros.usuario = 'Mínimo de ' + this.MINIMO_USUARIO + ' caracteres.';
     }
 
     if (senha === '') {

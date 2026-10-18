@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Contato</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Albert+Sans&family=Cal+Sans&family=Geostar+Fill&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-contato">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo" style="border-bottom: 1px solid #3f3f3f">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Contato</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="../index.html#garagem">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html" aria-current="page">Contato</a>
+    </nav>
+  </header>
+
+  <div class="faixa faixa--contato" role="img" aria-label="Dois Nissan Skyline azuis à beira de um lago"></div>
+
+  <main class="contato" id="conteudo">
+    <h1 class="contato__titulo">Fale conosco</h1>
+    <p class="contato__texto">
+      Dúvidas, críticas ou sugestões? Entre em contato conosco, preenchendo o formulário abaixo.<br>
+      Os campos com (*) são de preenchimento obrigatório
+    </p>
+
+    <form class="contato__form" id="form-contato">
+      <fieldset class="contato__caixa">
+        <legend class="apenas-leitor-tela">Seus dados</legend>
+        <label for="contato-nome">Nome *</label>
+        <input type="text" id="contato-nome" name="nome" autocomplete="name" required>
+
+        <label for="contato-email">Email *</label>
+        <input type="email" id="contato-email" name="email" autocomplete="email" required>
+
+        <label for="contato-telefone">Telefone *</label>
+        <input type="tel" id="contato-telefone" name="telefone" autocomplete="tel" required>
+
+        <label for="contato-comentarios">Comentários *</label>
+        <textarea id="contato-comentarios" name="comentarios" required></textarea>
+      </fieldset>
+
+      <div class="contato__acoes">
+        <p class="contato__aviso" id="contato-aviso" role="status"></p>
+        <button type="submit" class="contato__enviar">Enviar</button>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    // O projeto não tem servidor: o formulário só confere os campos (validação
+    // nativa do navegador) e avisa que nada foi enviado.
+    document.getElementById('form-contato').addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      document.getElementById('contato-aviso').textContent =
+        'Formulário de demonstração: a mensagem não foi enviada.';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Estoque</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Alan+Sans:wght@400;600&family=Albert+Sans&family=Cal+Sans&family=Courier+Prime:wght@400;700&family=Geostar+Fill&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-estoque">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Estoque</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="../index.html#garagem">Garagem</a>
+      <a href="estoque.html" aria-current="page">Estoque</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <div class="faixa faixa--estoque" role="img" aria-label="Nissan Skyline vermelho em encontro de carros"></div>
+
+  <main class="estoque" id="conteudo">
+    <h1 class="apenas-leitor-tela">Estoque de veículos</h1>
+
+    <!-- Painel de filtro. Os filtros só valem ao clicar em "Ver Veículos". -->
+    <form class="filtro" id="filtro" role="search">
+      <div class="filtro__cabeca">
+        <button type="button" class="filtro__fechar" id="filtro-fechar" aria-label="Fechar filtros" aria-expanded="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 15L15 5M5 5L15 15" stroke="#334155" stroke-width="1.83" stroke-linecap="round"/></svg>
+        </button>
+        <h2 class="filtro__titulo">Filtro <b>&amp;</b> Busca<small>Estoque Selecionado</small></h2>
+        <button type="reset" class="filtro__limpar">Limpar</button>
+      </div>
+
+      <div class="filtro__busca">
+        <label class="filtro__rotulo" for="filtro-texto">Palavra-chave</label>
+        <div class="filtro__campo">
+          <svg class="filtro__lupa" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M17.5 17.5L12.5 12.5M14.17 8.33A5.83 5.83 0 1 1 2.5 8.33a5.83 5.83 0 0 1 11.67 0" stroke="#64748B" stroke-width="1.67" stroke-linecap="round"/></svg>
+          <input type="search" id="filtro-texto" name="busca" value="Toyota" autocomplete="off">
+          <button type="button" class="filtro__apagar" id="filtro-apagar" aria-label="Apagar palavra-chave">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M3 9L9 3M3 3L9 9" stroke="#D1D5DB" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="filtro__recentes">
+          Recentes:
+          <button type="button" class="filtro__chip">Híbrido</button>
+          <button type="button" class="filtro__chip">Teto Solar</button>
+          <button type="button" class="filtro__chip">Automático</button>
+        </div>
+      </div>
+
+      <div class="filtro__divisor"></div>
+
+      <div class="filtro__marcas">
+        <div class="filtro__marcas-topo">
+          <h3>Marcas populares</h3>
+          <span>Ver todas (28)</span>
+        </div>
+        <div class="filtro__grade">
+          <button type="button" class="marca" data-marca="TOYOTA" aria-pressed="true">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2.67 16c0 4.42 5.97 8 13.33 8s13.33-3.58 13.33-8-5.97-8-13.33-8S2.67 11.58 2.67 16"/><path d="M10.67 14.67c0 4.05 2.39 7.33 5.33 7.33s5.33-3.28 5.33-7.33S18.94 7.33 16 7.33s-5.33 3.29-5.33 7.34"/><path d="M6.67 13.33c0 2.06 4.18 3.74 9.33 3.74s9.33-1.68 9.33-3.74S21.15 9.6 16 9.6s-9.33 1.67-9.33 3.73"/></svg>
+            TOYOTA
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="HONDA" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M10.67 5.33h10.66c2.95 0 5.34 2.39 5.34 5.34v10.66c0 2.95-2.39 5.34-5.34 5.34H10.67c-2.95 0-5.34-2.39-5.34-5.34V10.67c0-2.95 2.39-5.34 5.34-5.34"/><path d="M10.67 9.33v13.34M21.33 9.33v13.34M10.67 16h10.66" stroke-linecap="round"/></svg>
+            HONDA
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="NISSAN" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5.33 16c0 5.89 4.78 10.67 10.67 10.67S26.67 21.89 26.67 16 21.89 5.33 16 5.33 5.33 10.11 5.33 16"/><path d="M4.67 13.6h22.66c.37 0 .67.3.67.67v3.46c0 .37-.3.67-.67.67H4.67c-.37 0-.67-.3-.67-.67v-3.46c0-.37.3-.67.67-.67" fill="currentColor"/></svg>
+            NISSAN
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="MITSUBISHI" aria-pressed="false">
+            <svg viewBox="0 0 28 28" aria-hidden="true" style="padding:6px;stroke:none"><path d="M14 2.33L11.08 8.75h5.84L14 2.33" fill="currentColor"/><path d="M9.92 9.92L4.08 20.42h5.84l2.91-5.25-2.91-5.25" fill="currentColor"/><path d="M18.08 9.92l5.84 10.5h-5.84l-2.91-5.25 2.91-5.25" fill="currentColor"/></svg>
+            MITSUBISHI
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="MAZDA" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c0 5.15 5.38 9.33 12 9.33S28 21.15 28 16 22.62 6.67 16 6.67 4 10.85 4 16"/><path d="M9.33 14.67c3.34 4.66 6 1.33 6.67 0 .67 1.33 3.33 4.66 6.67 0" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            MAZDA
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="SUZUKI" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true" style="stroke-width:2.93"><path d="M21.33 8L10.67 14.67l10.66 2.66L10.67 24" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            SUZUKI
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="LEXUS" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c0 5.15 5.38 9.33 12 9.33S28 21.15 28 16 22.62 6.67 16 6.67 4 10.85 4 16"/><path d="M12 10.67V20h8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            LEXUS
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="INFINITI" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 17.33c0 4.42 5.38 8 12 8s12-3.58 12-8-5.38-8-12-8-12 3.58-12 8"/><path d="M10.67 25.33L16 14.67l5.33 10.66" stroke-linecap="round"/></svg>
+            INFINITI
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+          <button type="button" class="marca" data-marca="BMW" aria-pressed="false">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16c0 6.62 5.38 12 12 12s12-5.38 12-12S22.62 4 16 4 4 9.38 4 16"/><path d="M6.67 16c0 5.15 4.18 9.33 9.33 9.33s9.33-4.18 9.33-9.33S21.15 6.67 16 6.67 6.67 10.85 6.67 16"/><path d="M16 6.67v18.66M6.67 16h18.66"/></svg>
+            BMW
+            <span class="marca__check" aria-hidden="true"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2.08 5.42L3.75 7.08L7.92 2.92" stroke="white" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="filtro__rodape">
+        <span class="filtro__salvar" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.17 4.17c0-.92.74-1.67 1.66-1.67h8.34c.92 0 1.66.75 1.66 1.67V17.5L10 14.58 4.17 17.5V4.17" stroke="#334155" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <button type="submit" class="filtro__ver">
+          Ver Veículos
+          <span class="filtro__ver-total"><span id="filtro-total">0</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M5.25 2.92L9.33 7l-4.08 4.08" stroke="white" stroke-width="1.17" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </button>
+      </div>
+    </form>
+
+    <ul class="estoque__lista" id="lista-carros" aria-live="polite">
+      <li class="carro" data-marca="TOYOTA">
+        <img class="carro__foto" src="../assets/carros/supra.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Toyota Supra GR A90</h2><p class="carro__preco">R$ 580.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="HONDA">
+        <img class="carro__foto" src="../assets/carros/honda-nsx.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Honda NSX Type S</h2><p class="carro__preco">R$ 1.290.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="NISSAN">
+        <img class="carro__foto" src="../assets/carros/gtr-nismo.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Nissan GT-R Nismo R35</h2><p class="carro__preco">R$ 950.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="LEXUS">
+        <img class="carro__foto" src="../assets/carros/lexus-lc500.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Lexus LC 500 Convertible</h2><p class="carro__preco">R$ 1.200.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="MAZDA">
+        <img class="carro__foto" src="../assets/carros/mazda-rx7.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Mazda RX-7 FD3S Spirit R</h2><p class="carro__preco">R$ 610.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="MITSUBISHI">
+        <img class="carro__foto" src="../assets/carros/lancer-evo.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome carro__nome--justo">Mitsubishi Lancer Evolution X</h2><p class="carro__preco">R$ 580.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="INFINITI">
+        <img class="carro__foto" src="../assets/carros/infiniti-q60.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Infiniti Q60 Red Sport 400</h2><p class="carro__preco">R$ 390.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="NISSAN">
+        <img class="carro__foto" src="../assets/carros/gtr-premium.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Nissan GT-R Premium R35</h2><p class="carro__preco">R$ 820.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="TOYOTA">
+        <img class="carro__foto" src="../assets/carros/gr86.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Toyota GR86 Premium</h2><p class="carro__preco">R$ 440.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="ACURA">
+        <img class="carro__foto" src="../assets/carros/acura-nsx.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Acura NSX GT3 Evo</h2><p class="carro__preco">R$ 2.280.000,00</p></div>
+      </li>
+      <li class="carro" data-marca="SUZUKI">
+        <img class="carro__foto" src="../assets/carros/hayabusa.jpg" alt="">
+        <div class="carro__dados"><h2 class="carro__nome">Suzuki Hayabusa</h2><p class="carro__preco">R$ 125.000,00</p></div>
+      </li>
+    </ul>
+    <p class="estoque__vazio" id="lista-vazia" hidden>Nenhum veículo encontrado com esses filtros.</p>
+  </main>
+
+  <script>
+    // Filtro do estoque: palavra-chave no nome + marca. Só aplica em "Ver Veículos";
+    // o número no botão mostra quantos veículos a seleção atual vai trazer.
+    const form = document.getElementById('filtro');
+    const texto = form.elements.busca;
+    const marcas = [...form.querySelectorAll('.marca')];
+    const carros = [...document.querySelectorAll('#lista-carros .carro')];
+
+    const marcaAtiva = () => (marcas.find((m) => m.getAttribute('aria-pressed') === 'true') || {}).dataset?.marca;
+    const passa = (carro) => {
+      const busca = texto.value.trim().toLowerCase();
+      const marca = marcaAtiva();
+      return carro.querySelector('.carro__nome').textContent.toLowerCase().includes(busca)
+        && (!marca || carro.dataset.marca === marca);
+    };
+    const contar = () => {
+      document.getElementById('filtro-total').textContent = carros.filter(passa).length;
+    };
+
+    marcas.forEach((botao) => botao.addEventListener('click', () => {
+      const ligar = botao.getAttribute('aria-pressed') !== 'true';
+      marcas.forEach((m) => m.setAttribute('aria-pressed', 'false'));
+      botao.setAttribute('aria-pressed', String(ligar));
+      contar();
+    }));
+
+    form.querySelectorAll('.filtro__chip').forEach((chip) => chip.addEventListener('click', () => {
+      texto.value = chip.textContent;
+      contar();
+    }));
+
+    document.getElementById('filtro-apagar').addEventListener('click', () => {
+      texto.value = '';
+      texto.focus();
+      contar();
+    });
+
+    document.getElementById('filtro-fechar').addEventListener('click', (evento) => {
+      const fechado = form.classList.toggle('filtro--fechado');
+      evento.currentTarget.setAttribute('aria-expanded', String(!fechado));
+      evento.currentTarget.setAttribute('aria-label', fechado ? 'Abrir filtros' : 'Fechar filtros');
+    });
+
+    texto.addEventListener('input', contar);
+
+    form.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      let visiveis = 0;
+      carros.forEach((carro) => {
+        carro.hidden = !passa(carro);
+        if (!carro.hidden) visiveis++;
+      });
+      document.getElementById('lista-vazia').hidden = visiveis > 0;
+    });
+
+    // "Limpar": tira palavra-chave e marca e volta a mostrar todos.
+    form.addEventListener('reset', (evento) => {
+      evento.preventDefault();
+      texto.value = '';
+      marcas.forEach((m) => m.setAttribute('aria-pressed', 'false'));
+      carros.forEach((carro) => { carro.hidden = false; });
+      document.getElementById('lista-vazia').hidden = true;
+      contar();
+    });
+
+    contar();
+  </script>
+</body>
+</html>
