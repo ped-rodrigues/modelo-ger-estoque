@@ -21,8 +21,10 @@
     <p class="topo__pagina">Contato</p>
     <nav class="navegacao" aria-label="Navegação principal">
       <a href="../index.html">Início</a>
-      <a href="../index.html#garagem">Garagem</a>
+      <a href="garagem.html">Garagem</a>
       <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
       <a href="../index.html#sobre">Sobre</a>
       <a href="contato.html" aria-current="page">Contato</a>
     </nav>
@@ -61,8 +63,7 @@
   </main>
 
   <script>
-    // O projeto não tem servidor: o formulário só confere os campos (validação
-    // nativa do navegador) e avisa que nada foi enviado.
+    // Sem servidor: valida pelo navegador e avisa que nada foi enviado.
     document.getElementById('form-contato').addEventListener('submit', (evento) => {
       evento.preventDefault();
       document.getElementById('contato-aviso').textContent =

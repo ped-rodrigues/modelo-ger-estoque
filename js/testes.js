@@ -1,52 +1,16 @@
-/**
- * testes.js — CASOS DE TESTE AUTOMATIZADOS
- * ---------------------------------------------------------------------------
- * Executa os casos de teste CT01 a CT14 sobre as camadas Storage, Validacao e
- * Estoque. Não usa nenhuma biblioteca: são apenas funções que comparam o
- * resultado obtido com o resultado esperado.
- *
- * Como rodar: abra `pages/testes.html` no navegador e clique em "Executar testes".
- *
- * IMPORTANTE: os testes precisam de um estoque vazio para funcionar. Por isso
- * `executar()` guarda os dados atuais antes de começar e os devolve ao final,
- * mesmo que algum teste falhe (bloco `finally`). Nenhum dado do usuário é
- * perdido ao rodar os testes.
- */
-
 const Testes = {
-  // --------------------------------------------------------------------------
-  // Ferramentas de verificação: lançam um erro quando a condição não se cumpre.
-  // --------------------------------------------------------------------------
-
-  /**
-   * @param {boolean} condicao
-   * @param {string} mensagem descrição do que deveria ter acontecido
-   */
   afirmar(condicao, mensagem) {
     if (!condicao) {
       throw new Error(mensagem);
     }
   },
 
-  /**
-   * @param {*} obtido valor que o sistema devolveu
-   * @param {*} esperado valor que o teste espera
-   * @param {string} mensagem contexto da verificação
-   */
   afirmarIgual(obtido, esperado, mensagem) {
     if (obtido !== esperado) {
       throw new Error(mensagem + ' (esperado: ' + esperado + ', obtido: ' + obtido + ')');
     }
   },
 
-  // --------------------------------------------------------------------------
-  // Atalho usado pelos testes para criar um produto rapidamente.
-  // --------------------------------------------------------------------------
-
-  /**
-   * @param {Object} [dados] sobrescreve campos do produto padrão
-   * @returns {Object} o produto cadastrado
-   */
   criarProduto(dados) {
     const padrao = {
       nome: 'Mouse Logitech',
@@ -59,11 +23,6 @@ const Testes = {
     this.afirmar(resultado.ok, 'Falha ao preparar o produto de teste.');
     return resultado.produto;
   },
-
-  // ==========================================================================
-  // CASOS DE TESTE
-  // Cada caso tem: código, descrição e a função que executa a verificação.
-  // ==========================================================================
 
   casos: [
     {
@@ -297,9 +256,7 @@ const Testes = {
         const produto = Testes.criarProduto({ nome: 'Notebook', quantidade: 7, preco: 3500 });
         Estoque.registrarSaida(produto.id, 2);
 
-        // A aplicação não guarda estado em memória entre as telas: toda tela lê
-        // do localStorage ao abrir. Chamar obterProduto() novamente reproduz
-        // exatamente o que acontece quando a página é recarregada.
+        // Toda tela lê do localStorage ao abrir, então ler de novo equivale a recarregar a página.
         const recuperado = Estoque.obterProduto(produto.id);
 
         Testes.afirmar(recuperado !== null, 'O produto deveria continuar disponível após recarregar.');
@@ -326,19 +283,64 @@ const Testes = {
         Testes.afirmarIgual(indicadores.esgotados, 1, 'Deveria existir 1 produto esgotado.');
         Testes.afirmarIgual(indicadores.valorTotal, 10150, 'Valor total: (1000 x 10) + (50 x 3) + (30 x 0) = 10150.');
       }
+    },
+
+    {
+      codigo: 'CT15',
+      descricao: 'Simulador de importação soma veículo, frete, impostos e taxas (site público)',
+      executar() {
+        const r = Importacao.calcular('gtr-nismo', 'Japão');
+
+        Testes.afirmarIgual(r.frete, 18500, 'O frete do Japão deveria ser R$ 18.500.');
+        Testes.afirmarIgual(r.impostos, 610000, 'Impostos: 63% de (950.000 + 18.500), arredondado ao milhar.');
+        Testes.afirmarIgual(r.total, 1585700, 'O total do GT-R Nismo deveria ser o do design: R$ 1.585.700.');
+      }
+    },
+
+    {
+      codigo: 'CT16',
+      descricao: 'Financiamento: parcela pela tabela Price, entrada mínima e limite de 30% da renda',
+      executar() {
+        // GT-R Nismo (R$ 1.585.700) com a entrada mínima de 20%, em 48 meses a 1,49% ao mês.
+        const f = Importacao.financiar(1585700, 317140, 48, 130000);
+
+        Testes.afirmarIgual(f.financiado, 1268560, 'Valor financiado: total menos a entrada.');
+        Testes.afirmarIgual(f.parcela, 37184.45, 'Parcela pela tabela Price.');
+        Testes.afirmarIgual(f.totalPago, 2101993.6, 'Total pago: entrada + 48 parcelas.');
+        Testes.afirmar(f.entradaOk, 'Entrada de exatamente 20% deveria ser aceita.');
+        Testes.afirmar(f.rendaOk, 'Renda de R$ 130.000 comporta parcela de R$ 37.184,45 (até 30%).');
+
+        Testes.afirmar(!Importacao.financiar(1585700, 317139, 48, 130000).entradaOk,
+          'Um real abaixo dos 20% deveria ser recusado.');
+        Testes.afirmar(!Importacao.financiar(1585700, 317140, 48, 120000).rendaOk,
+          'Renda de R$ 120.000: a parcela passaria de 30% e deveria ser recusada.');
+      }
+    },
+
+    {
+      codigo: 'CT17',
+      descricao: 'Carrinho da loja: soma quantidades, limita veículo a 1 e calcula o total',
+      executar() {
+        const carro = { id: 'supra', tipo: 'veiculo', nome: 'Toyota Supra GR A90', preco: 580000 };
+        const volante = { id: 'volante', tipo: 'acessorio', nome: 'Volante esportivo', preco: 1850 };
+
+        let carrinho = Loja.adicionar([], carro);
+        carrinho = Loja.adicionar(carrinho, carro); // segundo clique no mesmo carro
+        carrinho = Loja.adicionar(carrinho, volante);
+        carrinho = Loja.adicionar(carrinho, volante);
+
+        Testes.afirmarIgual(carrinho.length, 2, 'Deveriam existir 2 itens diferentes no carrinho.');
+        Testes.afirmarIgual(carrinho[0].quantidade, 1, 'Um veículo é único: a quantidade não passa de 1.');
+        Testes.afirmarIgual(carrinho[1].quantidade, 2, 'Acessórios somam a quantidade.');
+        Testes.afirmarIgual(Loja.total(carrinho), 583700, 'Total: 580.000 + 2 x 1.850.');
+
+        carrinho = Loja.adicionar(carrinho, carro, -1);
+        Testes.afirmarIgual(carrinho.length, 1, 'Tirar a última unidade remove o item.');
+        Testes.afirmarIgual(Loja.produtos().length, 20, 'A loja mostra os 11 veículos do simulador e 9 acessórios.');
+      }
     }
   ],
 
-  // ==========================================================================
-  // EXECUÇÃO
-  // ==========================================================================
-
-  /**
-   * Roda todos os casos de teste em um estoque limpo e devolve os resultados.
-   * Os dados reais do usuário são salvos antes e restaurados no final.
-   *
-   * @returns {{ resultados: Array, total: number, aprovados: number, reprovados: number }}
-   */
   executar() {
     const backupProdutos = Storage.carregarProdutos();
     const backupMovimentacoes = Storage.carregarMovimentacoes();

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adicionar carro | Painel Kaisen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="painel">
+    <aside class="painel__menu">
+      <p class="painel__marca">KAISEN</p>
+      <p class="painel__area">Painel interno</p>
+      <nav aria-label="Painel interno">
+        <span aria-disabled="true">Painel geral</span>
+        <a href="produtos.html">Estoque</a>
+        <a href="painel.html" aria-current="page">Adicionar carro</a>
+        <a href="garagem.html">Garagem</a>
+        <a href="pedido.html">Pedidos</a>
+        <span aria-disabled="true">Clientes</span>
+        <a href="testes.html">Testes</a>
+      </nav>
+      <p class="painel__logado">Logado como <b>Funcionário · Vendas</b> <a href="login.html">Sair</a></p>
+    </aside>
+
+    <main class="painel__conteudo" id="conteudo">
+      <div class="painel__topo">
+        <div>
+          <h1 class="k-titulo">Adicionar carro</h1>
+          <p class="k-sub">Preencha os dados para publicar o veículo no site.</p>
+        </div>
+        <a class="k-botao k-botao--escuro" href="produtos.html">Cancelar</a>
+      </div>
+
+      <div class="painel__grade">
+        <form class="painel__form" id="form-carro" novalidate>
+          <fieldset class="k-cartao">
+            <legend class="k-cartao__titulo passo"><span>1</span> Fotos do veículo</legend>
+            <label class="k-envio" id="envio-fotos">
+              <input type="file" name="fotos" accept="image/png, image/jpeg" multiple>
+              <span><b>Clique para enviar</b> ou arraste as fotos aqui</span>
+              <span>PNG ou JPG, até 10 fotos</span>
+            </label>
+            <div class="fotos" id="fotos"></div>
+          </fieldset>
+
+          <fieldset class="k-cartao">
+            <legend class="k-cartao__titulo passo"><span>2</span> Dados básicos</legend>
+            <div class="k-campos">
+              <div class="k-campo"><label for="c-marca">Marca</label><input id="c-marca" name="marca" placeholder="Nissan" required></div>
+              <div class="k-campo"><label for="c-modelo">Modelo</label><input id="c-modelo" name="modelo" placeholder="GT-R Nismo R35" required></div>
+              <div class="k-campo"><label for="c-ano">Ano</label><input id="c-ano" name="ano" type="number" min="1950" max="2027" placeholder="2020" required></div>
+              <div class="k-campo"><label for="c-cor">Cor</label><input id="c-cor" name="cor" placeholder="Branco perolado" required></div>
+              <div class="k-campo"><label for="c-km">Quilometragem</label><input id="c-km" name="km" inputmode="numeric" placeholder="18.400 km" required></div>
+              <div class="k-campo">
+                <label for="c-tipo">Tipo</label>
+                <select id="c-tipo" name="tipo"><option>Carro</option><option>Moto</option></select>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="k-cartao">
+            <legend class="k-cartao__titulo passo"><span>3</span> Especificações</legend>
+            <div class="k-campos">
+              <div class="k-campo"><label for="c-motor">Motor</label><input id="c-motor" name="motor" placeholder="3.8 V6 biturbo" required></div>
+              <div class="k-campo"><label for="c-potencia">Potência (cv)</label><input id="c-potencia" name="potencia" type="number" min="1" placeholder="600" required></div>
+              <div class="k-campo"><label for="c-cambio">Câmbio</label><input id="c-cambio" name="cambio" placeholder="Automático 6 marchas" required></div>
+              <div class="k-campo"><label for="c-tracao">Tração</label><input id="c-tracao" name="tracao" placeholder="Integral" required></div>
+              <div class="k-campo k-campo--largo"><label for="c-descricao">Descrição</label><textarea id="c-descricao" name="descricao" placeholder="Escreva um texto curto sobre o carro..."></textarea></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="k-cartao">
+            <legend class="k-cartao__titulo passo"><span>4</span> Origem e valores</legend>
+            <div class="k-campos">
+              <div class="k-campo"><label for="c-pais">País de origem</label><input id="c-pais" name="pais" placeholder="Japão" required></div>
+              <div class="k-campo"><label for="c-cidade">Cidade</label><input id="c-cidade" name="cidade" placeholder="Yokohama" required></div>
+              <div class="k-campo"><label for="c-custo">Custo de compra</label><input id="c-custo" name="custo" class="dinheiro" inputmode="decimal" placeholder="R$ 700.000,00" required></div>
+              <div class="k-campo"><label for="c-preco">Preço de venda</label><input id="c-preco" name="preco" class="dinheiro" inputmode="decimal" placeholder="R$ 950.000,00" required></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="k-cartao">
+            <legend class="k-cartao__titulo passo"><span>5</span> Status e exibição</legend>
+            <fieldset class="k-opcoes">
+              <legend class="k-rotulo">Status</legend>
+              <label class="k-opcao"><input type="radio" name="status" value="Disponível" checked><span>Disponível</span></label>
+              <label class="k-opcao"><input type="radio" name="status" value="Reservado"><span>Reservado</span></label>
+              <label class="k-opcao"><input type="radio" name="status" value="Vendido"><span>Vendido</span></label>
+            </fieldset>
+            <fieldset class="k-opcoes" style="margin-top: 20px">
+              <legend class="k-rotulo">Mostrar em</legend>
+              <label class="k-opcao"><input type="checkbox" name="mostrar" value="Estoque" checked><span>Estoque</span></label>
+              <label class="k-opcao"><input type="checkbox" name="mostrar" value="Garagem"><span>Garagem</span></label>
+              <label class="k-opcao"><input type="checkbox" name="mostrar" value="Ofertas"><span>Ofertas</span></label>
+            </fieldset>
+          </fieldset>
+
+          <div class="painel__acoes">
+            <p class="k-aviso" id="aviso-carro" role="status"></p>
+            <button type="button" class="k-botao k-botao--escuro" id="salvar-rascunho">Salvar rascunho</button>
+            <button type="submit" class="k-botao">Publicar no estoque</button>
+          </div>
+        </form>
+
+        <aside class="painel__lateral">
+          <section class="k-cartao">
+            <h2 class="k-cartao__titulo" style="margin-bottom: 6px">Pré-visualização</h2>
+            <p class="k-aviso" style="margin: 0">Assim o carro aparece no Estoque</p>
+            <div class="previa__foto" id="previa-foto">Foto de capa</div>
+            <p class="previa__nome" id="previa-nome">Nome do carro</p>
+            <p class="previa__preco" id="previa-preco">R$ 0,00</p>
+          </section>
+          <section class="k-cartao">
+            <h2 class="k-cartao__titulo">Checklist</h2>
+            <ul class="checklist" id="checklist">
+              <li data-secao="2">Dados básicos</li>
+              <li data-secao="3">Especificações</li>
+              <li data-secao="4">Valores</li>
+              <li data-secao="fotos">Fotos (<span id="total-fotos">0</span> de 10)</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/painel.js"></script>
+</body>
+</html>

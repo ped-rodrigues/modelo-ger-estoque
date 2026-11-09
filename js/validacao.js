@@ -1,35 +1,7 @@
-/**
- * validacao.js — REGRAS DE VALIDAÇÃO
- * ---------------------------------------------------------------------------
- * Responsabilidade única: dizer se um dado informado pelo usuário é válido e,
- * quando válido, devolver esse dado já convertido para o tipo correto
- * (o formulário sempre entrega texto; o sistema trabalha com números).
- *
- * Este arquivo NÃO acessa o DOM e NÃO acessa o localStorage.
- * São funções puras: mesma entrada, mesma saída. Por isso são fáceis de testar.
- *
- * Atende: RNF06 (campos com validação), RN01, RN02, RN08, RN09.
- * A unicidade do código da peça (RN10) NÃO é verificada aqui: ela depende dos
- * produtos já cadastrados e por isso mora em `Estoque.codigoEmUso`.
- *
- * Observação sobre a ordem de carregamento: `validarProduto` consulta
- * `Estoque.CATEGORIAS`, mas só no momento da chamada (nunca no carregamento do
- * arquivo). Por isso a ordem das tags <script> entre validacao.js e estoque.js
- * não altera o funcionamento.
- */
-
 const Validacao = {
-  // Formato aceito para o código da peça: começa com letra ou número e aceita
-  // hífen, ponto, barra e espaço no meio. Cobre códigos como "MB-90.123/A",
-  // "BOSCH 0986BB4324" e "FR-4213".
+  // Ex.: "FR-4213", "MB-90.123/A", "BOSCH 0986BB4324".
   FORMATO_CODIGO: /^[A-Z0-9][A-Z0-9./\- ]*$/,
 
-  /**
-   * Converte um valor vindo do formulário em número.
-   * Aceita vírgula como separador decimal ("12,50" vira 12.5).
-   * @param {*} valor
-   * @returns {number|null} null quando não for um número válido
-   */
   paraNumero(valor) {
     if (valor === null || valor === undefined) return null;
 
@@ -40,27 +12,12 @@ const Validacao = {
     return Number.isFinite(numero) ? numero : null;
   },
 
-  /**
-   * Valida os dados de uma peça do estoque.
-   *
-   * O campo `quantidade` só é validado quando está presente em `dados`.
-   * Isso atende à decisão D2 do projeto: na EDIÇÃO a quantidade não é enviada,
-   * porque ela só pode mudar por meio de uma movimentação de entrada ou saída.
-   *
-   * @param {Object} dados { codigo, nome, fabricante, aplicacao?, categoria,
-   *                         preco, quantidade?, estoqueMinimo }
-   * @returns {{ valido: boolean, erros: Object, produto: Object }}
-   *          `erros` usa o nome do campo como chave e a mensagem como valor.
-   */
   validarProduto(dados) {
     const erros = {};
     const produto = {};
     const entrada = dados || {};
 
-    // --- código da peça (RF19, campo obrigatório) ---------------------------
-    // Guardado sempre em maiúsculas e com um único espaço entre as partes, para
-    // que "fr 4213", "FR  4213" e "Fr 4213" sejam reconhecidos como o mesmo
-    // código, tanto na comparação da RN10 quanto na pesquisa.
+    // Maiúsculo e com espaço único: "fr 4213" e "FR  4213" viram o mesmo código (RN10 e pesquisa).
     const codigo = String(entrada.codigo === undefined ? '' : entrada.codigo)
       .trim()
       .toUpperCase()
@@ -78,7 +35,6 @@ const Validacao = {
       produto.codigo = codigo;
     }
 
-    // --- nome (campo obrigatório) -------------------------------------------
     const nome = String(entrada.nome === undefined ? '' : entrada.nome).trim();
     if (nome === '') {
       erros.nome = 'Informe o nome da peça.';
@@ -90,7 +46,6 @@ const Validacao = {
       produto.nome = nome;
     }
 
-    // --- fabricante (RF20, campo obrigatório) -------------------------------
     const fabricante = String(entrada.fabricante === undefined ? '' : entrada.fabricante).trim();
     if (fabricante === '') {
       erros.fabricante = 'Informe o fabricante da peça.';
@@ -102,9 +57,7 @@ const Validacao = {
       produto.fabricante = fabricante;
     }
 
-    // --- aplicação (RF21, campo opcional) -----------------------------------
-    // Diz em quais veículos a peça serve. É opcional porque itens como óleo e
-    // aditivo não têm aplicação específica; quando vazio, guardamos "".
+    // Opcional: itens como óleo não servem a um carro específico.
     const aplicacao = String(entrada.aplicacao === undefined ? '' : entrada.aplicacao).trim();
     if (aplicacao.length > 80) {
       erros.aplicacao = 'A aplicação deve ter no máximo 80 caracteres.';
@@ -112,17 +65,15 @@ const Validacao = {
       produto.aplicacao = aplicacao;
     }
 
-    // --- categoria (campo controlado, decisão D4) ---------------------------
     const categoria = String(entrada.categoria === undefined ? '' : entrada.categoria).trim();
     if (categoria === '') {
       erros.categoria = 'Selecione uma categoria.';
-    } else if (!Estoque.CATEGORIAS.includes(categoria)) {
+    } else if (!Estoque.CATEGORIAS.includes(categoria)) { // lido só na chamada: a ordem dos <script> não importa
       erros.categoria = 'Categoria inválida.';
     } else {
       produto.categoria = categoria;
     }
 
-    // --- preço (RN08: não pode ser negativo) --------------------------------
     const preco = this.paraNumero(entrada.preco);
     if (preco === null) {
       erros.preco = 'Informe um preço válido.';
@@ -132,7 +83,7 @@ const Validacao = {
       produto.preco = preco;
     }
 
-    // --- quantidade (RN09: número inteiro maior ou igual a zero) ------------
+    // D2: na edição a quantidade não é enviada, então só é validada quando vem.
     if (entrada.quantidade !== undefined) {
       const quantidade = this.paraNumero(entrada.quantidade);
       if (quantidade === null) {
@@ -146,7 +97,6 @@ const Validacao = {
       }
     }
 
-    // --- estoque mínimo (RN09: número inteiro maior ou igual a zero) --------
     const estoqueMinimo = this.paraNumero(entrada.estoqueMinimo);
     if (estoqueMinimo === null) {
       erros.estoqueMinimo = 'Informe o estoque mínimo.';
@@ -165,14 +115,6 @@ const Validacao = {
     };
   },
 
-  /**
-   * Valida a quantidade informada em uma movimentação de entrada ou saída.
-   * A checagem de "saída maior que o disponível" (RN02) fica no estoque.js,
-   * porque depende do produto e não apenas do valor digitado.
-   *
-   * @param {*} valor
-   * @returns {{ valido: boolean, erro: string|null, quantidade: number|null }}
-   */
   validarQuantidadeMovimentacao(valor) {
     const quantidade = this.paraNumero(valor);
 

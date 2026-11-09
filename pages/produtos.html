@@ -3,111 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Produtos | Gerenciador de Estoque</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <title>Estoque | Painel Kaisen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
   <link rel="stylesheet" href="../css/produtos.css">
 </head>
-<body>
+<body class="pagina-k">
   <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
-  <header class="cabecalho">
-    <div class="cabecalho__conteudo">
-      <p class="cabecalho__titulo">Gerenciador de Estoque <span class="cabecalho__area">Autopeças</span></p>
-      <nav class="navegacao" aria-label="Navegação principal">
-        <a href="produtos.html" aria-current="page">Produtos</a>
+  <div class="painel">
+    <aside class="painel__menu">
+      <p class="painel__marca">KAISEN</p>
+      <p class="painel__area">Painel interno</p>
+      <nav aria-label="Painel interno">
+        <span aria-disabled="true">Painel geral</span>
+        <a href="produtos.html" aria-current="page">Estoque</a>
+        <a href="painel.html">Adicionar carro</a>
+        <a href="garagem.html">Garagem</a>
+        <a href="pedido.html">Pedidos</a>
+        <span aria-disabled="true">Clientes</span>
         <a href="testes.html">Testes</a>
-        <a href="login.html" class="navegacao__sair">Sair</a>
       </nav>
-    </div>
-  </header>
+      <p class="painel__logado">Logado como <b>Funcionário · Vendas</b> <a href="login.html">Sair</a></p>
+    </aside>
 
-  <!-- Bandeira de chegada fechando o cabeçalho. Puramente decorativa. -->
-  <div class="faixa-quadriculada" aria-hidden="true"></div>
+    <main class="painel__conteudo" id="conteudo">
+      <div class="painel__topo">
+        <div>
+          <h1 class="k-titulo">Peças em estoque</h1>
+          <p class="k-sub">Cadastro, movimentação e situação das peças do box.</p>
+        </div>
+        <button type="button" class="k-botao" id="botao-novo">Nova peça</button>
+      </div>
 
-  <main class="conteudo" id="conteudo">
-    <h1>Peças em estoque</h1>
-    <p class="subtitulo-pagina">
-      Cadastro, movimentação e situação das peças do box.
-    </p>
+      <section class="k-cartao barra-filtros" aria-labelledby="titulo-filtros">
+        <h2 id="titulo-filtros" class="apenas-leitor-tela">Pesquisa e filtros</h2>
 
-    <!-- ================= Filtros e ações ================= -->
-    <section class="secao cartao" aria-labelledby="titulo-filtros">
-      <h2 id="titulo-filtros" class="apenas-leitor-tela">Pesquisa e filtros</h2>
-
-      <div class="barra-filtros">
-        <div class="campo">
+        <div class="k-campo">
           <label for="filtro-texto">Pesquisar por nome ou código</label>
           <input type="search" id="filtro-texto" placeholder="Ex.: pastilha ou FR-4213">
         </div>
 
-        <div class="campo">
+        <div class="k-campo">
           <label for="filtro-categoria">Categoria</label>
           <select id="filtro-categoria"></select>
         </div>
 
-        <div class="campo">
+        <div class="k-campo">
           <label for="filtro-status">Situação do estoque</label>
           <select id="filtro-status"></select>
         </div>
 
-        <div class="barra-filtros__acoes">
-          <button type="button" class="botao" id="botao-novo">Nova peça</button>
-          <button type="button" class="botao botao--secundario" id="botao-limpar">Limpar filtros</button>
+        <button type="button" class="k-botao k-botao--escuro" id="botao-limpar">Limpar filtros</button>
+      </section>
+
+      <div id="mensagem" role="status" aria-live="polite" hidden></div>
+
+      <section class="lista-pecas" aria-labelledby="titulo-lista">
+        <div class="lista-pecas__topo">
+          <h2 class="k-cartao__titulo" id="titulo-lista">Lista de peças</h2>
+          <p class="k-aviso" id="contador-produtos" aria-live="polite"></p>
         </div>
-      </div>
-    </section>
 
-    <!-- ================= Mensagem de feedback ================= -->
-    <div id="mensagem" role="status" aria-live="polite" hidden></div>
+        <div class="tabela-rolagem">
+          <table class="tabela tabela-produtos">
+            <caption class="apenas-leitor-tela">
+              Peças cadastradas, com código, fabricante, aplicação, categoria, preço,
+              quantidade, estoque mínimo, situação do estoque e valor total.
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Peça</th>
+                <th scope="col">Aplicação</th>
+                <th scope="col">Categoria</th>
+                <th scope="col" class="numero">Preço</th>
+                <th scope="col" class="numero">Qtd.</th>
+                <th scope="col" class="numero">Mínimo</th>
+                <th scope="col">Situação</th>
+                <th scope="col" class="numero">Valor total</th>
+                <th scope="col">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-produtos"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 
-    <!-- ================= Tabela de produtos ================= -->
-    <section class="secao" aria-labelledby="titulo-lista">
-      <h2 id="titulo-lista">Lista de peças</h2>
-      <p id="contador-produtos" aria-live="polite"></p>
-
-      <div class="tabela-rolagem">
-        <table class="tabela tabela-produtos">
-          <caption class="apenas-leitor-tela">
-            Peças cadastradas, com código, fabricante, aplicação, categoria, preço,
-            quantidade, estoque mínimo, situação do estoque e valor total.
-          </caption>
-          <thead>
-            <tr>
-              <th scope="col">Código</th>
-              <th scope="col">Peça</th>
-              <th scope="col">Aplicação</th>
-              <th scope="col">Categoria</th>
-              <th scope="col">Preço</th>
-              <th scope="col">Qtd.</th>
-              <th scope="col">Mínimo</th>
-              <th scope="col">Situação</th>
-              <th scope="col">Valor total</th>
-              <th scope="col">Ações</th>
-            </tr>
-          </thead>
-          <tbody id="corpo-produtos"></tbody>
-        </table>
-      </div>
-    </section>
-  </main>
-
-  <footer class="rodape">
-    Projeto acadêmico de Engenharia de Software &middot; Gerenciador de Estoque de Autopeças
-  </footer>
-
-  <!-- ======================================================================
-       Janela de cadastro e edição de produto.
-       O elemento <dialog> do HTML já prende o foco dentro da janela e fecha
-       com a tecla Esc, o que ajuda na acessibilidade sem código extra.
-       ====================================================================== -->
   <dialog id="dialog-produto" aria-labelledby="titulo-dialog-produto">
     <form id="form-produto" novalidate>
       <h2 id="titulo-dialog-produto">Nova peça</h2>
 
-      <!-- Guarda o id do produto durante a edição; fica vazio no cadastro. -->
+      <!-- Vazio no cadastro; id do produto na edição. -->
       <input type="hidden" name="id" id="produto-id">
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-codigo">Código da peça <span aria-hidden="true">*</span></label>
         <input type="text" id="produto-codigo" name="codigo" maxlength="30"
                autocomplete="off" spellcheck="false"
@@ -118,14 +112,14 @@
         <span class="campo__erro" id="erro-produto-codigo" data-erro-de="codigo"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-nome">Nome da peça <span aria-hidden="true">*</span></label>
         <input type="text" id="produto-nome" name="nome" maxlength="60"
                aria-describedby="erro-produto-nome" aria-invalid="false">
         <span class="campo__erro" id="erro-produto-nome" data-erro-de="nome"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-fabricante">Fabricante <span aria-hidden="true">*</span></label>
         <input type="text" id="produto-fabricante" name="fabricante" maxlength="40"
                aria-describedby="ajuda-produto-fabricante erro-produto-fabricante" aria-invalid="false">
@@ -133,7 +127,7 @@
         <span class="campo__erro" id="erro-produto-fabricante" data-erro-de="fabricante"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-aplicacao">Aplicação</label>
         <input type="text" id="produto-aplicacao" name="aplicacao" maxlength="80"
                aria-describedby="ajuda-produto-aplicacao erro-produto-aplicacao" aria-invalid="false">
@@ -143,14 +137,14 @@
         <span class="campo__erro" id="erro-produto-aplicacao" data-erro-de="aplicacao"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-categoria">Categoria <span aria-hidden="true">*</span></label>
         <select id="produto-categoria" name="categoria"
                 aria-describedby="erro-produto-categoria" aria-invalid="false"></select>
         <span class="campo__erro" id="erro-produto-categoria" data-erro-de="categoria"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-preco">Preço (R$) <span aria-hidden="true">*</span></label>
         <input type="text" inputmode="decimal" id="produto-preco" name="preco"
                aria-describedby="ajuda-produto-preco erro-produto-preco" aria-invalid="false">
@@ -158,7 +152,7 @@
         <span class="campo__erro" id="erro-produto-preco" data-erro-de="preco"></span>
       </div>
 
-      <div class="campo" id="campo-quantidade">
+      <div class="k-campo" id="campo-quantidade">
         <label for="produto-quantidade">Quantidade inicial <span aria-hidden="true">*</span></label>
         <input type="number" id="produto-quantidade" name="quantidade" min="0" step="1"
                aria-describedby="ajuda-produto-quantidade erro-produto-quantidade" aria-invalid="false">
@@ -168,7 +162,7 @@
         <span class="campo__erro" id="erro-produto-quantidade" data-erro-de="quantidade"></span>
       </div>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="produto-estoque-minimo">Estoque mínimo <span aria-hidden="true">*</span></label>
         <input type="number" id="produto-estoque-minimo" name="estoqueMinimo" min="0" step="1"
                aria-describedby="erro-produto-estoque-minimo" aria-invalid="false">
@@ -176,13 +170,12 @@
       </div>
 
       <p class="dialog__rodape">
-        <button type="button" class="botao botao--secundario" data-fechar="dialog-produto">Cancelar</button>
-        <button type="submit" class="botao">Salvar</button>
+        <button type="button" class="k-botao k-botao--escuro" data-fechar="dialog-produto">Cancelar</button>
+        <button type="submit" class="k-botao">Salvar</button>
       </p>
     </form>
   </dialog>
 
-  <!-- ================= Janela de entrada e saída de estoque ================= -->
   <dialog id="dialog-movimentacao" aria-labelledby="titulo-dialog-movimentacao">
     <form id="form-movimentacao" novalidate>
       <h2 id="titulo-dialog-movimentacao">Registrar entrada</h2>
@@ -192,7 +185,7 @@
 
       <p id="movimentacao-resumo" class="dialog__resumo"></p>
 
-      <div class="campo">
+      <div class="k-campo">
         <label for="movimentacao-quantidade">Quantidade <span aria-hidden="true">*</span></label>
         <input type="number" id="movimentacao-quantidade" name="quantidade" min="1" step="1"
                aria-describedby="erro-movimentacao-quantidade" aria-invalid="false">
@@ -200,13 +193,12 @@
       </div>
 
       <p class="dialog__rodape">
-        <button type="button" class="botao botao--secundario" data-fechar="dialog-movimentacao">Cancelar</button>
-        <button type="submit" class="botao">Registrar</button>
+        <button type="button" class="k-botao k-botao--escuro" data-fechar="dialog-movimentacao">Cancelar</button>
+        <button type="submit" class="k-botao">Registrar</button>
       </p>
     </form>
   </dialog>
 
-  <!-- ================= Janela de confirmação de exclusão ================= -->
   <dialog id="dialog-exclusao" aria-labelledby="titulo-dialog-exclusao">
     <h2 id="titulo-dialog-exclusao">Excluir peça</h2>
     <p id="exclusao-resumo" class="dialog__resumo"></p>
@@ -214,12 +206,12 @@
       As movimentações já registradas permanecem no histórico.
     </p>
     <p class="dialog__rodape">
-      <button type="button" class="botao botao--secundario" data-fechar="dialog-exclusao">Cancelar</button>
-      <button type="button" class="botao botao--perigo" id="botao-confirmar-exclusao">Excluir</button>
+      <button type="button" class="k-botao k-botao--escuro" data-fechar="dialog-exclusao">Cancelar</button>
+      <button type="button" class="k-botao botao--perigo" id="botao-confirmar-exclusao">Excluir</button>
     </p>
   </dialog>
 
-  <!-- A ordem importa: as camadas de baixo primeiro. -->
+  <!-- A ordem importa: quem é usado vem antes de quem usa. -->
   <script src="../js/storage.js"></script>
   <script src="../js/validacao.js"></script>
   <script src="../js/estoque.js"></script>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Loja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Loja</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html" aria-current="page">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina loja-pagina" id="conteudo">
+    <h1 class="k-titulo">Loja Kaisen</h1>
+    <p class="k-sub">Carros importados sob encomenda e acessórios para deixar o seu do seu jeito.</p>
+
+    <div class="abas" role="group" aria-label="Filtrar a loja">
+      <button type="button" class="k-aba" data-filtro="" aria-pressed="true">Todos</button>
+      <button type="button" class="k-aba" data-filtro="veiculo" aria-pressed="false">Veículos</button>
+      <button type="button" class="k-aba" data-filtro="acessorio" aria-pressed="false">Acessórios</button>
+    </div>
+
+    <div class="loja">
+      <!-- Preenchida por js/loja.js a partir dos veículos do simulador e dos acessórios. -->
+      <ul class="loja__lista" id="lista-loja"></ul>
+
+      <aside class="k-cartao carrinho" aria-labelledby="titulo-carrinho">
+        <h2 class="k-cartao__titulo" id="titulo-carrinho">Carrinho <span id="carrinho-contagem"></span></h2>
+        <p class="k-aviso" id="carrinho-vazio">Nenhum item ainda.</p>
+        <ul class="carrinho__itens" id="itens-carrinho"></ul>
+        <dl class="k-linhas">
+          <div class="k-total"><dt>Total</dt><dd id="carrinho-total">R$ 0,00</dd></div>
+        </dl>
+        <p class="k-ajuda" id="carrinho-veiculo" hidden>
+          Veículos: valor sem frete e impostos. <a href="importacao.html">Simule a importação</a> para ver o custo até a sua porta.
+        </p>
+        <button type="button" class="k-botao" id="finalizar-pedido">Finalizar pedido</button>
+        <button type="button" class="k-botao k-botao--escuro" id="esvaziar-carrinho">Esvaziar</button>
+        <p class="k-aviso" id="aviso-carrinho" role="status"></p>
+      </aside>
+    </div>
+
+    <p class="creditos">
+      Fotos de acessórios (Wikimedia Commons e Flickr):
+      Aerofólio: <a href="https://commons.wikimedia.org/wiki/File:2008_Porsche_911_997_Turbo_RUF_RT_12_-_Flickr_-_The_Car_Spy.jpg">The Car Spy</a> (CC BY 2.0) · 
+      Banco concha: <a href="https://commons.wikimedia.org/wiki/File:Bucket_seat_with_Schroth_six-point_harness_in_a_2010_Porsche_997_GT3_RS_3.8.jpg">The Car Spy</a> (CC BY 2.0) · 
+      Escape: <a href="https://www.flickr.com/photos/51434786@N06/20421648208">crudmucosa</a> (CC BY 2.0) · 
+      Intercooler: <a href="https://commons.wikimedia.org/wiki/File:Sti-fmic.jpg">Freonr2</a> (CC BY 2.5) · 
+      Turbina: <a href="https://commons.wikimedia.org/wiki/File:Turbocharger.jpg">Quentin Schwinn</a> (domínio público) · 
+      Volante: <a href="https://commons.wikimedia.org/wiki/File:Stock_Mazda_MX-5_NA(Special_Edition)_Momo_Steering_Wheel.jpg">Benjamin Winkler</a> (CC BY-SA 3.0).
+    </p>
+  </main>
+
+  <script src="../js/importacao.js"></script>
+  <script src="../js/loja.js"></script>
+</body>
+</html>

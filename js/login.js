@@ -1,43 +1,12 @@
-/**
- * login.js — TELA DE ACESSO
- * ---------------------------------------------------------------------------
- * Responsabilidade: ligar a tela `pages/login.html` ao usuário. Ela confere se
- * os campos foram preenchidos, mostra os erros junto de cada campo e, quando
- * está tudo certo, encaminha para a tela principal.
- *
- * Esta tela é GENÉRICA de propósito. Autenticação real está fora do escopo do
- * projeto (seção 1 de docs/requisitos.md): não existe cadastro de usuários,
- * nem senha guardada, nem sessão. Por isso o arquivo:
- *
- *   - não usa `Storage` (ele guarda estoque, não usuários);
- *   - não usa `Estoque` (nenhuma regra de negócio é aplicada aqui);
- *   - não grava nada no navegador, nem mesmo a marcação "lembrar de mim".
- *
- * Como as demais telas, este arquivo conhece o DOM e reaproveita `UI` para as
- * mensagens (RNF11).
- *
- * Atende: RNF06 (campos com validação), RNF07 (feedback visual).
- */
-
 const TelaLogin = {
-  // Referências aos elementos da página, preenchidas em iniciar().
   el: {},
 
-  // Para onde o usuário vai depois de entrar. Enquanto o dashboard não existe,
-  // a tela de peças é a página principal do sistema.
   DESTINO: 'produtos.html',
 
-  // Tempo até a troca de página, em milissegundos. Existe para a mensagem de
-  // sucesso ser vista e anunciada pelo leitor de tela antes da navegação.
+  // Tempo para a mensagem de sucesso ser vista e anunciada antes de trocar de página.
   ESPERA_ATE_ENTRAR: 800,
 
-  // Tamanho mínimo do usuário. Não é regra de negócio: é só uma conferência de
-  // formulário, para o campo não ser enviado com uma letra solta.
   MINIMO_USUARIO: 3,
-
-  // ==========================================================================
-  // INICIALIZAÇÃO
-  // ==========================================================================
 
   iniciar() {
     this.el = {
@@ -49,8 +18,7 @@ const TelaLogin = {
 
     this.el.formulario.addEventListener('submit', (evento) => this.aoEnviar(evento));
 
-    // O "esqueci minha senha" não tem para onde levar em uma tela sem
-    // autenticação. Em vez de um link quebrado, ele explica isso.
+    // Não há autenticação no projeto: estes links explicam isso em vez de quebrar.
     this.el.linkSenha.addEventListener('click', (evento) => {
       evento.preventDefault();
       UI.mostrarMensagem(
@@ -60,7 +28,6 @@ const TelaLogin = {
       );
     });
 
-    // O mesmo vale para o "Sign up": não há cadastro de usuários.
     this.el.linkCadastro.addEventListener('click', (evento) => {
       evento.preventDefault();
       UI.mostrarMensagem(
@@ -71,20 +38,6 @@ const TelaLogin = {
     });
   },
 
-  // ==========================================================================
-  // VALIDAÇÃO
-  // ==========================================================================
-
-  /**
-   * Confere os campos da tela de acesso.
-   *
-   * Segue o formato usado por `Validacao`: devolve um objeto de erros com uma
-   * mensagem por campo, no mesmo formato que `UI.mostrarErros` já sabe exibir.
-   *
-   * @param {string} usuario
-   * @param {string} senha
-   * @returns {Object} { campo: mensagem }; vazio quando não há erro
-   */
   validar(usuario, senha) {
     const erros = {};
 
@@ -101,14 +54,6 @@ const TelaLogin = {
     return erros;
   },
 
-  // ==========================================================================
-  // EVENTOS
-  // ==========================================================================
-
-  /**
-   * Trata o envio do formulário.
-   * @param {Event} evento
-   */
   aoEnviar(evento) {
     evento.preventDefault();
 

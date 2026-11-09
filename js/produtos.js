@@ -1,37 +1,16 @@
-/**
- * produtos.js — TELA DE PEÇAS EM ESTOQUE
- * ---------------------------------------------------------------------------
- * Responsabilidade: ligar a tela `pages/produtos.html` às regras de negócio.
- * Este arquivo cuida do DOM (ler campos, montar a tabela, abrir janelas) e
- * delega toda decisão para `Estoque`, que por sua vez usa `Validacao` e
- * `Storage`.
- *
- * Atende: RF01 a RF12 na interface, RNF07 (feedback) e RNF06 (validação).
- */
-
 const TelaProdutos = {
-  // Referências aos elementos da página, preenchidas em iniciar().
   el: {},
 
-  // Guarda qual produto está aguardando confirmação de exclusão.
   idParaExcluir: null,
 
-  // Quantidade de colunas da tabela, usada pela linha de estado vazio.
   COLUNAS_DA_TABELA: 10,
 
-  // Textos de ajuda do campo quantidade, que muda entre cadastro e edição (D2).
   AJUDA_QUANTIDADE_NOVA: 'Registrada como uma entrada de estoque no histórico.',
   AJUDA_QUANTIDADE_EDICAO: 'A quantidade só muda por entrada ou saída de estoque.',
-
-  // ==========================================================================
-  // INICIALIZAÇÃO
-  // ==========================================================================
 
   iniciar() {
     this.capturarElementos();
 
-    // Se o navegador bloqueia o armazenamento, avisamos em vez de falhar em
-    // silêncio a cada operação.
     if (!Storage.disponivel()) {
       UI.mostrarMensagem(
         this.el.mensagem,
@@ -48,19 +27,16 @@ const TelaProdutos = {
 
   capturarElementos() {
     this.el = {
-      // filtros e ações
       filtroTexto: document.getElementById('filtro-texto'),
       filtroCategoria: document.getElementById('filtro-categoria'),
       filtroStatus: document.getElementById('filtro-status'),
       botaoNovo: document.getElementById('botao-novo'),
       botaoLimpar: document.getElementById('botao-limpar'),
 
-      // listagem
       corpoProdutos: document.getElementById('corpo-produtos'),
       contador: document.getElementById('contador-produtos'),
       mensagem: document.getElementById('mensagem'),
 
-      // janela de peça
       dialogProduto: document.getElementById('dialog-produto'),
       formProduto: document.getElementById('form-produto'),
       tituloDialogProduto: document.getElementById('titulo-dialog-produto'),
@@ -68,20 +44,17 @@ const TelaProdutos = {
       ajudaQuantidade: document.getElementById('ajuda-produto-quantidade'),
       categoriaProduto: document.getElementById('produto-categoria'),
 
-      // janela de movimentação
       dialogMovimentacao: document.getElementById('dialog-movimentacao'),
       formMovimentacao: document.getElementById('form-movimentacao'),
       tituloDialogMovimentacao: document.getElementById('titulo-dialog-movimentacao'),
       resumoMovimentacao: document.getElementById('movimentacao-resumo'),
 
-      // janela de exclusão
       dialogExclusao: document.getElementById('dialog-exclusao'),
       resumoExclusao: document.getElementById('exclusao-resumo'),
       botaoConfirmarExclusao: document.getElementById('botao-confirmar-exclusao')
     };
   },
 
-  /** Monta as opções dos filtros a partir das constantes do domínio. */
   preencherFiltros() {
     UI.preencherSelect(
       this.el.filtroCategoria,
@@ -99,7 +72,6 @@ const TelaProdutos = {
     );
   },
 
-  /** Monta as opções de categoria do formulário de produto. */
   preencherCategoriasDoFormulario() {
     UI.preencherSelect(
       this.el.categoriaProduto,
@@ -109,7 +81,6 @@ const TelaProdutos = {
   },
 
   ligarEventos() {
-    // Pesquisa e filtros: a lista é refeita a cada digitação ou mudança.
     this.el.filtroTexto.addEventListener('input', () => this.renderizar());
     this.el.filtroCategoria.addEventListener('change', () => this.renderizar());
     this.el.filtroStatus.addEventListener('change', () => this.renderizar());
@@ -117,16 +88,13 @@ const TelaProdutos = {
     this.el.botaoLimpar.addEventListener('click', () => this.limparFiltros());
     this.el.botaoNovo.addEventListener('click', () => this.abrirDialogProduto(null));
 
-    // Um único ouvinte para a tabela inteira (delegação de eventos): as linhas
-    // são criadas e destruídas o tempo todo, e assim não precisamos ligar um
-    // ouvinte a cada botão criado.
+    // Delegação: um ouvinte para a tabela toda, porque as linhas são recriadas a cada renderização.
     this.el.corpoProdutos.addEventListener('click', (evento) => this.tratarCliqueNaTabela(evento));
 
     this.el.formProduto.addEventListener('submit', (evento) => this.salvarProduto(evento));
     this.el.formMovimentacao.addEventListener('submit', (evento) => this.salvarMovimentacao(evento));
     this.el.botaoConfirmarExclusao.addEventListener('click', () => this.confirmarExclusao());
 
-    // Todos os botões "Cancelar" das janelas.
     document.querySelectorAll('[data-fechar]').forEach((botao) => {
       botao.addEventListener('click', () => {
         document.getElementById(botao.dataset.fechar).close();
@@ -134,11 +102,6 @@ const TelaProdutos = {
     });
   },
 
-  // ==========================================================================
-  // LISTAGEM (RF03, RF04, RF05, RF12)
-  // ==========================================================================
-
-  /** @returns {{texto: string, categoria: string, status: string}} */
   obterFiltros() {
     return {
       texto: this.el.filtroTexto.value,
@@ -155,7 +118,6 @@ const TelaProdutos = {
     this.el.filtroTexto.focus();
   },
 
-  /** Refaz a tabela a partir dos dados salvos e dos filtros atuais. */
   renderizar() {
     const todos = Estoque.listarProdutos();
     const visiveis = Estoque.filtrarProdutos(todos, this.obterFiltros());
@@ -180,11 +142,6 @@ const TelaProdutos = {
     });
   },
 
-  /**
-   * Monta a linha da tabela de um produto.
-   * @param {Object} produto
-   * @returns {HTMLTableRowElement}
-   */
   criarLinha(produto) {
     const linha = document.createElement('tr');
     const status = Estoque.classificar(produto);
@@ -207,13 +164,6 @@ const TelaProdutos = {
     return linha;
   },
 
-  /**
-   * Monta a célula que identifica a peça: o nome e, abaixo, o fabricante.
-   * Os dois juntos em uma célula evitam mais uma coluna em uma tabela que já é
-   * larga, sem esconder uma informação que o balconista usa para conferir o item.
-   * @param {Object} produto
-   * @returns {HTMLTableCellElement}
-   */
   criarCelulaDaPeca(produto) {
     const celula = document.createElement('td');
     celula.textContent = produto.nome;
@@ -226,13 +176,6 @@ const TelaProdutos = {
     return celula;
   },
 
-  /**
-   * Monta os botões de ação da linha.
-   * Cada botão guarda a ação e o id do produto em atributos `data-`, lidos
-   * depois pela delegação de eventos.
-   * @param {Object} produto
-   * @returns {HTMLTableCellElement}
-   */
   criarCelulaDeAcoes(produto) {
     const celula = document.createElement('td');
     celula.className = 'acoes';
@@ -251,9 +194,8 @@ const TelaProdutos = {
       botao.textContent = item.texto;
       botao.dataset.acao = item.acao;
       botao.dataset.id = produto.id;
-      // Sem isto, um leitor de tela ouviria apenas "Editar" repetido em todas
-      // as linhas, sem saber de qual peça se trata. O código entra junto porque
-      // duas peças podem ter o mesmo nome e mudar só de aplicação.
+      // Sem isto o leitor de tela ouviria só "Editar" em todas as linhas. O código
+      // entra porque duas peças podem ter o mesmo nome.
       botao.setAttribute('aria-label', item.texto + ' ' + produto.nome + ' ' + (produto.codigo || ''));
       celula.appendChild(botao);
     });
@@ -261,10 +203,6 @@ const TelaProdutos = {
     return celula;
   },
 
-  /**
-   * Descobre qual botão foi clicado na tabela e executa a ação correspondente.
-   * @param {MouseEvent} evento
-   */
   tratarCliqueNaTabela(evento) {
     const botao = evento.target.closest('button[data-acao]');
     if (!botao) return;
@@ -282,14 +220,6 @@ const TelaProdutos = {
     if (botao.dataset.acao === 'saida') this.abrirDialogMovimentacao(produto, Estoque.TIPOS.SAIDA);
   },
 
-  // ==========================================================================
-  // CADASTRO E EDIÇÃO (RF01, RF06)
-  // ==========================================================================
-
-  /**
-   * Abre a janela de produto.
-   * @param {Object|null} produto null para cadastrar, o produto para editar
-   */
   abrirDialogProduto(produto) {
     const form = this.el.formProduto;
     form.reset();
@@ -314,7 +244,7 @@ const TelaProdutos = {
       this.el.campoQuantidade.value = produto.quantidade;
       form.elements.estoqueMinimo.value = produto.estoqueMinimo;
 
-      // Decisão D2: na edição a quantidade é apenas informativa.
+      // D2: na edição a quantidade é só informativa.
       this.el.campoQuantidade.disabled = true;
       this.el.ajudaQuantidade.textContent = this.AJUDA_QUANTIDADE_EDICAO;
     }
@@ -323,10 +253,6 @@ const TelaProdutos = {
     form.elements.codigo.focus();
   },
 
-  /**
-   * Trata o envio do formulário de produto.
-   * @param {SubmitEvent} evento
-   */
   salvarProduto(evento) {
     evento.preventDefault();
 
@@ -371,15 +297,6 @@ const TelaProdutos = {
     );
   },
 
-  // ==========================================================================
-  // MOVIMENTAÇÕES (RF08, RF09, RF11)
-  // ==========================================================================
-
-  /**
-   * Abre a janela de entrada ou saída de estoque.
-   * @param {Object} produto
-   * @param {string} tipo Estoque.TIPOS.ENTRADA ou Estoque.TIPOS.SAIDA
-   */
   abrirDialogMovimentacao(produto, tipo) {
     const form = this.el.formMovimentacao;
     form.reset();
@@ -400,10 +317,6 @@ const TelaProdutos = {
     form.elements.quantidade.focus();
   },
 
-  /**
-   * Trata o envio do formulário de movimentação.
-   * @param {SubmitEvent} evento
-   */
   salvarMovimentacao(evento) {
     evento.preventDefault();
 
@@ -415,8 +328,7 @@ const TelaProdutos = {
     );
 
     if (!resultado.ok) {
-      // A operação devolve uma única mensagem; ela é exibida no campo
-      // quantidade, que é onde o usuário pode corrigir o problema.
+      // O erro vai para o campo quantidade, que é onde o usuário corrige.
       UI.mostrarErros(form, { quantidade: resultado.erro });
       return;
     }
@@ -435,14 +347,6 @@ const TelaProdutos = {
     );
   },
 
-  // ==========================================================================
-  // EXCLUSÃO (RF07)
-  // ==========================================================================
-
-  /**
-   * Pede confirmação antes de excluir (usabilidade: ação irreversível).
-   * @param {Object} produto
-   */
   abrirDialogExclusao(produto) {
     UI.limparMensagem(this.el.mensagem);
 
@@ -476,5 +380,4 @@ const TelaProdutos = {
   }
 };
 
-// A tela só pode ser montada depois que o HTML existir na página.
 document.addEventListener('DOMContentLoaded', () => TelaProdutos.iniciar());

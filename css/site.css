@@ -1,10 +1,3 @@
-/* ==========================================================================
-   site.css — SITE PÚBLICO KAISEN (Início, Estoque, Contato)
-   --------------------------------------------------------------------------
-   Reproduz o design do Figma "Projeto front" (página "tela login alta
-   fidelidade"). As medidas em px são as do quadro de 1836px do design.
-   ========================================================================== */
-
 :root {
   --laranja: #c37a32;
   --laranja-forte: #be6b19;
@@ -66,9 +59,7 @@ h1, h2, h3, p {
   white-space: nowrap;
 }
 
-/* --------------------------------------------------------------------------
-   1. Cabeçalho
-   -------------------------------------------------------------------------- */
+/* 1. Cabeçalho */
 .topo {
   position: relative;
   z-index: 2;
@@ -91,7 +82,7 @@ h1, h2, h3, p {
   width: 143px;
 }
 
-/* "Kaisen" escrito por cima do traço do carro, como no design. */
+/* "Kaisen" fica por cima do traço do carro na logo, como no design. */
 .topo__nome {
   position: absolute;
   left: 50px;
@@ -134,7 +125,6 @@ h1, h2, h3, p {
   color: var(--laranja);
 }
 
-/* Cabeçalho da página inicial: mais baixo, logo maior, sem título. */
 .topo--inicio {
   height: 94px;
   padding-left: 3px;
@@ -162,13 +152,11 @@ h1, h2, h3, p {
   gap: 62px;
 }
 
-/* --------------------------------------------------------------------------
-   2. Faixa de imagem das páginas internas
-   -------------------------------------------------------------------------- */
+/* 2. Faixa de imagem das páginas internas */
 .faixa {
   height: 316px;
   background: center / cover no-repeat;
-  /* Véu escuro com sombra interna, como o retângulo sobre a foto. */
+
   box-shadow: inset 0 40px 40px rgba(0, 0, 0, 0.25), inset 0 0 0 999px rgba(0, 0, 0, 0.3);
 }
 
@@ -182,14 +170,12 @@ h1, h2, h3, p {
   box-shadow: inset 0 40px 40px rgba(0, 0, 0, 0.25), inset 0 0 0 999px rgba(0, 0, 0, 0.5);
 }
 
-/* --------------------------------------------------------------------------
-   3. Cartão de veículo (Início e Estoque)
-   -------------------------------------------------------------------------- */
+/* 3. Cartão de veículo (Início e Estoque) */
 .carro {
   display: flex;
   flex-direction: column;
-  width: 406px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 406px;
 }
 
 .carro__foto {
@@ -198,10 +184,11 @@ h1, h2, h3, p {
   object-fit: cover;
 }
 
+/* min-height: o nome pode quebrar linha em colunas estreitas. 12% = os 48px do design num cartão de 406px. */
 .carro__dados {
-  height: 206px;
+  min-height: 206px;
   margin-top: -6px;
-  padding: 32px 48px 0;
+  padding: 32px 12% 0;
   background: #242424;
   border: 1px solid var(--borda-cartao);
   border-radius: 7px;
@@ -213,7 +200,7 @@ h1, h2, h3, p {
   letter-spacing: 0.07em;
   line-height: 26px;
   color: var(--laranja);
-  /* Contorno externo de 0,8px do design (o stroke do CSS é centralizado). */
+  /* Contorno externo de 0,8px: o stroke do CSS é centralizado, por isso 1,6px. */
   -webkit-text-stroke: 1.6px rgba(195, 122, 50, 0.8);
   paint-order: stroke fill;
 }
@@ -227,7 +214,7 @@ h1, h2, h3, p {
   border-bottom: 2px solid var(--linha-cartao);
 }
 
-/* No design este nome não tem espaçamento entre letras (cabe na linha). */
+/* Sem espaçamento entre letras para caber numa linha, como no design. */
 .carro__nome--justo {
   letter-spacing: 0;
 }
@@ -243,7 +230,7 @@ h1, h2, h3, p {
   justify-content: space-between;
   height: 62px;
   margin-top: -12px;
-  padding: 16px 40px 0 48px;
+  padding: 16px 10% 0 12%;
   background: var(--marrom-botao);
   border: 1px solid var(--linha-cartao);
   font-size: 25px;
@@ -254,15 +241,12 @@ h1, h2, h3, p {
   background: #8a5218;
 }
 
-/* --------------------------------------------------------------------------
-   4. Página inicial
-   -------------------------------------------------------------------------- */
+/* 4. Página inicial */
 .inicio {
   padding-bottom: 246px;
 }
 
-/* Foto de 1872x1053 deslocada (-19, -88) dentro da área de 1836x955, como no
-   design; as porcentagens mantêm o mesmo recorte em qualquer largura. */
+/* Foto de 1872x1053 deslocada (-19, -88) numa área de 1836x955, como no design; em porcentagem o recorte vale para qualquer largura. */
 .capa {
   aspect-ratio: 1836 / 955;
   background: url('../assets/home-hero.jpg') 52.8% 89.8% / 101.96% auto no-repeat;
@@ -512,25 +496,26 @@ h1, h2, h3, p {
   background: rgba(120, 70, 20, 0.2);
 }
 
-/* --------------------------------------------------------------------------
-   5. Estoque
-   -------------------------------------------------------------------------- */
+/* 5. Estoque */
 .pagina-estoque {
   background: #262626;
 }
 
 .estoque {
   display: flex;
-  align-items: flex-start;
-  gap: 44px;
-  padding: 102px 68px 75px 52px;
+  flex-direction: column;
+  align-items: center;
+  gap: 72px;
+  padding: 102px 68px 75px;
 }
 
+/* No máximo 3 colunas de 406px. O mínimo de 340px impede uma 4ª; o min() evita estouro abaixo de 340px. */
 .estoque__lista {
   display: grid;
-  flex: 1;
-  grid-template-columns: repeat(3, minmax(0, 406px));
-  justify-content: end;
+  width: 100%;
+  max-width: 1282px;
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+  justify-items: center;
   gap: 36px 32px;
   margin: 0;
   padding: 0;
@@ -538,17 +523,16 @@ h1, h2, h3, p {
 }
 
 .estoque__vazio {
-  flex: 1;
   font-size: 22px;
   color: #8c8c8c;
 }
 
-/* Painel de filtro: segue o estilo claro do componente no design. */
+/* Mesma largura máxima da grade de veículos, para os dois ficarem alinhados. */
 .filtro {
   display: flex;
   flex-direction: column;
-  width: 390px;
-  height: 790px;
+  width: 100%;
+  max-width: 1282px;
   flex-shrink: 0;
   background: linear-gradient(rgba(241, 244, 247, 0.91), rgba(241, 244, 247, 0.91)), #e2e8f0;
   border: 1px solid #e1e1e1;
@@ -561,7 +545,7 @@ h1, h2, h3, p {
   align-items: center;
   justify-content: space-between;
   height: 98px;
-  padding: 28px 20px 14px;
+  padding: 28px 24px 14px;
   background: rgba(248, 250, 252, 0.92);
   border-bottom: 1px solid #e2e8f0;
 }
@@ -610,7 +594,7 @@ h1, h2, h3, p {
 }
 
 .filtro__busca {
-  padding: 3px 7px 0 13px;
+  padding: 16px 24px 0;
 }
 
 .filtro__rotulo {
@@ -669,6 +653,7 @@ h1, h2, h3, p {
 .filtro__recentes {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 12px 0 2px;
   font-size: 11px;
@@ -688,12 +673,12 @@ h1, h2, h3, p {
 
 .filtro__divisor {
   height: 1px;
-  margin: 12px 21px 0 18px;
+  margin: 16px 24px 0;
   background: #cbd5e1;
 }
 
 .filtro__marcas {
-  padding: 12px 20px 0;
+  padding: 16px 24px 20px;
 }
 
 .filtro__marcas-topo {
@@ -720,7 +705,7 @@ h1, h2, h3, p {
 
 .filtro__grade {
   display: grid;
-  grid-template-columns: repeat(3, 110px);
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
 }
 
@@ -763,11 +748,6 @@ h1, h2, h3, p {
   color: #ea580c;
 }
 
-/* Fechado, o painel mostra só o cabeçalho. */
-.filtro--fechado {
-  height: auto;
-}
-
 .filtro--fechado > :not(.filtro__cabeca) {
   display: none;
 }
@@ -796,8 +776,9 @@ h1, h2, h3, p {
 .filtro__rodape {
   display: flex;
   gap: 12px;
+  justify-content: flex-end;
   margin-top: auto;
-  padding: 12px 20px 16px;
+  padding: 12px 24px 16px;
   background: rgba(248, 250, 252, 0.95);
   border-top: 1px solid #cbd5e1;
 }
@@ -815,7 +796,7 @@ h1, h2, h3, p {
 
 .filtro__ver {
   display: flex;
-  flex: 1;
+  flex: 0 1 340px;
   align-items: center;
   justify-content: space-between;
   height: 52px;
@@ -839,9 +820,7 @@ h1, h2, h3, p {
   font: 700 12px/16px 'Liberation Sans', Arial, sans-serif;
 }
 
-/* --------------------------------------------------------------------------
-   6. Contato
-   -------------------------------------------------------------------------- */
+/* 6. Contato */
 .pagina-contato {
   background: #151515;
 }
@@ -872,6 +851,7 @@ h1, h2, h3, p {
 .contato__caixa {
   display: flex;
   flex-direction: column;
+  min-width: 0; /* fieldset cresce até o conteúdo por padrão e estourava no celular */
   margin: 0;
   padding: 30px 27px 30px 30px;
   border: 1px solid #4a4a4a;
@@ -930,21 +910,16 @@ h1, h2, h3, p {
   background: #3d3d3d;
 }
 
-/* --------------------------------------------------------------------------
-   7. Telas menores que o design (1836px)
-   -------------------------------------------------------------------------- */
+/* 7. Telas menores que o design (1836px) */
 @media (max-width: 1500px) {
   .estoque {
     padding: 64px 32px 64px;
   }
 
-  .estoque__lista {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 406px));
-  }
-
   .recursos,
   .lancamentos__lista {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 406px));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-items: center;
     gap: 48px;
   }
 
@@ -953,7 +928,15 @@ h1, h2, h3, p {
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1500px) {
+  .navegacao,
+  .topo--inicio .navegacao {
+    gap: 32px;
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 1250px) {
   .topo {
     flex-wrap: wrap;
     height: auto;
@@ -968,30 +951,24 @@ h1, h2, h3, p {
     width: 100%;
     font-size: 20px;
   }
+}
 
-  .filtro__grade {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
+@media (max-width: 1100px) {
   .lancamentos__estoque {
     max-width: 100%;
   }
 
   .estoque {
-    flex-direction: column;
-    align-items: stretch;
+    gap: 48px;
     padding: 32px 16px;
   }
 
-  .filtro {
-    width: 100%;
-    max-width: 390px;
-    margin: 0 auto;
-  }
-
-  .estoque__lista {
-    justify-content: center;
-  }
+  .filtro__cabeca,
+  .filtro__busca,
+  .filtro__marcas,
+  .filtro__rodape { padding-left: 16px; padding-right: 16px; }
+  .filtro__divisor { margin: 16px 16px 0; }
+  .filtro__ver { flex: 1; padding: 14px 16px; font-size: 16px; white-space: nowrap; }
 
   .chamada {
     flex-direction: column;
@@ -1002,7 +979,6 @@ h1, h2, h3, p {
   .chamada__titulo { font-size: 36px; line-height: 48px; }
   .chamada__modelo { font-size: 26px; line-height: 34px; }
   .chamada__acoes { margin-top: 0; height: auto; padding-left: 24px; }
-
 
   .vitrine__titulo,
   .lancamentos__titulo { font-size: 36px; line-height: 44px; }
@@ -1018,4 +994,634 @@ h1, h2, h3, p {
   .contato__form { margin-top: 48px; }
   .faixa--contato { height: 240px; }
   .inicio { padding-bottom: 96px; }
+}
+
+/* 8. TELAS NOVAS (Garagem, Carro, Importação, Pedido, Venda, Painel) */
+:root {
+  --k-fundo: #0c0c0c;
+  --k-cartao: #1b1b1b;
+  --k-campo: #262626;
+  --k-borda: #333333;
+  --k-laranja: #e8761c;
+  --k-texto-fraco: #9a9a9a;
+  --k-verde: #6cc070;
+}
+
+.pagina-k {
+  background: var(--k-fundo);
+  font-family: 'Hanken Grotesk', Arial, sans-serif;
+}
+
+/* O detalhe do carro usa Inter no Figma. */
+.pagina-carro { font-family: 'Inter', Arial, sans-serif; }
+
+.k-pagina {
+  width: 1180px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+
+.k-titulo { font-size: 44px; line-height: 1.15; }
+.k-sub { margin-top: 12px; font-size: 19px; color: var(--k-texto-fraco); }
+
+.k-cartao {
+  padding: 28px;
+  border: 1px solid var(--k-borda);
+  background: var(--k-cartao);
+}
+
+.k-cartao__titulo { margin-bottom: 20px; font-size: 19px; font-weight: 600; }
+
+.k-grade {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 32px;
+}
+
+.k-campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.k-campos--um { grid-template-columns: 1fr; }
+.k-campo--largo { grid-column: 1 / -1; }
+
+.k-campo label,
+.k-rotulo {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--k-texto-fraco);
+}
+
+.k-campo input,
+.k-campo select,
+.k-campo textarea {
+  width: 100%;
+  height: 50px;
+  padding: 0 14px;
+  border: 1px solid var(--k-borda);
+  background: var(--k-campo);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.k-campo textarea {
+  height: 90px;
+  padding: 14px;
+  font-weight: 400;
+  resize: vertical;
+}
+
+.k-campo input::placeholder,
+.k-campo textarea::placeholder { color: #6b6b6b; font-weight: 400; }
+
+.k-campo input:focus,
+.k-campo select:focus,
+.k-campo textarea:focus,
+.k-botao:focus-visible,
+.k-aba:focus-visible,
+.k-opcao input:focus-visible + span,
+.k-envio:focus-within {
+  outline: 2px solid var(--k-laranja);
+  outline-offset: 2px;
+}
+
+.k-botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 26px;
+  border: 0;
+  background: var(--k-laranja);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  cursor: pointer;
+}
+
+.k-botao:hover { background: #f58a33; }
+.k-botao--escuro { background: var(--k-campo); color: #ffffff; }
+.k-botao--escuro:hover { background: #333333; }
+
+.k-aviso { margin-top: 14px; font-size: 15px; color: var(--k-texto-fraco); }
+.k-aviso:empty { display: none; }
+.k-aviso + .k-botao,
+.k-ajuda + .k-botao { margin-top: 20px; }
+.k-aviso--ok { color: var(--k-verde); }
+.k-aviso--erro { color: #ff8a8a; }
+.k-ajuda { display: block; margin-top: 6px; font-size: 13px; color: var(--k-texto-fraco); }
+.k-ajuda:empty { display: none; }
+
+.financiamento { margin: 0; padding: 16px 0 0; border: 0; border-top: 1px solid var(--k-borda); }
+.financiamento:not([hidden]) { display: grid; gap: 16px; }
+#resumo-financiamento { margin-top: 20px; }
+.k-grade--metades { grid-template-columns: 1fr 1fr; }
+
+.k-linhas { margin: 0; }
+
+.k-linhas > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--k-borda);
+}
+
+.k-linhas dt { color: var(--k-texto-fraco); }
+.k-linhas dd { margin: 0; font-weight: 600; text-align: right; }
+.k-linhas .k-total dt { color: #ffffff; font-weight: 600; }
+.k-linhas .k-total dd { color: var(--k-laranja); }
+.k-linhas dd.k-ok { color: var(--k-verde); font-weight: 400; }
+
+/* Rádio e caixa de seleção nativos, escondidos sob o visual de botão. */
+.k-opcoes { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; border: 0; }
+.k-opcao input { position: absolute; opacity: 0; }
+
+.k-opcao span,
+.k-aba {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--k-borda);
+  background: var(--k-cartao);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.k-opcao input:checked + span,
+.k-aba[aria-pressed="true"] {
+  border-color: var(--k-laranja);
+  background: var(--k-laranja);
+  color: #111111;
+}
+
+.k-etiqueta {
+  display: inline-block;
+  padding: 4px 8px;
+  background: var(--k-laranja);
+  font-size: 12px;
+  font-weight: 600;
+  color: #111111;
+}
+
+.k-etiqueta--escura { background: #111111; color: #ffffff; }
+
+/* Um <label> com o <input type="file"> escondido. */
+.k-envio {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  min-height: 90px;
+  padding: 16px;
+  border: 1px dashed #4a4a4a;
+  background: var(--k-campo);
+  text-align: center;
+  color: var(--k-texto-fraco);
+  cursor: pointer;
+}
+
+.k-envio b { color: var(--k-laranja); font-weight: 600; }
+.k-envio input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+/* 8.1 Garagem */
+.garagem-capa {
+  aspect-ratio: 1836 / 995;
+  max-height: 80vh;
+  width: 100%;
+  background: url('../assets/garagem-topo.jpg') center 80% / cover no-repeat;
+  border-bottom: 3px solid var(--k-laranja);
+}
+
+.destaque {
+  display: grid;
+  grid-template-columns: 1.55fr 1fr;
+  border: 1px solid var(--k-borda);
+  background: var(--k-cartao);
+}
+
+.destaque__foto { position: relative; min-height: 340px; }
+.destaque__foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.destaque__foto .k-etiqueta { position: absolute; top: 14px; left: 14px; }
+.destaque__info { padding: 32px 28px; }
+.destaque__nome { font-size: 30px; }
+.destaque__sub { margin: 8px 0 18px; font-size: 15px; color: var(--k-texto-fraco); }
+.destaque .k-linhas { margin-bottom: 26px; font-size: 16px; }
+
+.abas { display: flex; flex-wrap: wrap; gap: 10px; margin: 56px 0 24px; }
+
+.garagem-lista {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.garagem-cartao {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--k-borda);
+  background: var(--k-cartao);
+}
+
+.garagem-cartao[hidden] { display: none; }
+.garagem-cartao__foto { position: relative; }
+.garagem-cartao__foto img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.garagem-cartao__foto .k-etiqueta { position: absolute; top: 10px; left: 10px; }
+.garagem-cartao__corpo { flex: 1; padding: 18px; }
+.garagem-cartao__nome { font-size: 18px; font-weight: 600; }
+.garagem-cartao__sub { margin: 4px 0 14px; font-size: 14px; color: var(--k-texto-fraco); }
+
+.garagem-cartao__tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+
+.garagem-cartao__tags li {
+  padding: 4px 9px;
+  border: 1px solid var(--k-borda);
+  font-size: 13px;
+}
+
+.garagem-cartao__rodape {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-top: 1px solid var(--k-borda);
+  font-size: 14px;
+  color: var(--k-texto-fraco);
+}
+
+.garagem-cartao__rodape a { font-weight: 600; color: var(--k-laranja); }
+
+.chamada-garagem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-top: 40px;
+  padding: 28px;
+  border: 1px solid var(--k-borda);
+  border-left: 4px solid var(--k-laranja);
+  background: var(--k-cartao);
+}
+
+.chamada-garagem h2 { font-size: 24px; font-weight: 600; }
+.chamada-garagem p { margin-top: 6px; color: var(--k-texto-fraco); }
+
+/* 8.2 Detalhe do carro */
+.trilha { font-size: 17px; color: var(--cinza-nav); }
+.trilha a:hover { color: #ffffff; }
+
+.ficha {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 24px;
+}
+
+.galeria__principal {
+  width: 100%;
+  aspect-ratio: 506 / 364;
+  object-fit: cover;
+  border: 1px solid var(--borda-cartao);
+}
+
+.galeria__miniaturas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 14px; }
+
+.galeria__miniaturas button {
+  padding: 0;
+  border: 1px solid var(--borda-cartao);
+  background: none;
+  cursor: pointer;
+}
+
+.galeria__miniaturas img { width: 100%; aspect-ratio: 163 / 80; object-fit: cover; }
+
+.ficha__nome { font-size: 40px; line-height: 1.2; }
+.ficha__local { margin-top: 10px; font-size: 16px; color: var(--cinza-nav); }
+
+.ficha__specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 28px 0 0;
+  border: 1px solid var(--borda-cartao);
+  background: var(--k-cartao);
+}
+
+.ficha__specs div { padding: 16px 22px; border-bottom: 1px solid var(--borda-cartao); }
+.ficha__specs div:nth-child(odd) { border-right: 1px solid var(--borda-cartao); }
+.ficha__specs div:nth-last-child(-n + 2) { border-bottom: 0; }
+.ficha__specs dt { font-size: 14px; color: var(--cinza-nav); }
+.ficha__specs dd { margin: 4px 0 0; font-size: 18px; }
+
+.ficha__preco { margin-top: 26px; font-size: 40px; color: var(--k-laranja); }
+.ficha__obs { margin-top: 8px; font-size: 15px; color: var(--cinza-nav); }
+.ficha__acoes { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
+.ficha__acoes .k-botao--escuro { background: #434343; }
+
+.parecidos { margin-top: 80px; }
+.parecidos h2 { font-size: 20px; font-weight: 600; }
+.parecidos__lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 316px)); gap: 16px; margin-top: 24px; }
+
+.parecido {
+  display: block;
+  border: 1px solid var(--borda-cartao);
+  background: var(--k-campo);
+}
+
+.parecido img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.parecido p { padding: 14px 20px 0; }
+.parecido p + p { padding: 0 20px 16px; color: var(--k-laranja); }
+
+/* 8.3 Pedido */
+.etapas {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin: 40px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+  font-size: 14px;
+  color: var(--k-texto-fraco);
+}
+
+.etapas li { position: relative; padding-top: 30px; }
+
+.etapas li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(50% - 9px);
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: #2e2e2e;
+}
+
+.etapas li::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #2e2e2e;
+}
+
+.etapas li:last-child::after { display: none; }
+.etapas .feita { color: #ffffff; }
+.etapas .feita::before,
+.etapas .feita::after { background: var(--k-laranja); }
+.etapas [aria-current="step"]::before { border: 2px solid var(--k-laranja); }
+
+.linha-tempo { margin: 0; padding: 0; list-style: none; }
+.linha-tempo li { padding: 2px 0 2px 16px; border-left: 2px solid var(--k-borda); }
+.linha-tempo li + li { margin-top: 22px; }
+.linha-tempo time { display: block; margin-top: 4px; font-size: 13px; color: var(--k-texto-fraco); }
+
+.chegada__data { font-size: 46px; font-weight: 700; color: var(--k-laranja); }
+.chegada__porto { margin: 12px 0 14px; color: var(--k-texto-fraco); }
+.chegada .k-botao { margin-top: 24px; }
+
+/* 8.4 Venda seu carro */
+.venda { grid-template-columns: 1fr 0.8fr; gap: 48px; margin-top: 0; }
+.venda .k-sub { max-width: 560px; line-height: 1.5; }
+.venda form .k-botao { margin-top: 24px; }
+
+.vantagens { margin: 32px 0 0; padding: 0; list-style: none; }
+
+.vantagens li {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--k-borda);
+  font-weight: 600;
+}
+
+.vantagens li:last-child { border-bottom: 0; }
+.vantagens li::after { content: '\2713'; color: var(--k-laranja); }
+
+/* 8.5 Painel interno (Adicionar carro) */
+/* minmax(0, 1fr): conteúdo largo (como a tabela do estoque) rola por dentro em vez de alargar a página. */
+.painel { display: grid; grid-template-columns: 260px minmax(0, 1fr); min-height: 100vh; }
+
+.painel__menu {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 0;
+  border-right: 1px solid var(--k-borda);
+  background: #111111;
+}
+
+.painel__marca { padding: 0 24px; font-size: 18px; font-weight: 700; letter-spacing: 0.04em; color: var(--k-laranja); }
+.painel__area { margin: 6px 0 32px; padding: 0 24px; font-size: 14px; color: var(--k-texto-fraco); }
+.painel__menu nav { display: flex; flex-direction: column; padding-bottom: 24px; border-bottom: 1px solid var(--k-borda); }
+
+.painel__menu nav a,
+.painel__menu nav span {
+  padding: 14px 24px 14px 21px;
+  border-left: 3px solid transparent;
+  font-size: 16px;
+}
+
+.painel__menu nav a:hover { background: #1a1a1a; }
+.painel__menu nav span { color: #5c5c5c; }
+
+.painel__menu nav [aria-current="page"] {
+  border-left-color: var(--k-laranja);
+  background: #1e1915;
+  color: var(--k-laranja);
+}
+
+.painel__logado { padding: 24px; font-size: 14px; color: var(--k-texto-fraco); }
+.painel__logado b { display: block; margin-top: 4px; color: #ffffff; }
+.painel__logado a { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--k-laranja); }
+.painel__logado a:hover { text-decoration: underline; }
+
+.painel__conteudo { padding: 40px 40px 64px; }
+.painel__topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
+.painel__grade { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; margin-top: 32px; }
+.painel__form { display: flex; flex-direction: column; gap: 24px; }
+.painel__form .k-cartao { margin: 0; }
+/* Legenda flutuante para ficar dentro do cartão em vez de cortar a borda do fieldset. */
+.painel__form legend.passo { float: left; width: 100%; padding: 0; }
+.painel__form legend.passo + * { clear: both; }
+.k-opcoes legend { padding: 0; }
+.painel__lateral { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+.passo { display: flex; align-items: center; gap: 12px; }
+
+.passo > span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  background: var(--k-laranja);
+  font-size: 13px;
+  color: #111111;
+}
+
+.fotos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+
+.fotos > * {
+  display: grid;
+  place-items: center;
+  height: 64px;
+  overflow: hidden;
+  border: 1px solid var(--k-borda);
+  background: var(--k-campo);
+  font-size: 14px;
+  color: var(--k-texto-fraco);
+}
+
+.fotos > :first-child { border-color: var(--k-laranja); }
+.fotos img { width: 100%; height: 100%; object-fit: cover; }
+.fotos label { cursor: pointer; }
+
+.previa__foto {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  margin: 16px 0;
+  overflow: hidden;
+  background: var(--k-campo);
+  color: var(--k-texto-fraco);
+}
+
+.previa__foto img { width: 100%; height: 100%; object-fit: cover; }
+.previa__nome { padding-bottom: 14px; border-bottom: 1px solid var(--k-borda); font-weight: 600; }
+.previa__preco { margin-top: 14px; font-weight: 700; color: var(--k-laranja); }
+
+.checklist { margin: 0; padding: 0; list-style: none; font-size: 15px; color: var(--k-texto-fraco); }
+.checklist li + li { margin-top: 10px; }
+.checklist li::before { content: '\2022'; margin-right: 8px; color: var(--k-laranja); }
+.checklist .feito::before { content: '\2713'; color: var(--k-verde); }
+
+.painel__acoes {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 24px;
+  border-top: 1px solid var(--k-borda);
+}
+
+.painel__acoes .k-aviso { margin: 0 auto 0 0; }
+
+/* 8.6 Telas estreitas */
+@media (max-width: 900px) {
+  .k-titulo { font-size: 32px; }
+  .k-grade,
+  .k-grade--metades,
+  .venda,
+  .destaque,
+  .ficha,
+  .painel,
+  .painel__grade { grid-template-columns: minmax(0, 1fr); }
+  .garagem-lista { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .destaque__foto { min-height: 220px; }
+  .chamada-garagem { flex-direction: column; align-items: flex-start; }
+  .etapas { grid-template-columns: repeat(3, 1fr); row-gap: 24px; }
+  .etapas li:nth-child(3)::after { display: none; }
+  .painel__conteudo { padding: 32px 16px 48px; }
+  .painel__lateral { position: static; }
+}
+
+@media (max-width: 560px) {
+  .k-pagina { padding: 32px 16px 64px; }
+  .k-cartao { padding: 20px 16px; }
+  .k-campos,
+  .ficha__acoes { grid-template-columns: 1fr; }
+  .fotos { grid-template-columns: repeat(2, 1fr); }
+  .etapas { grid-template-columns: repeat(2, 1fr); }
+  .etapas li:nth-child(3)::after { display: block; }
+  .etapas li:nth-child(even)::after { display: none; }
+  .ficha__nome { font-size: 30px; }
+  .ficha__preco,
+  .chegada__data { font-size: 34px; }
+}
+
+/* 8.7 Loja */
+.loja-pagina { width: 1400px; }
+.loja { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 28px; align-items: start; }
+
+.loja__lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.produto { display: flex; flex-direction: column; border: 1px solid var(--k-borda); background: var(--k-cartao); }
+.produto[hidden] { display: none; }
+.produto__foto { position: relative; }
+.produto__foto img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: var(--k-campo); }
+.produto__foto .k-etiqueta { position: absolute; top: 10px; left: 10px; }
+.produto__corpo { flex: 1; padding: 16px 18px 0; }
+.produto__nome { font-size: 17px; font-weight: 600; line-height: 1.3; }
+.produto__descricao { margin-top: 6px; font-size: 14px; line-height: 1.4; color: var(--k-texto-fraco); }
+.produto__preco { margin-top: 12px; font-size: 20px; font-weight: 700; color: var(--k-laranja); }
+.produto__acoes { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 18px; }
+.produto__acoes .k-botao { min-height: 44px; font-size: 15px; }
+
+.carrinho { position: sticky; top: 24px; display: flex; flex-direction: column; }
+.carrinho .k-botao { margin-top: 12px; }
+.carrinho .k-linhas { margin-top: 8px; }
+.carrinho #carrinho-vazio { margin: 0 0 8px; }
+.carrinho__itens { margin: 0; padding: 0; list-style: none; }
+
+.carrinho__itens li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--k-borda);
+  font-size: 14px;
+}
+
+.carrinho__nome { font-weight: 600; }
+.carrinho__preco { text-align: right; white-space: nowrap; }
+.carrinho__qtd { display: flex; align-items: center; gap: 10px; color: var(--k-texto-fraco); }
+
+.carrinho__qtd button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--k-borda);
+  background: var(--k-campo);
+  font: inherit;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.carrinho__qtd button:disabled { opacity: 0.35; cursor: not-allowed; }
+.carrinho__qtd button:focus-visible { outline: 2px solid var(--k-laranja); outline-offset: 2px; }
+.carrinho .k-ajuda a,
+.creditos a { color: var(--k-laranja); }
+.creditos { margin-top: 48px; font-size: 12px; line-height: 1.6; color: #6b6b6b; }
+
+@media (max-width: 900px) {
+  .loja { grid-template-columns: minmax(0, 1fr); }
+  .carrinho { position: static; }
 }

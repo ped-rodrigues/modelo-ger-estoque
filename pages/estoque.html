@@ -21,8 +21,10 @@
     <p class="topo__pagina">Estoque</p>
     <nav class="navegacao" aria-label="Navegação principal">
       <a href="../index.html">Início</a>
-      <a href="../index.html#garagem">Garagem</a>
+      <a href="garagem.html">Garagem</a>
       <a href="estoque.html" aria-current="page">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
       <a href="../index.html#sobre">Sobre</a>
       <a href="contato.html">Contato</a>
     </nav>
@@ -33,7 +35,6 @@
   <main class="estoque" id="conteudo">
     <h1 class="apenas-leitor-tela">Estoque de veículos</h1>
 
-    <!-- Painel de filtro. Os filtros só valem ao clicar em "Ver Veículos". -->
     <form class="filtro" id="filtro" role="search">
       <div class="filtro__cabeca">
         <button type="button" class="filtro__fechar" id="filtro-fechar" aria-label="Fechar filtros" aria-expanded="true">
@@ -133,54 +134,64 @@
       <li class="carro" data-marca="TOYOTA">
         <img class="carro__foto" src="../assets/carros/supra.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Toyota Supra GR A90</h2><p class="carro__preco">R$ 580.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=supra">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="HONDA">
         <img class="carro__foto" src="../assets/carros/honda-nsx.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Honda NSX Type S</h2><p class="carro__preco">R$ 1.290.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=honda-nsx">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="NISSAN">
         <img class="carro__foto" src="../assets/carros/gtr-nismo.jpg" alt="">
-        <div class="carro__dados"><h2 class="carro__nome">Nissan GT-R Nismo R35</h2><p class="carro__preco">R$ 950.000,00</p></div>
+        <div class="carro__dados"><h2 class="carro__nome"><a href="carro.html">Nissan GT-R Nismo R35</a></h2><p class="carro__preco">R$ 950.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=gtr-nismo">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="LEXUS">
         <img class="carro__foto" src="../assets/carros/lexus-lc500.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Lexus LC 500 Convertible</h2><p class="carro__preco">R$ 1.200.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=lexus-lc500">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="MAZDA">
         <img class="carro__foto" src="../assets/carros/mazda-rx7.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Mazda RX-7 FD3S Spirit R</h2><p class="carro__preco">R$ 610.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=mazda-rx7">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="MITSUBISHI">
         <img class="carro__foto" src="../assets/carros/lancer-evo.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome carro__nome--justo">Mitsubishi Lancer Evolution X</h2><p class="carro__preco">R$ 580.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=lancer-evo">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="INFINITI">
         <img class="carro__foto" src="../assets/carros/infiniti-q60.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Infiniti Q60 Red Sport 400</h2><p class="carro__preco">R$ 390.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=infiniti-q60">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="NISSAN">
         <img class="carro__foto" src="../assets/carros/gtr-premium.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Nissan GT-R Premium R35</h2><p class="carro__preco">R$ 820.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=gtr-premium">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="TOYOTA">
         <img class="carro__foto" src="../assets/carros/gr86.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Toyota GR86 Premium</h2><p class="carro__preco">R$ 440.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=gr86">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="ACURA">
         <img class="carro__foto" src="../assets/carros/acura-nsx.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Acura NSX GT3 Evo</h2><p class="carro__preco">R$ 2.280.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=acura-nsx">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
       <li class="carro" data-marca="SUZUKI">
         <img class="carro__foto" src="../assets/carros/hayabusa.jpg" alt="">
         <div class="carro__dados"><h2 class="carro__nome">Suzuki Hayabusa</h2><p class="carro__preco">R$ 125.000,00</p></div>
+        <a class="carro__botao" href="importacao.html?veiculo=hayabusa">Simular importação <span aria-hidden="true">&gt;</span></a>
       </li>
     </ul>
     <p class="estoque__vazio" id="lista-vazia" hidden>Nenhum veículo encontrado com esses filtros.</p>
   </main>
 
   <script>
-    // Filtro do estoque: palavra-chave no nome + marca. Só aplica em "Ver Veículos";
-    // o número no botão mostra quantos veículos a seleção atual vai trazer.
+    // A lista só muda em "Ver Veículos"; o número no botão é uma prévia de quantos carros virão.
     const form = document.getElementById('filtro');
     const texto = form.elements.busca;
     const marcas = [...form.querySelectorAll('.marca')];
@@ -233,7 +244,6 @@
       document.getElementById('lista-vazia').hidden = visiveis > 0;
     });
 
-    // "Limpar": tira palavra-chave e marca e volta a mostrar todos.
     form.addEventListener('reset', (evento) => {
       evento.preventDefault();
       texto.value = '';

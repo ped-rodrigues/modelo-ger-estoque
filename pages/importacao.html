@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Simular importação</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Importação</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html" aria-current="page">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina" id="conteudo">
+    <h1 class="k-titulo">Simule o custo da sua importação</h1>
+    <p class="k-sub">Escolha o carro e veja o valor total até a sua porta.</p>
+
+    <div class="k-grade">
+      <form class="k-cartao" id="form-simulador">
+        <div class="k-campos k-campos--um">
+          <div class="k-campo">
+            <label for="sim-veiculo">Veículo</label>
+            <select id="sim-veiculo" name="veiculo"></select>
+          </div>
+          <div class="k-campo">
+            <label for="sim-origem">País de origem</label>
+            <select id="sim-origem" name="origem"></select>
+          </div>
+          <div class="k-campo">
+            <label for="sim-porto">Porto de destino</label>
+            <select id="sim-porto" name="porto">
+              <option>Porto de Suape, PE</option>
+              <option>Porto de Santos, SP</option>
+              <option>Porto de Paranaguá, PR</option>
+            </select>
+          </div>
+          <div class="k-campo">
+            <label for="sim-pagamento">Forma de pagamento</label>
+            <select id="sim-pagamento" name="pagamento">
+              <option>À vista</option>
+              <option>Financiado</option>
+            </select>
+          </div>
+          <!-- Só aparece (e só é enviado) quando a forma de pagamento é "Financiado". -->
+          <fieldset class="financiamento" id="campos-financiamento" hidden disabled>
+            <legend class="apenas-leitor-tela">Financiamento</legend>
+            <div class="k-campo">
+              <label for="sim-entrada">Entrada</label>
+              <input type="text" id="sim-entrada" name="entrada" class="dinheiro" inputmode="decimal" aria-describedby="ajuda-entrada">
+              <span class="k-ajuda" id="ajuda-entrada"></span>
+            </div>
+            <div class="k-campo">
+              <label for="sim-parcelas">Parcelas</label>
+              <select id="sim-parcelas" name="parcelas"></select>
+            </div>
+            <div class="k-campo">
+              <label for="sim-renda">Renda mensal</label>
+              <input type="text" id="sim-renda" name="renda" class="dinheiro" inputmode="decimal" placeholder="R$ 50.000,00">
+            </div>
+          </fieldset>
+          <div><button type="submit" class="k-botao">Calcular valor total</button></div>
+        </div>
+      </form>
+
+      <section class="k-cartao" aria-labelledby="titulo-resumo" aria-live="polite">
+        <h2 class="k-cartao__titulo" id="titulo-resumo">Resumo do valor</h2>
+        <dl class="k-linhas">
+          <div><dt>Veículo</dt><dd id="resumo-veiculo"></dd></div>
+          <div><dt>Frete marítimo</dt><dd id="resumo-frete"></dd></div>
+          <div><dt>Impostos de importação</dt><dd id="resumo-impostos"></dd></div>
+          <div><dt>Taxas e documentação</dt><dd id="resumo-taxas"></dd></div>
+          <div class="k-total"><dt>Total</dt><dd id="resumo-total"></dd></div>
+        </dl>
+        <dl class="k-linhas" id="resumo-financiamento" hidden>
+          <div><dt>Entrada</dt><dd id="fin-entrada"></dd></div>
+          <div><dt>Valor financiado</dt><dd id="fin-financiado"></dd></div>
+          <div><dt>Parcelas</dt><dd id="fin-parcelas"></dd></div>
+          <div class="k-total"><dt>Total pago com juros</dt><dd id="fin-total"></dd></div>
+        </dl>
+        <p class="k-aviso" id="fin-veredito"></p>
+        <p class="k-aviso">Prazo estimado: <span id="resumo-prazo"></span></p>
+        <p class="k-ajuda">Simulação com valores de exemplo (juros de 1,49% ao mês). Não é proposta de crédito.</p>
+        <a class="k-botao" href="contato.html">Solicitar proposta</a>
+      </section>
+    </div>
+  </main>
+
+  <script src="../js/importacao.js"></script>
+</body>
+</html>

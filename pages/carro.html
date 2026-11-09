@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Nissan GT-R Nismo R35</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Inter:wght@400;600&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k pagina-carro">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">carros</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html" aria-current="page">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina" id="conteudo">
+    <nav class="trilha" aria-label="Você está em">
+      <a href="estoque.html">Estoque</a> / <a href="estoque.html">Nissan</a> / <span aria-current="page">GT-R Nismo R35</span>
+    </nav>
+
+    <div class="ficha">
+      <div class="galeria">
+        <img class="galeria__principal" id="foto-principal" src="../assets/carros/gtr-nismo.jpg" alt="Nissan GT-R Nismo R35 branco">
+        <div class="galeria__miniaturas">
+          <button type="button"><img src="../assets/motor.jpg" alt="Motor V6 biturbo do GT-R Nismo"></button>
+          <button type="button"><img src="../assets/rodas.jpg" alt="Roda RAYS de alumínio forjado"></button>
+          <button type="button"><img src="../assets/freios.jpg" alt="Freio de cerâmica de carbono Brembo"></button>
+        </div>
+      </div>
+
+      <div>
+        <h1 class="ficha__nome">Nissan GT-R Nismo R35</h1>
+        <p class="ficha__local">Disponível em estoque · Yokohama, Japão</p>
+
+        <dl class="ficha__specs">
+          <div><dt>Ano</dt><dd>2020</dd></div>
+          <div><dt>Motor</dt><dd>3.8 V6 biturbo</dd></div>
+          <div><dt>Potência</dt><dd>600 cv</dd></div>
+          <div><dt>Câmbio</dt><dd>Automático 6 marchas</dd></div>
+          <div><dt>Quilometragem</dt><dd>18.400 km</dd></div>
+          <div><dt>Tração</dt><dd>Integral</dd></div>
+        </dl>
+
+        <p class="ficha__preco">R$ 950.000,00</p>
+        <p class="ficha__obs">Valor do carro, sem frete e impostos de importação</p>
+
+        <div class="ficha__acoes">
+          <a class="k-botao" href="importacao.html?veiculo=gtr-nismo">Simular importação</a>
+          <a class="k-botao k-botao--escuro" href="contato.html">Falar com consultor</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="parecidos">
+      <h2>Você também pode gostar</h2>
+      <div class="parecidos__lista">
+        <a class="parecido" href="estoque.html">
+          <img src="../assets/carros/gtr-premium.jpg" alt="">
+          <p>Nissan GT-R Premium R35</p>
+          <p>R$ 820.000,00</p>
+        </a>
+        <a class="parecido" href="estoque.html">
+          <img src="../assets/carros/lancer-evo.jpg" alt="">
+          <p>Mitsubishi Lancer Evolution X</p>
+          <p>R$ 580.000,00</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // A miniatura clicada troca de lugar com a foto principal.
+    const principal = document.getElementById('foto-principal');
+    document.querySelectorAll('.galeria__miniaturas button').forEach((botao) => {
+      botao.addEventListener('click', () => {
+        const mini = botao.querySelector('img');
+        [principal.src, mini.src] = [mini.src, principal.src];
+        [principal.alt, mini.alt] = [mini.alt, principal.alt];
+      });
+    });
+  </script>
+</body>
+</html>

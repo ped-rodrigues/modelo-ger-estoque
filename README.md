@@ -75,13 +75,20 @@ gerenciador-estoque/
 ├── pages/
 │   ├── estoque.html        # Vitrine de veículos com filtro (design Kaisen)
 │   ├── contato.html        # Formulário "Fale conosco" (design Kaisen)
+│   ├── garagem.html        # Carros personalizados e vendidos, com abas (design Kaisen)
+│   ├── carro.html          # Detalhe do Nissan GT-R Nismo R35 (design Kaisen)
+│   ├── importacao.html     # Simulador do custo de importação e financiamento
+│   ├── loja.html           # Loja: veículos do simulador e acessórios, com carrinho (demonstração)
+│   ├── pedido.html         # Acompanhamento do pedido #2041 (design Kaisen)
+│   ├── venda.html          # "Venda seu carro para nós" (design Kaisen)
+│   ├── painel.html         # Painel interno: adicionar carro (demonstração, nada é gravado)
 │   ├── login.html          # Acesso de funcionários (demonstração, sem autenticação real)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
 │   └── testes.html         # Execução dos casos de teste automatizados
 ├── css/
 │   ├── style.css           # Base: variáveis, layout, componentes
-│   ├── site.css            # Site público: Início, Estoque e Contato
+│   ├── site.css            # Site público e painel interno (design Kaisen)
 │   ├── login.css
 │   ├── produtos.css
 │   └── historico.css
@@ -91,11 +98,15 @@ gerenciador-estoque/
 │   ├── estoque.js          # Regras de negócio e operações do estoque
 │   ├── ui.js               # Funções auxiliares de tela compartilhadas
 │   ├── login.js            # Tela de acesso
+│   ├── importacao.js       # Simulador de importação e financiamento (CT15 e CT16)
+│   ├── painel.js           # Painel interno: fotos, prévia e checklist
+│   ├── loja.js             # Loja e carrinho (CT17)
 │   ├── dashboard.js        # Tela do dashboard
 │   ├── produtos.js         # Tela de produtos
 │   ├── historico.js        # Tela de histórico
 │   └── testes.js           # Casos de teste CT01 a CT14
 ├── docs/
+│   ├── explicacao-do-codigo.md # Como o código funciona, arquivo por arquivo
 │   ├── requisitos.md       # RF, RNF, regras de negócio, casos de uso, modelo de dados
 │   ├── casos-de-teste.md   # Roteiro dos casos de teste
 │   ├── diario-do-projeto.md# Registro das decisões e do andamento
@@ -103,6 +114,9 @@ gerenciador-estoque/
 ├── assets/
 └── README.md
 ```
+
+A explicação completa do código, arquivo por arquivo, está em
+[`docs/explicacao-do-codigo.md`](docs/explicacao-do-codigo.md).
 
 ### Arquitetura em camadas
 

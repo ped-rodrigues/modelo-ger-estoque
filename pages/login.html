@@ -15,7 +15,6 @@
   <main class="login" id="conteudo">
     <section class="login__cartao" aria-labelledby="titulo-login">
 
-      <!-- Lado de boas-vindas. No celular só a marca aparece. -->
       <div class="login__boasvindas">
         <a class="login__marca" href="../index.html" aria-label="Kaisen — página inicial">
           <picture><source media="(max-width: 1060px)" srcset="../assets/logo-login-mobile.png"><img src="../assets/logo-login.png" alt=""></picture>
@@ -29,7 +28,6 @@
       </div>
 
       <div class="login__painel">
-        <!-- Mensagem geral do formulário (RNF07). -->
         <div id="mensagem-login" role="status" aria-live="polite" hidden></div>
 
         <form id="form-login" novalidate>
@@ -72,8 +70,7 @@
     </section>
   </main>
 
-  <!-- A ordem importa: as camadas de baixo primeiro. Esta tela não usa
-       Storage nem Estoque: ela não lê nem grava nada do estoque. -->
+  <!-- A ordem importa: quem é usado vem antes de quem usa. -->
   <script src="../js/ui.js"></script>
   <script src="../js/login.js"></script>
 </body>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Pedido #2041</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Pedido</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina" id="conteudo">
+    <h1 class="k-titulo">Pedido #2041</h1>
+    <p class="k-sub">Nissan GT-R Nismo R35 · Em transporte marítimo</p>
+
+    <ol class="etapas" aria-label="Etapas do pedido">
+      <li class="feita">Compra</li>
+      <li class="feita">Documentação</li>
+      <li class="feita">Embarque</li>
+      <li aria-current="step">Em trânsito</li>
+      <li>Desembaraço</li>
+      <li>Entrega</li>
+    </ol>
+
+    <div class="k-grade k-grade--metades">
+      <section class="k-cartao" aria-labelledby="titulo-historico">
+        <h2 class="k-cartao__titulo" id="titulo-historico">Histórico</h2>
+        <ol class="linha-tempo" reversed>
+          <li>Navio em rota para o Brasil<time datetime="2026-11-09T08:30">Hoje, 08:30</time></li>
+          <li>Carro embarcado em Yokohama<time datetime="2026-10-28">28/10/2026</time></li>
+          <li>Documentos aprovados<time datetime="2026-10-20">20/10/2026</time></li>
+          <li>Compra confirmada<time datetime="2026-10-12">12/10/2026</time></li>
+        </ol>
+      </section>
+
+      <section class="k-cartao chegada" aria-labelledby="titulo-chegada">
+        <h2 class="k-cartao__titulo" id="titulo-chegada">Chegada prevista</h2>
+        <p class="chegada__data"><time datetime="2026-12-12">12/12/2026</time></p>
+        <p class="chegada__porto">Porto de Suape, PE</p>
+        <dl class="k-linhas">
+          <div><dt>Pagamento</dt><dd class="k-ok">Confirmado</dd></div>
+          <div><dt>Documentos</dt><dd class="k-ok">Aprovados</dd></div>
+        </dl>
+        <button type="button" class="k-botao k-botao--escuro" id="baixar-contrato">Baixar contrato</button>
+        <p class="k-aviso" id="aviso-contrato" role="status"></p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // Sem servidor não há contrato para baixar.
+    document.getElementById('baixar-contrato').addEventListener('click', () => {
+      document.getElementById('aviso-contrato').textContent = 'Página de demonstração: o contrato não está disponível.';
+    });
+  </script>
+</body>
+</html>

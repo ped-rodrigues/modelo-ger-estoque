@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Garagem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Garagem</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html" aria-current="page">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <div class="garagem-capa" role="img" aria-label="Dois sedãs brancos cobertos de neve, frente a frente na rua à noite"></div>
+
+  <main class="k-pagina" id="conteudo">
+    <h1 class="apenas-leitor-tela">Garagem: carros personalizados e vendidos pela Kaisen</h1>
+
+    <article class="destaque">
+      <div class="destaque__foto">
+        <img src="../assets/home-hero.jpg" alt="Nissan Skyline GT-R R34 preto fosco visto de trás">
+        <span class="k-etiqueta">Destaque do mês</span>
+      </div>
+      <div class="destaque__info">
+        <h2 class="destaque__nome">Nissan Skyline GT-R R34</h2>
+        <p class="destaque__sub">Projeto da casa · Personalização completa</p>
+        <dl class="k-linhas">
+          <div><dt>Rodas</dt><dd>Work Meister 18”</dd></div>
+          <div><dt>Suspensão</dt><dd>Coilover regulável</dd></div>
+          <div><dt>Motor</dt><dd>Turbo maior · 620 cv</dd></div>
+          <div><dt>Pintura</dt><dd>Preto fosco com detalhes laranja</dd></div>
+        </dl>
+        <a class="k-botao" href="carro.html">Ver todos os detalhes</a>
+      </div>
+    </article>
+
+    <div class="abas" role="group" aria-label="Filtrar a garagem">
+      <button type="button" class="k-aba" data-filtro="" aria-pressed="true">Todos</button>
+      <button type="button" class="k-aba" data-filtro="personalizado" aria-pressed="false">Personalizados</button>
+      <button type="button" class="k-aba" data-filtro="loja" aria-pressed="false">Comprados na loja</button>
+      <button type="button" class="k-aba" data-filtro="moto" aria-pressed="false">Motos</button>
+    </div>
+
+    <ul class="garagem-lista" id="garagem-lista" aria-live="polite">
+      <li class="garagem-cartao" data-tipo="personalizado">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/supra.jpg" alt="">
+          <span class="k-etiqueta">Personalizado</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Toyota Supra A80</h2>
+          <p class="garagem-cartao__sub">Projeto da casa</p>
+          <ul class="garagem-cartao__tags"><li>Turbo</li><li>Escape</li><li>Rodas 18”</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 1997</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+      <li class="garagem-cartao" data-tipo="loja">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/honda-nsx.jpg" alt="">
+          <span class="k-etiqueta k-etiqueta--escura">Comprado na loja</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Honda NSX Type S</h2>
+          <p class="garagem-cartao__sub">Cliente: Rafael M. · João Pessoa</p>
+          <ul class="garagem-cartao__tags"><li>Original</li><li>Película</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 2022</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+      <li class="garagem-cartao" data-tipo="personalizado">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/mazda-rx7.jpg" alt="">
+          <span class="k-etiqueta">Personalizado</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Mazda RX-7 FD3S</h2>
+          <p class="garagem-cartao__sub">Projeto da casa</p>
+          <ul class="garagem-cartao__tags"><li>Body kit</li><li>Suspensão</li><li>Freios</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 1999</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+      <li class="garagem-cartao" data-tipo="loja">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/gtr-nismo.jpg" alt="">
+          <span class="k-etiqueta k-etiqueta--escura">Comprado na loja</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Nissan GT-R Nismo R35</h2>
+          <p class="garagem-cartao__sub">Cliente: Camila A. · Recife</p>
+          <ul class="garagem-cartao__tags"><li>Escape</li><li>Rodas forjadas</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 2020</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+      <li class="garagem-cartao" data-tipo="personalizado">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/lancer-evo.jpg" alt="">
+          <span class="k-etiqueta">Personalizado</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Mitsubishi Lancer Evo IX</h2>
+          <p class="garagem-cartao__sub">Projeto da casa</p>
+          <ul class="garagem-cartao__tags"><li>ECU</li><li>Intercooler</li><li>Aerofólio</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 2007</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+      <li class="garagem-cartao" data-tipo="loja moto">
+        <div class="garagem-cartao__foto">
+          <img src="../assets/carros/hayabusa.jpg" alt="">
+          <span class="k-etiqueta k-etiqueta--escura">Comprado na loja</span>
+        </div>
+        <div class="garagem-cartao__corpo">
+          <h2 class="garagem-cartao__nome">Suzuki Hayabusa</h2>
+          <p class="garagem-cartao__sub">Cliente: Pedro L. · Natal</p>
+          <ul class="garagem-cartao__tags"><li>Original</li></ul>
+        </div>
+        <div class="garagem-cartao__rodape"><span>Ano 2021</span><a href="carro.html">Ver detalhes</a></div>
+      </li>
+    </ul>
+
+    <section class="chamada-garagem">
+      <div>
+        <h2>Quer ver o seu carro aqui?</h2>
+        <p>Compre com a gente ou personalize o seu e entre para a garagem.</p>
+      </div>
+      <a class="k-botao" href="venda.html">Enviar meu carro</a>
+    </section>
+  </main>
+
+  <script>
+    // Cada cartão lista seus tipos em data-tipo, separados por espaço ("loja moto").
+    const abas = document.querySelectorAll('.k-aba');
+    abas.forEach((aba) => aba.addEventListener('click', () => {
+      abas.forEach((a) => a.setAttribute('aria-pressed', String(a === aba)));
+      document.querySelectorAll('.garagem-cartao').forEach((cartao) => {
+        cartao.hidden = aba.dataset.filtro !== '' && !cartao.dataset.tipo.split(' ').includes(aba.dataset.filtro);
+      });
+    }));
+  </script>
+</body>
+</html>

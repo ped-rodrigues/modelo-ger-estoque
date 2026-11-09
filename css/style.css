@@ -1,26 +1,6 @@
-/* ==========================================================================
-   style.css — ESTILOS BASE E COMPARTILHADOS
-   --------------------------------------------------------------------------
-   Contém o que se repete em todas as telas: variáveis de cor, reset,
-   cabeçalho, navegação, botões, formulários, tabelas, avisos e rodapé.
-   Estilos específicos de cada tela ficam em login.css, produtos.css e
-   historico.css.
+/* Usado só por pages/testes.html: é o estilo da primeira versão do sistema. */
 
-   Identidade visual: automobilismo. O sistema atende uma autopeça, então a
-   linguagem visual é a de box de corrida — asfalto escuro, vermelho de
-   competição, bandeira quadriculada e títulos inclinados, como as inscrições
-   aplicadas na lataria de um carro de prova.
-
-   As cores de estado (verde, âmbar, vermelho) NÃO fazem parte do tema: elas
-   comunicam a situação do estoque e continuam com contraste alto sobre fundo
-   claro (RNF05).
-
-   Atende: RNF03 (responsiva), RNF05 (contraste), RNF10 (consistência visual).
-   ========================================================================== */
-
-/* --------------------------------------------------------------------------
-   1. Variáveis (tokens) — mudar aqui muda o sistema inteiro
-   -------------------------------------------------------------------------- */
+/* 1. Variáveis */
 :root {
   --cor-fundo: #eef1f5;
   --cor-superficie: #ffffff;
@@ -28,17 +8,12 @@
   --cor-texto: #151a20;
   --cor-texto-suave: #55636f;
 
-  /* Vermelho de corrida: cor de ação do sistema. Contraste acima de 6:1 com o
-     texto branco dos botões, folgadamente acima do mínimo exigido (RNF05). */
   --cor-primaria: #c1121f;
   --cor-primaria-escura: #8f0d17;
 
-  /* Asfalto: fundo do cabeçalho, do rodapé e do cabeçalho das tabelas. */
   --cor-asfalto: #14181d;
   --cor-asfalto-claro: #262e37;
 
-  /* Cores de estado. Nunca são usadas sozinhas: sempre acompanham um texto
-     ou um símbolo, para não comunicar apenas por cor (acessibilidade). */
   --cor-sucesso: #1c6b3c;
   --cor-sucesso-fundo: #e4f4ea;
   --cor-alerta: #8a5a00;
@@ -51,17 +26,14 @@
   --espaco: 16px;
 }
 
-/* --------------------------------------------------------------------------
-   2. Reset leve e tipografia
-   -------------------------------------------------------------------------- */
+/* 2. Reset leve e tipografia */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  /* Coluna que ocupa a tela toda: com pouco conteúdo, o rodapé escuro fica
-     colado embaixo em vez de flutuar no meio da página. */
+  /* Rodapé colado embaixo mesmo com pouco conteúdo. */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -70,8 +42,7 @@ body {
   line-height: 1.5;
   color: var(--cor-texto);
   background-color: var(--cor-fundo);
-  /* Faixas diagonais bem suaves, na direção das listras de capô. Ficam quase
-     invisíveis para não competir com o conteúdo da tabela. */
+
   background-image: repeating-linear-gradient(
     115deg,
     rgba(20, 24, 29, 0.025) 0 2px,
@@ -87,9 +58,6 @@ h1, h2, h3 {
 h1 { font-size: 1.5rem; }
 h2 { font-size: 1.2rem; }
 
-/* O título da página leva a inclinação e o caixa-alta das inscrições de carro
-   de corrida, com um traço vermelho embaixo fazendo as vezes de faixa de
-   lataria. A borda acompanha o texto, e não a largura da página. */
 h1 {
   display: inline-block;
   font-style: italic;
@@ -99,13 +67,11 @@ h1 {
   border-bottom: 3px solid var(--cor-primaria);
 }
 
-/* Foco sempre visível: exigido para navegação por teclado (RNF04). */
 :focus-visible {
   outline: 3px solid var(--cor-primaria);
   outline-offset: 2px;
 }
 
-/* Link para pular direto ao conteúdo, útil para leitores de tela. */
 .pular-para-conteudo {
   position: absolute;
   left: -9999px;
@@ -120,17 +86,7 @@ h1 {
   top: 8px;
 }
 
-/* --------------------------------------------------------------------------
-   3. Faixa quadriculada reutilizável
-   --------------------------------------------------------------------------
-   Bandeira de chegada desenhada apenas com gradiente, sem imagem e sem
-   requisição de rede (RNF09). O `repeating-conic-gradient` divide cada
-   quadrado de 24px em quatro de 12px, alternando preto e branco; a altura de
-   12px deixa exatamente uma fileira visível.
-
-   Aplique a classe em um elemento vazio; ela é decorativa, nenhuma informação
-   depende dela.
-   -------------------------------------------------------------------------- */
+/* 3. Faixa quadriculada: cada quadrado de 24px do conic-gradient vira quatro de 12px, preto e branco. */
 .faixa-quadriculada {
   height: 12px;
   background-color: #101418;
@@ -138,15 +94,13 @@ h1 {
   background-size: 24px 24px;
 }
 
-/* --------------------------------------------------------------------------
-   4. Cabeçalho e navegação
-   -------------------------------------------------------------------------- */
+/* 4. Cabeçalho e navegação */
 .cabecalho {
   background-color: var(--cor-asfalto);
   background-image: linear-gradient(180deg, var(--cor-asfalto-claro), var(--cor-asfalto));
   color: #ffffff;
   padding: 12px var(--espaco);
-  /* Listra vermelha lateral, como a que corre pela lateral do carro. */
+
   border-left: 6px solid var(--cor-primaria);
 }
 
@@ -168,7 +122,6 @@ h1 {
   letter-spacing: 0.06em;
 }
 
-/* Etiqueta com o segmento atendido pelo sistema, ao lado do nome do projeto. */
 .cabecalho__area {
   display: inline-block;
   margin-left: 8px;
@@ -205,22 +158,18 @@ h1 {
   background-color: var(--cor-primaria-escura);
 }
 
-/* A página atual é marcada por cor E por sublinhado, não só por cor. */
 .navegacao a[aria-current="page"] {
   background-color: var(--cor-primaria);
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-/* Link de saída: contornado, para não ser confundido com as telas do sistema. */
 .navegacao__sair {
   border: 1px solid rgba(255, 255, 255, 0.35);
   margin-left: 8px;
 }
 
-/* --------------------------------------------------------------------------
-   5. Estrutura da página
-   -------------------------------------------------------------------------- */
+/* 5. Estrutura da página */
 .conteudo {
   flex: 1; /* empurra o rodapé para o fim da tela */
   width: 100%;
@@ -242,7 +191,6 @@ h1 {
   padding: var(--espaco);
 }
 
-/* Linha de apoio logo abaixo do título da página. */
 .subtitulo-pagina {
   margin: 8px 0 24px;
   color: var(--cor-texto-suave);
@@ -257,9 +205,7 @@ h1 {
   font-size: 0.875rem;
 }
 
-/* --------------------------------------------------------------------------
-   6. Botões
-   -------------------------------------------------------------------------- */
+/* 6. Botões */
 .botao {
   display: inline-block;
   font: inherit;
@@ -280,7 +226,6 @@ h1 {
   background-color: var(--cor-primaria-escura);
 }
 
-/* Afunda 1px ao ser pressionado: confirma o clique sem depender de cor. */
 .botao:active {
   transform: translateY(1px);
 }
@@ -308,7 +253,6 @@ h1 {
   font-size: 0.8rem;
 }
 
-/* Ocupa a largura toda do contêiner. Usado no botão de entrar do login. */
 .botao--largo {
   display: block;
   width: 100%;
@@ -316,9 +260,7 @@ h1 {
   text-align: center;
 }
 
-/* --------------------------------------------------------------------------
-   7. Formulários
-   -------------------------------------------------------------------------- */
+/* 7. Formulários */
 .campo {
   margin-bottom: 14px;
 }
@@ -357,7 +299,6 @@ h1 {
   margin-top: 4px;
 }
 
-/* Mensagem de erro do campo: texto explícito, nunca apenas a borda vermelha. */
 .campo__erro {
   display: block;
   font-size: 0.875rem;
@@ -372,7 +313,6 @@ h1 {
   border-width: 2px;
 }
 
-/* Caixa de marcação com o rótulo ao lado, e não acima. */
 .campo--marcacao {
   display: flex;
   align-items: center;
@@ -389,11 +329,9 @@ h1 {
   font-weight: 400;
 }
 
-/* --------------------------------------------------------------------------
-   8. Tabelas
-   -------------------------------------------------------------------------- */
+/* 8. Tabelas */
 .tabela-rolagem {
-  overflow-x: auto; /* em telas pequenas a tabela rola sozinha (RNF03) */
+  overflow-x: auto; /* em telas pequenas a tabela rola sozinha */
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio);
   background-color: var(--cor-superficie);
@@ -419,7 +357,6 @@ h1 {
   border-bottom: 1px solid var(--cor-borda);
 }
 
-/* Cabeçalho da tabela em asfalto, no mesmo tom da barra de navegação. */
 .tabela th {
   background-color: var(--cor-asfalto);
   color: #ffffff;
@@ -429,7 +366,6 @@ h1 {
   border-bottom: 3px solid var(--cor-primaria);
 }
 
-/* Linhas alternadas ajudam a seguir a linha certa numa tabela larga. */
 .tabela tbody tr:nth-child(even) {
   background-color: #f6f8fa;
 }
@@ -443,9 +379,7 @@ h1 {
   font-variant-numeric: tabular-nums;
 }
 
-/* --------------------------------------------------------------------------
-   9. Etiquetas de situação (status)
-   -------------------------------------------------------------------------- */
+/* 9. Etiquetas de situação (status) */
 .etiqueta {
   display: inline-block;
   padding: 2px 10px;
@@ -473,9 +407,7 @@ h1 {
   border-color: var(--cor-erro);
 }
 
-/* --------------------------------------------------------------------------
-   10. Mensagens e estados vazios
-   -------------------------------------------------------------------------- */
+/* 10. Mensagens e estados vazios */
 .aviso {
   padding: 12px 14px;
   border-radius: var(--raio);
@@ -502,7 +434,6 @@ h1 {
   padding: 32px 16px;
 }
 
-/* Esconde visualmente, mas mantém o texto para leitores de tela. */
 .apenas-leitor-tela {
   position: absolute;
   width: 1px;
@@ -512,9 +443,7 @@ h1 {
   white-space: nowrap;
 }
 
-/* --------------------------------------------------------------------------
-   11. Responsividade
-   -------------------------------------------------------------------------- */
+/* 11. Responsividade */
 @media (max-width: 640px) {
   .cabecalho__conteudo {
     flex-direction: column;
@@ -535,8 +464,6 @@ h1 {
   }
 }
 
-/* Quem pede menos animação no sistema operacional não recebe o afundar do
-   botão nem qualquer outro movimento. */
 @media (prefers-reduced-motion: reduce) {
   .botao:active {
     transform: none;

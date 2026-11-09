@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Venda seu carro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Akatab&family=Cal+Sans&family=Geostar+Fill&family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Venda</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="../index.html#sobre">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina k-grade venda" id="conteudo">
+    <div>
+      <h1 class="k-titulo">Venda seu carro para nós</h1>
+      <p class="k-sub">Compramos carros orientais e fazemos uma avaliação gratuita em até 24 horas.</p>
+      <ul class="vantagens">
+        <li>Avaliação gratuita e sem compromisso</li>
+        <li>Pagamento rápido</li>
+        <li>Cuidamos de toda a burocracia</li>
+      </ul>
+    </div>
+
+    <form class="k-cartao" id="form-venda">
+      <h2 class="k-cartao__titulo">Dados do veículo</h2>
+      <div class="k-campos k-campos--um">
+        <div class="k-campo">
+          <label for="venda-modelo">Marca e modelo</label>
+          <input type="text" id="venda-modelo" name="modelo" placeholder="Toyota Supra" required>
+        </div>
+        <div class="k-campo">
+          <label for="venda-ano">Ano</label>
+          <input type="number" id="venda-ano" name="ano" placeholder="2021" min="1950" max="2027" required>
+        </div>
+        <div class="k-campo">
+          <label for="venda-km">Quilometragem</label>
+          <input type="text" id="venda-km" name="km" inputmode="numeric" placeholder="22.000 km" required>
+        </div>
+        <div class="k-campo">
+          <span class="k-rotulo" id="rotulo-fotos">Fotos do carro</span>
+          <label class="k-envio" aria-labelledby="rotulo-fotos texto-fotos">
+            <input type="file" name="fotos" accept="image/png, image/jpeg" multiple>
+            <span id="texto-fotos">Arraste ou selecione as fotos</span>
+          </label>
+        </div>
+        <div class="k-campo">
+          <label for="venda-whatsapp">WhatsApp</label>
+          <input type="tel" id="venda-whatsapp" name="whatsapp" placeholder="(83) 90000-0000" autocomplete="tel" required>
+        </div>
+      </div>
+      <button type="submit" class="k-botao">Pedir avaliação</button>
+      <p class="k-aviso" id="aviso-venda" role="status"></p>
+    </form>
+  </main>
+
+  <script>
+    const formVenda = document.getElementById('form-venda');
+
+    formVenda.elements.fotos.addEventListener('change', (evento) => {
+      const total = evento.target.files.length;
+      document.getElementById('texto-fotos').textContent =
+        total ? total + (total === 1 ? ' foto selecionada' : ' fotos selecionadas') : 'Arraste ou selecione as fotos';
+    });
+
+    // Sem servidor: valida pelo navegador e avisa que nada foi enviado.
+    formVenda.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      document.getElementById('aviso-venda').textContent =
+        'Formulário de demonstração: o pedido de avaliação não foi enviado.';
+    });
+  </script>
+</body>
+</html>
