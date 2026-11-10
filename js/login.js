@@ -1,7 +1,8 @@
 const TelaLogin = {
   el: {},
 
-  DESTINO: 'produtos.html',
+  DESTINO_ADM: 'dashboard.html',
+  DESTINO_OPR: 'produtos.html',
 
   // Tempo para a mensagem de sucesso ser vista e anunciada antes de trocar de página.
   ESPERA_ATE_ENTRAR: 800,
@@ -70,13 +71,23 @@ const TelaLogin = {
     }
 
     UI.limparErros(formulario);
-    UI.mostrarMensagem(this.el.mensagem, 'Acesso liberado. Abrindo o estoque...', 'sucesso');
+
+    // Administrador abre no Dashboard; Funcionário vai direto ao estoque (seção 1.8).
+    const perfil = formulario.elements.perfil.value;
+    Storage.salvarPerfil(perfil);
+    const adm = Estoque.ehAdministrador(perfil);
+
+    UI.mostrarMensagem(
+      this.el.mensagem,
+      adm ? 'Acesso liberado. Abrindo o painel geral...' : 'Acesso liberado. Abrindo o estoque...',
+      'sucesso'
+    );
 
     // Evita um segundo envio enquanto a próxima página não carrega.
     formulario.querySelector('button[type="submit"]').disabled = true;
 
     window.setTimeout(() => {
-      window.location.href = this.DESTINO;
+      window.location.href = adm ? this.DESTINO_ADM : this.DESTINO_OPR;
     }, this.ESPERA_ATE_ENTRAR);
   }
 };

@@ -11,10 +11,16 @@ const Testes = {
     }
   },
 
+  sequencia: 0,
+
+  // Código único a cada chamada (RN10) e fabricante preenchido: os dois são obrigatórios no cadastro.
   criarProduto(dados) {
+    this.sequencia += 1;
     const padrao = {
+      codigo: 'TST-' + this.sequencia,
+      fabricante: 'Bosch',
       nome: 'Mouse Logitech',
-      categoria: 'Periféricos',
+      categoria: 'Elétrica',
       preco: 89.9,
       quantidade: 15,
       estoqueMinimo: 5
@@ -30,8 +36,10 @@ const Testes = {
       descricao: 'Cadastro válido de produto (RF01, RF02, D2)',
       executar() {
         const resultado = Estoque.cadastrarProduto({
+          codigo: 'FR-4213',
+          fabricante: 'Fras-le',
           nome: 'Monitor LG',
-          categoria: 'Eletrônicos',
+          categoria: 'Acessórios',
           preco: 899.9,
           quantidade: 10,
           estoqueMinimo: 3
@@ -55,7 +63,7 @@ const Testes = {
       executar() {
         const resultado = Estoque.cadastrarProduto({
           nome: '   ',
-          categoria: 'Eletrônicos',
+          categoria: 'Acessórios',
           preco: 10,
           quantidade: 1,
           estoqueMinimo: 1
@@ -74,8 +82,10 @@ const Testes = {
         const produto = Testes.criarProduto({ nome: 'Teclado', quantidade: 8 });
 
         const resultado = Estoque.editarProduto(produto.id, {
+          codigo: produto.codigo,
+          fabricante: 'Bosch',
           nome: 'Teclado Mecânico',
-          categoria: 'Periféricos',
+          categoria: 'Elétrica',
           preco: 199.9,
           estoqueMinimo: 4
         });
@@ -191,9 +201,9 @@ const Testes = {
       codigo: 'CT10',
       descricao: 'Pesquisa de produto pelo nome (RF04)',
       executar() {
-        Testes.criarProduto({ nome: 'Monitor LG', categoria: 'Eletrônicos' });
-        Testes.criarProduto({ nome: 'Mouse Logitech', categoria: 'Periféricos' });
-        Testes.criarProduto({ nome: 'Cadeira Giratória', categoria: 'Escritório' });
+        Testes.criarProduto({ nome: 'Monitor LG', categoria: 'Acessórios' });
+        Testes.criarProduto({ nome: 'Mouse Logitech', categoria: 'Elétrica' });
+        Testes.criarProduto({ nome: 'Cadeira Giratória', categoria: 'Outros' });
 
         const produtos = Estoque.listarProdutos();
 
@@ -215,19 +225,19 @@ const Testes = {
       codigo: 'CT11',
       descricao: 'Filtro por categoria e por situação do estoque (RF05)',
       executar() {
-        Testes.criarProduto({ nome: 'Monitor LG', categoria: 'Eletrônicos', quantidade: 10, estoqueMinimo: 2 });
-        Testes.criarProduto({ nome: 'Mouse Logitech', categoria: 'Periféricos', quantidade: 2, estoqueMinimo: 5 });
-        Testes.criarProduto({ nome: 'Teclado', categoria: 'Periféricos', quantidade: 20, estoqueMinimo: 5 });
+        Testes.criarProduto({ nome: 'Monitor LG', categoria: 'Acessórios', quantidade: 10, estoqueMinimo: 2 });
+        Testes.criarProduto({ nome: 'Mouse Logitech', categoria: 'Elétrica', quantidade: 2, estoqueMinimo: 5 });
+        Testes.criarProduto({ nome: 'Teclado', categoria: 'Elétrica', quantidade: 20, estoqueMinimo: 5 });
 
         const produtos = Estoque.listarProdutos();
 
-        const perifericos = Estoque.filtrarProdutos(produtos, { categoria: 'Periféricos' });
-        Testes.afirmarIgual(perifericos.length, 2, 'Deveriam existir 2 periféricos.');
+        const perifericos = Estoque.filtrarProdutos(produtos, { categoria: 'Elétrica' });
+        Testes.afirmarIgual(perifericos.length, 2, 'Deveriam existir 2 peças de Elétrica.');
 
         const baixos = Estoque.filtrarProdutos(produtos, { status: 'BAIXO' });
         Testes.afirmarIgual(baixos.length, 1, 'Apenas o Mouse está com estoque baixo.');
 
-        const combinado = Estoque.filtrarProdutos(produtos, { categoria: 'Periféricos', status: 'NORMAL' });
+        const combinado = Estoque.filtrarProdutos(produtos, { categoria: 'Elétrica', status: 'NORMAL' });
         Testes.afirmarIgual(combinado.length, 1, 'Os filtros combinados deveriam encontrar apenas o Teclado.');
       }
     },
@@ -337,6 +347,71 @@ const Testes = {
         carrinho = Loja.adicionar(carrinho, carro, -1);
         Testes.afirmarIgual(carrinho.length, 1, 'Tirar a última unidade remove o item.');
         Testes.afirmarIgual(Loja.produtos().length, 20, 'A loja mostra os 11 veículos do simulador e 9 acessórios.');
+      }
+    },
+
+    {
+      codigo: 'CT18',
+      descricao: 'Pesquisa ignora hífen, ponto, barra e espaço no código (RF04)',
+      executar() {
+        Testes.criarProduto({ codigo: 'FR-4213', nome: 'Pastilha de freio' });
+        Testes.criarProduto({ codigo: 'MB-90.123/A', nome: 'Amortecedor dianteiro' });
+        const produtos = Estoque.listarProdutos();
+
+        Testes.afirmarIgual(Estoque.filtrarProdutos(produtos, { texto: 'fr4213' }).length, 1,
+          '"fr4213" deveria encontrar "FR-4213".');
+        Testes.afirmarIgual(Estoque.filtrarProdutos(produtos, { texto: 'mb 90123a' }).length, 1,
+          '"mb 90123a" deveria encontrar "MB-90.123/A".');
+        Testes.afirmarIgual(Estoque.filtrarProdutos(produtos, { texto: '-' }).length, 2,
+          'Pesquisa só com símbolo equivale a pesquisa vazia.');
+      }
+    },
+
+    {
+      codigo: 'CT19',
+      descricao: 'Histórico filtra por peça e por tipo, do mais recente ao mais antigo (RF14)',
+      executar() {
+        const pastilha = Testes.criarProduto({ nome: 'Pastilha de freio', quantidade: 10 });
+        Testes.criarProduto({ nome: 'Filtro de óleo', quantidade: 5 });
+        Estoque.registrarSaida(pastilha.id, 4);
+
+        const todas = Estoque.listarMovimentacoes();
+        Testes.afirmarIgual(todas.length, 3, 'Duas entradas iniciais e uma saída.');
+        Testes.afirmar(todas[0].data >= todas[todas.length - 1].data, 'A mais recente deveria vir primeiro.');
+
+        Testes.afirmarIgual(Estoque.filtrarMovimentacoes(todas, { texto: 'pastilha' }).length, 2,
+          'A pastilha tem a entrada inicial e a saída.');
+        Testes.afirmarIgual(Estoque.filtrarMovimentacoes(todas, { tipo: 'SAIDA' }).length, 1,
+          'Só existe uma saída.');
+        Testes.afirmarIgual(Estoque.filtrarMovimentacoes(todas, { texto: 'filtro', tipo: 'SAIDA' }).length, 0,
+          'O filtro de óleo não teve saída.');
+      }
+    },
+
+    {
+      codigo: 'CT20',
+      descricao: 'Garagem lista só o que precisa de reposição, esgotados primeiro',
+      executar() {
+        Testes.criarProduto({ nome: 'Normal', quantidade: 10, estoqueMinimo: 2 });
+        Testes.criarProduto({ nome: 'Baixo', quantidade: 3, estoqueMinimo: 5 });
+        Testes.criarProduto({ nome: 'Esgotado', quantidade: 0, estoqueMinimo: 4 });
+
+        const itens = Estoque.listarParaReposicao();
+
+        Testes.afirmarIgual(itens.length, 2, 'A peça Normal não entra na Garagem.');
+        Testes.afirmarIgual(itens[0].produto.nome, 'Esgotado', 'O esgotado vem primeiro.');
+        Testes.afirmarIgual(itens[0].repor, 5, 'Esgotado com mínimo 4: repor 5 para voltar a Normal.');
+        Testes.afirmarIgual(itens[1].repor, 3, 'Baixo com 3 e mínimo 5: repor 3 para ficar com 6.');
+      }
+    },
+
+    {
+      codigo: 'CT21',
+      descricao: 'Só o Administrador edita e exclui peças (RF06, RF07)',
+      executar() {
+        Testes.afirmar(Estoque.ehAdministrador('ADM'), 'ADM deveria ter acesso.');
+        Testes.afirmar(!Estoque.ehAdministrador('OPR'), 'OPR não pode editar nem excluir.');
+        Testes.afirmar(!Estoque.ehAdministrador(null), 'Sem login, vale o menor acesso.');
       }
     }
   ],

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garagem | Painel Kaisen</title>
+  <link rel="stylesheet" href="../css/fontes.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="../css/produtos.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="painel">
+    <aside class="painel__menu">
+      <p class="painel__marca">KAISEN</p>
+      <p class="painel__area">Painel interno</p>
+      <nav aria-label="Painel interno">
+        <a href="dashboard.html" data-perfil="ADM">Painel geral</a>
+        <a href="produtos.html">Estoque</a>
+        <a href="historico.html">Histórico</a>
+        <a href="garagem-estoque.html" aria-current="page">Garagem</a>
+        <a href="painel.html">Adicionar carro</a>
+        <a href="pedido.html">Pedidos</a>
+        <span aria-disabled="true">Clientes</span>
+        <a href="testes.html">Testes</a>
+      </nav>
+      <p class="painel__logado">Logado como <b id="perfil-logado">Funcionário</b> <a href="login.html">Sair</a></p>
+    </aside>
+
+    <main class="painel__conteudo" id="conteudo">
+      <div class="painel__topo">
+        <div>
+          <h1 class="k-titulo">Garagem</h1>
+          <p class="k-sub">Peças que precisam de reposição, das mais urgentes para as menos.</p>
+        </div>
+        <a class="k-botao" href="produtos.html">Registrar entrada no estoque</a>
+      </div>
+
+      <section class="lista-pecas" aria-labelledby="titulo-esgotados">
+        <h2 class="k-cartao__titulo" id="titulo-esgotados">Esgotados — atenção imediata</h2>
+        <ul class="reposicao" id="lista-esgotados"></ul>
+      </section>
+
+      <section class="lista-pecas" aria-labelledby="titulo-baixos">
+        <h2 class="k-cartao__titulo" id="titulo-baixos">Estoque baixo</h2>
+        <ul class="reposicao" id="lista-baixos"></ul>
+      </section>
+    </main>
+  </div>
+
+  <!-- A ordem importa: quem é usado vem antes de quem usa. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/garagem.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-const TelaProdutos = {
+const TelaEstoque = {
   el: {},
 
   idParaExcluir: null,
@@ -182,10 +182,16 @@ const TelaProdutos = {
 
     const acoes = [
       { acao: 'entrada', texto: 'Entrada', classe: 'botao botao--secundario botao--pequeno' },
-      { acao: 'saida', texto: 'Saída', classe: 'botao botao--secundario botao--pequeno' },
-      { acao: 'editar', texto: 'Editar', classe: 'botao botao--secundario botao--pequeno' },
-      { acao: 'excluir', texto: 'Excluir', classe: 'botao botao--perigo botao--pequeno' }
+      { acao: 'saida', texto: 'Saída', classe: 'botao botao--secundario botao--pequeno' }
     ];
+
+    // RF06 e RF07: o Funcionário nem vê os botões de editar e excluir.
+    if (Estoque.ehAdministrador(UI.perfilAtual())) {
+      acoes.push(
+        { acao: 'editar', texto: 'Editar', classe: 'botao botao--secundario botao--pequeno' },
+        { acao: 'excluir', texto: 'Excluir', classe: 'botao botao--perigo botao--pequeno' }
+      );
+    }
 
     acoes.forEach((item) => {
       const botao = document.createElement('button');
@@ -214,8 +220,9 @@ const TelaProdutos = {
       return;
     }
 
-    if (botao.dataset.acao === 'editar') this.abrirDialogProduto(produto);
-    if (botao.dataset.acao === 'excluir') this.abrirDialogExclusao(produto);
+    const adm = Estoque.ehAdministrador(UI.perfilAtual());
+    if (botao.dataset.acao === 'editar' && adm) this.abrirDialogProduto(produto);
+    if (botao.dataset.acao === 'excluir' && adm) this.abrirDialogExclusao(produto);
     if (botao.dataset.acao === 'entrada') this.abrirDialogMovimentacao(produto, Estoque.TIPOS.ENTRADA);
     if (botao.dataset.acao === 'saida') this.abrirDialogMovimentacao(produto, Estoque.TIPOS.SAIDA);
   },
@@ -380,4 +387,4 @@ const TelaProdutos = {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => TelaProdutos.iniciar());
+document.addEventListener('DOMContentLoaded', () => TelaEstoque.iniciar());

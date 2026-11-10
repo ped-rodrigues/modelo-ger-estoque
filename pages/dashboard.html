@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel geral | Painel Kaisen</title>
+  <link rel="stylesheet" href="../css/fontes.css">
+  <link rel="stylesheet" href="../css/site.css">
+  <link rel="stylesheet" href="../css/produtos.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="painel">
+    <aside class="painel__menu">
+      <p class="painel__marca">KAISEN</p>
+      <p class="painel__area">Painel interno</p>
+      <nav aria-label="Painel interno">
+        <a href="dashboard.html" data-perfil="ADM" aria-current="page">Painel geral</a>
+        <a href="produtos.html">Estoque</a>
+        <a href="historico.html">Histórico</a>
+        <a href="garagem-estoque.html">Garagem</a>
+        <a href="painel.html">Adicionar carro</a>
+        <a href="pedido.html">Pedidos</a>
+        <span aria-disabled="true">Clientes</span>
+        <a href="testes.html">Testes</a>
+      </nav>
+      <p class="painel__logado">Logado como <b id="perfil-logado">Funcionário</b> <a href="login.html">Sair</a></p>
+    </aside>
+
+    <main class="painel__conteudo" id="conteudo">
+      <div class="painel__topo">
+        <div>
+          <h1 class="k-titulo">Painel geral</h1>
+          <p class="k-sub">Situação do estoque de peças agora.</p>
+        </div>
+        <a class="k-botao" href="garagem-estoque.html">Ver o que repor</a>
+      </div>
+
+      <!-- RF15 e RF16: os números vêm de Estoque.calcularIndicadores. -->
+      <section aria-labelledby="titulo-indicadores">
+        <h2 id="titulo-indicadores" class="apenas-leitor-tela">Indicadores do estoque</h2>
+        <dl class="indicadores">
+          <div class="k-cartao indicador">
+            <dt>Peças cadastradas</dt>
+            <dd id="ind-total-produtos">0</dd>
+          </div>
+          <div class="k-cartao indicador">
+            <dt>Itens em estoque</dt>
+            <dd id="ind-total-itens">0</dd>
+          </div>
+          <div class="k-cartao indicador indicador--baixo">
+            <dt>Estoque baixo</dt>
+            <dd id="ind-estoque-baixo">0</dd>
+          </div>
+          <div class="k-cartao indicador indicador--esgotado">
+            <dt>Esgotados</dt>
+            <dd id="ind-esgotados">0</dd>
+          </div>
+          <div class="k-cartao indicador indicador--valor">
+            <dt>Valor investido</dt>
+            <dd id="ind-valor-total">R$ 0,00</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="lista-pecas" aria-labelledby="titulo-ultimas">
+        <div class="lista-pecas__topo">
+          <h2 class="k-cartao__titulo" id="titulo-ultimas">Últimas movimentações</h2>
+          <a class="link-painel" href="historico.html">Ver histórico completo</a>
+        </div>
+        <div class="tabela-rolagem">
+          <table class="tabela tabela--curta">
+            <caption class="apenas-leitor-tela">As cinco movimentações mais recentes.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Data e hora</th>
+                <th scope="col">Peça</th>
+                <th scope="col">Tipo</th>
+                <th scope="col" class="numero">Quantidade</th>
+              </tr>
+            </thead>
+            <tbody id="corpo-ultimas"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- A ordem importa: quem é usado vem antes de quem usa. -->
+  <script src="../js/storage.js"></script>
+  <script src="../js/validacao.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/home.js"></script>
+</body>
+</html>

@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kaisen | Acesso de funcionários</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=42dot+Sans&family=Abhaya+Libre&family=Alef&family=Cal+Sans&family=Caladea&family=Geostar+Fill&display=swap">
+  <link rel="stylesheet" href="../css/fontes.css">
   <link rel="stylesheet" href="../css/login.css">
 </head>
 <body class="pagina-login">
@@ -54,6 +52,13 @@
             <a href="#" id="link-senha">Forgot password?</a>
           </div>
 
+          <!-- Seção 1.8 do Documento de Visão: dois perfis. Sem autenticação real, o perfil é escolhido aqui. -->
+          <fieldset class="login__perfil">
+            <legend>Sign in as</legend>
+            <label><input type="radio" name="perfil" value="ADM" checked> Administrador</label>
+            <label><input type="radio" name="perfil" value="OPR"> Funcionário</label>
+          </fieldset>
+
           <div class="login__botoes">
             <button type="submit" class="login__entrar">Login</button>
             <a href="#" class="login__cadastro" id="link-cadastro">Sign up</a>
@@ -71,7 +76,9 @@
   </main>
 
   <!-- A ordem importa: quem é usado vem antes de quem usa. -->
-  <script src="../js/ui.js"></script>
+  <script src="../js/storage.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/layout.js"></script>
   <script src="../js/login.js"></script>
 </body>
 </html>

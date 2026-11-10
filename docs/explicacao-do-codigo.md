@@ -59,10 +59,14 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 | `pages/pedido.html` | Acompanhamento do pedido #2041 | `site.css` | inline (aviso) |
 | `pages/venda.html` | Formulário "Venda seu carro para nós" | `site.css` | inline (aviso) |
 | `pages/contato.html` | Formulário "Fale conosco" | `site.css` | inline (aviso) |
-| `pages/login.html` | Acesso de funcionários | `login.css` | `ui.js`, `login.js` |
-| `pages/produtos.html` | Estoque de peças: CRUD, filtros e movimentações | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `ui.js`, `produtos.js` |
-| `pages/painel.html` | Adicionar carro (fotos, prévia, checklist) | `site.css` | `painel.js` |
-| `pages/testes.html` | Executa os casos de teste CT01 a CT17 | `style.css` | `storage.js`, `validacao.js`, `estoque.js`, `importacao.js`, `loja.js`, `testes.js` |
+| `pages/sobre.html` | Página institucional: projeto e equipe | `site.css` | nenhum |
+| `pages/login.html` | Acesso de funcionários, com escolha do perfil | `login.css` | `storage.js`, `estoque.js`, `layout.js`, `login.js` |
+| `pages/dashboard.html` | Painel geral: indicadores e últimas movimentações (só Administrador) | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `home.js` |
+| `pages/historico.html` | Histórico de movimentações com filtros | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `historico.js` |
+| `pages/garagem-estoque.html` | Garagem: peças esgotadas e com estoque baixo, com quanto repor | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `garagem.js` |
+| `pages/produtos.html` | Estoque de peças: CRUD, filtros e movimentações | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `tela-estoque.js` |
+| `pages/painel.html` | Adicionar carro (fotos, prévia, checklist) | `site.css` | `storage.js`, `estoque.js`, `layout.js`, `painel.js` |
+| `pages/testes.html` | Executa os casos de teste CT01 a CT21 | `style.css` | `storage.js`, `validacao.js`, `estoque.js`, `importacao.js`, `loja.js`, `testes.js` |
 
 ### Como as páginas se ligam
 
@@ -72,9 +76,11 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 - **Loja → Importação:** cada veículo tem o mesmo botão, e o carrinho leva ao simulador.
 - **Garagem → Venda:** o botão "Enviar meu carro".
 - **Carro → Importação e Contato:** "Simular importação" e "Falar com consultor".
-- **Login → Estoque de peças:** depois de entrar, o login leva a `produtos.html`.
-- **Menu lateral do painel:** Estoque, Adicionar carro, Garagem, Pedidos, Testes e Sair.
-  "Painel geral" e "Clientes" aparecem apagados e sem link porque ainda não têm tela.
+- **Login → Painel:** o Administrador cai no `dashboard.html`; o Funcionário, em `produtos.html`.
+  O perfil escolhido fica no `sessionStorage` (chave `gestoque.perfil`) até a aba fechar.
+- **Menu lateral do painel:** Painel geral (só Administrador), Estoque, Histórico, Garagem,
+  Adicionar carro, Pedidos, Testes e Sair. "Clientes" aparece apagado porque ainda não tem tela.
+- **Funcionário:** não vê "Painel geral" nem os botões Editar e Excluir (RF06 e RF07).
 
 ---
 
@@ -84,9 +90,11 @@ O estoque de peças é a parte com regras de negócio de verdade, e por isso é 
 A dependência sempre aponta para baixo:
 
 ```text
-Telas       produtos.js, login.js       conhecem o DOM; não decidem regras
+Telas       home.js, tela-estoque.js,   conhecem o DOM; não decidem regras
+            historico.js, garagem.js,
+            login.js
               │  usam
-Apoio       ui.js                        formata e exibe; não decide regras
+Apoio       layout.js                    formata, exibe e aplica o perfil no menu
               │
 Regras      estoque.js ──► validacao.js  não conhecem o DOM (testáveis sozinhos)
               │
@@ -235,8 +243,12 @@ Objeto `Estoque`. Usa `Validacao` para validar e `Storage` para salvar.
 | `excluirProduto(id)` | Remove o produto e **mantém** as movimentações (D3). A confirmação é feita pela tela. |
 | `registrarMovimentacao(id, tipo, qtd)` | Valida o tipo e a quantidade, recusa saída maior que o disponível (RN02) e, por segurança, qualquer resultado negativo (RN01). Atualiza a quantidade e grava a movimentação com data e com o **nome do produto copiado**, para o histórico continuar legível depois de uma exclusão (D3). |
 | `registrarEntrada` / `registrarSaida` | Atalhos para `registrarMovimentacao`. |
+| `chaveDeBusca(texto)` | Minúsculo, sem acento e só com letras e números. Usada nas pesquisas: `fr4213` acha `FR-4213` (RF04). |
+| `filtrarMovimentacoes(lista, filtros)` | Filtros do histórico: texto no nome da peça e tipo (RF14). |
+| `listarParaReposicao(produtos)` | Para a Garagem: só Baixo e Esgotado, esgotados primeiro, com `repor` = mínimo + 1 − quantidade (o que falta para voltar a Normal). |
+| `ehAdministrador(perfil)` | `true` só para `ADM`. Decide quem vê o Dashboard e os botões Editar e Excluir (RF06, RF07). |
 
-### 5.4 `js/ui.js` — apoio de tela
+### 5.4 `js/layout.js` — apoio de tela
 
 Objeto `UI`. Conhece o DOM, mas não decide nada sobre o estoque. Existe para as telas não
 repetirem código.
@@ -250,6 +262,8 @@ repetirem código.
 | `mostrarMensagem(el, texto, tipo)` / `limparMensagem(el)` | Aviso de sucesso ou erro. O elemento tem `role="status"` no HTML, então o leitor de tela anuncia a mensagem. |
 | `mostrarErros(form, erros)` / `limparErros(form)` | Põe cada mensagem no `<span data-erro-de="campo">`, marca o campo com `aria-invalid="true"` e leva o foco ao primeiro erro. |
 | `criarCelula(texto, classe)` / `mostrarEstadoVazio(tbody, colunas, texto)` | Montagem da tabela. |
+| `criarLinhaMovimentacao(mov)` | Linha do histórico (data, peça, tipo, quantidade), usada no Histórico e no Dashboard. |
+| `perfilAtual()` / `aplicarPerfil()` | Lê o perfil da sessão (sem login, vale Funcionário), escreve o nome no menu e esconde o que tem `data-perfil="ADM"`. Roda sozinho no `DOMContentLoaded`. |
 
 Como o HTML liga campo e erro:
 
@@ -258,9 +272,9 @@ Como o HTML liga campo e erro:
 <span id="erro-produto-nome" data-erro-de="nome"></span>
 ```
 
-### 5.5 `js/produtos.js` — tela de estoque de peças
+### 5.5 `js/tela-estoque.js` — tela de estoque de peças
 
-Objeto `TelaProdutos`, iniciado no `DOMContentLoaded`.
+Objeto `TelaEstoque`, iniciado no `DOMContentLoaded`.
 
 - **`iniciar()`:** guarda as referências dos elementos em `this.el` e avisa se o navegador bloqueia
   o armazenamento. Depois preenche os `<select>` de categoria e situação, liga os eventos e

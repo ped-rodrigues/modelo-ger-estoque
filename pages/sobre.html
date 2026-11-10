@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kaisen | Sobre</title>
+  <link rel="stylesheet" href="../css/fontes.css">
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body class="pagina-k">
+  <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
+      <img class="topo__logo" src="../assets/logo.png" alt="">
+      <span class="topo__nome" aria-hidden="true">Kaisen</span>
+    </a>
+    <span class="topo__divisor" aria-hidden="true"></span>
+    <p class="topo__pagina">Sobre</p>
+    <nav class="navegacao" aria-label="Navegação principal">
+      <a href="../index.html">Início</a>
+      <a href="garagem.html">Garagem</a>
+      <a href="estoque.html">Estoque</a>
+      <a href="loja.html">Loja</a>
+      <a href="importacao.html">Importação</a>
+      <a href="sobre.html" aria-current="page">Sobre</a>
+      <a href="contato.html">Contato</a>
+    </nav>
+  </header>
+
+  <main class="k-pagina" id="conteudo">
+    <h1 class="k-titulo">Sobre o Kaisen</h1>
+    <p class="k-sub">Gerenciador de estoque para o segmento de autopeças.</p>
+
+    <div class="k-grade k-grade--metades">
+      <section class="k-cartao" aria-labelledby="titulo-projeto">
+        <h2 class="k-cartao__titulo" id="titulo-projeto">O projeto</h2>
+        <p>
+          O Kaisen controla o estoque de peças de uma loja de autopeças: cadastro das peças,
+          entradas e saídas com data e hora, alertas de estoque baixo e esgotado e o valor
+          investido em estoque.
+        </p>
+        <p class="k-ajuda">
+          Projeto acadêmico da disciplina Prototipagem de Sistemas Computacionais, curso de
+          Engenharia de Software do UNIPÊ, turma 02.2026.
+        </p>
+      </section>
+
+      <section class="k-cartao" aria-labelledby="titulo-tecnologia">
+        <h2 class="k-cartao__titulo" id="titulo-tecnologia">Como funciona</h2>
+        <p>
+          Roda direto no navegador, sem servidor e sem internet. Feito só com HTML5, CSS3 e
+          JavaScript, sem bibliotecas. Os dados ficam salvos no próprio navegador
+          (localStorage), na máquina onde foram cadastrados.
+        </p>
+      </section>
+    </div>
+
+    <section class="k-cartao" aria-labelledby="titulo-equipe" style="margin-top: 32px">
+      <h2 class="k-cartao__titulo" id="titulo-equipe">Equipe</h2>
+      <dl class="k-linhas">
+        <div><dt>Pedro Henrique</dt><dd>Líder do projeto e desenvolvimento front-end (JavaScript)</dd></div>
+        <div><dt>Ângelo Antônio</dt><dd>Desenvolvimento front-end (HTML5 e CSS3)</dd></div>
+        <div><dt>Bruna Villanova</dt><dd>UI/UX e prototipagem (Figma)</dd></div>
+        <div><dt>Diana Nicole</dt><dd>Análise de requisitos e documentação</dd></div>
+        <div><dt>Victor Lucas</dt><dd>Testes e validação de interface e acessibilidade</dd></div>
+      </dl>
+    </section>
+  </main>
+</body>
+</html>

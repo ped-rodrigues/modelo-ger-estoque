@@ -56,6 +56,27 @@ const Storage = {
     return this.escrever(this.CHAVE_MOVIMENTACOES, movimentacoes);
   },
 
+  // Perfil escolhido no login (ADM ou OPR). Fica no sessionStorage: fechar a aba é sair.
+  CHAVE_PERFIL: 'gestoque.perfil',
+
+  lerPerfil() {
+    try {
+      return sessionStorage.getItem(this.CHAVE_PERFIL);
+    } catch (erro) {
+      return null;
+    }
+  },
+
+  salvarPerfil(perfil) {
+    try {
+      sessionStorage.setItem(this.CHAVE_PERFIL, perfil);
+      return true;
+    } catch (erro) {
+      console.error('[Storage] Não foi possível gravar o perfil.', erro);
+      return false;
+    }
+  },
+
   limparTudo() {
     try {
       localStorage.removeItem(this.CHAVE_PRODUTOS);

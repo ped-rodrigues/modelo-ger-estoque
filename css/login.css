@@ -220,6 +220,42 @@ a {
   background: #637091;
 }
 
+.login__perfil {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  margin: 22px 0 0 5px;
+  padding: 0;
+  border: 0;
+  font-size: 18px;
+  line-height: 21px;
+  color: #637091;
+}
+
+.login__perfil legend {
+  float: left;
+  padding: 0;
+}
+
+.login__perfil label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.login__perfil input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: #637091;
+}
+
+.login__perfil input:focus-visible {
+  outline: 2px solid #8a96b5;
+  outline-offset: 2px;
+}
+
 .login__opcoes a:hover {
   color: #8a96b5;
 }
@@ -382,6 +418,17 @@ a {
   .login__lembrar {
     margin-left: 18px;
     gap: 7px;
+  }
+
+  .login__perfil {
+    margin-left: 18px;
+  }
+
+  /* A legenda ocupa a linha toda e as duas opções ficam juntas embaixo. */
+  .login__perfil legend {
+    float: none;
+    width: 100%;
+    margin-bottom: 4px;
   }
 
   .login__lembrar input {

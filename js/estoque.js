@@ -30,6 +30,22 @@ const Estoque = {
     SAIDA: 'SAIDA'
   },
 
+  // Seção 1.8 e 2.1 do Documento de Visão.
+  PERFIS: {
+    ADM: 'ADM',
+    OPR: 'OPR'
+  },
+
+  ROTULOS_PERFIS: {
+    ADM: 'Administrador',
+    OPR: 'Funcionário'
+  },
+
+  // RF06, RF07 e Dashboard (seção 1.8) são só do Administrador.
+  ehAdministrador(perfil) {
+    return perfil === this.PERFIS.ADM;
+  },
+
   gerarId(prefixo) {
     const tempo = Date.now().toString(36);
     const aleatorio = Math.random().toString(36).slice(2, 7);
@@ -77,14 +93,20 @@ const Estoque = {
       .replace(/[̀-ͯ]/g, '');
   },
 
+  // RF04: além dos acentos, ignora hífen, ponto, barra e espaço. "fr4213" acha "FR-4213".
+  chaveDeBusca(texto) {
+    return this.normalizarTexto(texto).replace(/[^a-z0-9]/g, '');
+  },
+
   filtrarProdutos(produtos, filtros) {
     const criterios = filtros || {};
-    const busca = this.normalizarTexto(criterios.texto || '').trim();
+    const busca = this.chaveDeBusca(criterios.texto || '');
 
     return produtos.filter((produto) => {
       if (busca !== '') {
-        const alvo = this.normalizarTexto(produto.nome + ' ' + (produto.codigo || ''));
-        if (!alvo.includes(busca)) return false;
+        const noNome = this.chaveDeBusca(produto.nome).includes(busca);
+        const noCodigo = this.chaveDeBusca(produto.codigo || '').includes(busca);
+        if (!noNome && !noCodigo) return false;
       }
       if (criterios.categoria && produto.categoria !== criterios.categoria) {
         return false;
@@ -118,6 +140,37 @@ const Estoque = {
 
   listarMovimentacoesDoProduto(produtoId) {
     return this.listarMovimentacoes().filter((item) => item.produtoId === produtoId);
+  },
+
+  // RF14: filtros do histórico. Busca pelo nome guardado na movimentação, que sobrevive à exclusão (D3).
+  filtrarMovimentacoes(movimentacoes, filtros) {
+    const criterios = filtros || {};
+    const busca = this.chaveDeBusca(criterios.texto || '');
+
+    return movimentacoes.filter((item) => {
+      if (busca !== '' && !this.chaveDeBusca(item.produtoNome).includes(busca)) return false;
+      if (criterios.tipo && item.tipo !== criterios.tipo) return false;
+      return true;
+    });
+  },
+
+  // Módulo Garagem: só o que não está Normal, esgotados primeiro, depois o mais longe do mínimo.
+  // "repor" é o que falta para a peça sair de Baixo (RN05: passar do mínimo).
+  listarParaReposicao(produtos) {
+    const lista = produtos || this.listarProdutos();
+
+    return lista
+      .map((produto) => ({
+        produto: produto,
+        status: this.classificar(produto),
+        repor: produto.estoqueMinimo + 1 - produto.quantidade
+      }))
+      .filter((item) => item.status !== this.STATUS.NORMAL)
+      .sort((a, b) => {
+        const esgotadoA = a.status === this.STATUS.ESGOTADO ? 0 : 1;
+        const esgotadoB = b.status === this.STATUS.ESGOTADO ? 0 : 1;
+        return esgotadoA - esgotadoB || b.repor - a.repor;
+      });
   },
 
   cadastrarProduto(dados) {

@@ -83,28 +83,32 @@ gerenciador-estoque/
 │   ├── venda.html          # "Venda seu carro para nós" (design Kaisen)
 │   ├── painel.html         # Painel interno: adicionar carro (demonstração, nada é gravado)
 │   ├── login.html          # Acesso de funcionários (demonstração, sem autenticação real)
+│   ├── dashboard.html      # Painel geral: indicadores do estoque (só Administrador)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
+│   ├── garagem-estoque.html# Garagem: peças esgotadas e com estoque baixo
+│   ├── sobre.html          # Página institucional
 │   └── testes.html         # Execução dos casos de teste automatizados
 ├── css/
 │   ├── style.css           # Base: variáveis, layout, componentes
 │   ├── site.css            # Site público e painel interno (design Kaisen)
 │   ├── login.css
-│   ├── produtos.css
-│   └── historico.css
+│   ├── produtos.css        # Telas do estoque de peças (tabela, indicadores, garagem)
+│   └── fontes.css          # Fontes embutidas, para o site abrir sem internet
 ├── js/
 │   ├── storage.js          # Camada de persistência (único ponto de acesso ao localStorage)
 │   ├── validacao.js        # Validação dos dados informados (funções puras)
 │   ├── estoque.js          # Regras de negócio e operações do estoque
-│   ├── ui.js               # Funções auxiliares de tela compartilhadas
+│   ├── layout.js           # Funções de tela compartilhadas e perfil logado no menu
 │   ├── login.js            # Tela de acesso
 │   ├── importacao.js       # Simulador de importação e financiamento (CT15 e CT16)
 │   ├── painel.js           # Painel interno: fotos, prévia e checklist
 │   ├── loja.js             # Loja e carrinho (CT17)
-│   ├── dashboard.js        # Tela do dashboard
-│   ├── produtos.js         # Tela de produtos
+│   ├── home.js             # Tela do dashboard
+│   ├── tela-estoque.js     # Tela de estoque de peças
 │   ├── historico.js        # Tela de histórico
-│   └── testes.js           # Casos de teste CT01 a CT14
+│   ├── garagem.js          # Tela da garagem (reposição)
+│   └── testes.js           # Casos de teste CT01 a CT21
 ├── docs/
 │   ├── explicacao-do-codigo.md # Como o código funciona, arquivo por arquivo
 │   ├── requisitos.md       # RF, RNF, regras de negócio, casos de uso, modelo de dados
@@ -123,7 +127,8 @@ A explicação completa do código, arquivo por arquivo, está em
 O projeto separa responsabilidades em três camadas, e a dependência sempre aponta para baixo:
 
 ```text
-Telas (dashboard.js, produtos.js, historico.js)   -> conhecem o DOM
+Telas (home.js, tela-estoque.js, garagem.js,      -> conhecem o DOM
+       historico.js, layout.js)
         |
         v
 Regras (estoque.js, validacao.js)                 -> não conhecem o DOM

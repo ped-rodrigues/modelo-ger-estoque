@@ -96,5 +96,47 @@ const UI = {
 
     linha.appendChild(celula);
     corpoTabela.appendChild(linha);
+  },
+
+  // Linha de movimentação, usada no histórico e nas últimas movimentações do Dashboard.
+  criarLinhaMovimentacao(movimentacao) {
+    const linha = document.createElement('tr');
+    const entrada = movimentacao.tipo === Estoque.TIPOS.ENTRADA;
+
+    linha.appendChild(this.criarCelula(this.formatarDataHora(movimentacao.data)));
+    linha.appendChild(this.criarCelula(movimentacao.produtoNome));
+
+    const celulaTipo = document.createElement('td');
+    const etiqueta = document.createElement('span');
+    // Texto e cor juntos: o tipo não depende só da cor (RNF05).
+    etiqueta.className = 'etiqueta ' + (entrada ? 'etiqueta--normal' : 'etiqueta--baixo');
+    etiqueta.textContent = entrada ? 'Entrada' : 'Saída';
+    celulaTipo.appendChild(etiqueta);
+    linha.appendChild(celulaTipo);
+
+    linha.appendChild(this.criarCelula((entrada ? '+' : '−') + movimentacao.quantidade, 'numero'));
+    return linha;
+  },
+
+  // Sem login (página aberta direto), vale o menor acesso: Funcionário.
+  perfilAtual() {
+    return Estoque.ehAdministrador(Storage.lerPerfil()) ? Estoque.PERFIS.ADM : Estoque.PERFIS.OPR;
+  },
+
+  // Menu do painel: mostra quem está logado e esconde do Funcionário o que é do Administrador.
+  aplicarPerfil() {
+    const logado = document.getElementById('perfil-logado');
+    if (!logado) return; // fora do painel (login)
+
+    const perfil = this.perfilAtual();
+    logado.textContent = Estoque.ROTULOS_PERFIS[perfil];
+
+    if (!Estoque.ehAdministrador(perfil)) {
+      document.querySelectorAll('[data-perfil="ADM"]').forEach((elemento) => {
+        elemento.hidden = true;
+      });
+    }
   }
 };
+
+document.addEventListener('DOMContentLoaded', () => UI.aplicarPerfil());

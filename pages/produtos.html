@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estoque | Painel Kaisen</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="../css/fontes.css">
   <link rel="stylesheet" href="../css/site.css">
   <link rel="stylesheet" href="../css/produtos.css">
 </head>
@@ -18,15 +16,16 @@
       <p class="painel__marca">KAISEN</p>
       <p class="painel__area">Painel interno</p>
       <nav aria-label="Painel interno">
-        <span aria-disabled="true">Painel geral</span>
+        <a href="dashboard.html" data-perfil="ADM">Painel geral</a>
         <a href="produtos.html" aria-current="page">Estoque</a>
+        <a href="historico.html">Histórico</a>
+        <a href="garagem-estoque.html">Garagem</a>
         <a href="painel.html">Adicionar carro</a>
-        <a href="garagem.html">Garagem</a>
         <a href="pedido.html">Pedidos</a>
         <span aria-disabled="true">Clientes</span>
         <a href="testes.html">Testes</a>
       </nav>
-      <p class="painel__logado">Logado como <b>Funcionário · Vendas</b> <a href="login.html">Sair</a></p>
+      <p class="painel__logado">Logado como <b id="perfil-logado">Funcionário</b> <a href="login.html">Sair</a></p>
     </aside>
 
     <main class="painel__conteudo" id="conteudo">
@@ -215,7 +214,7 @@
   <script src="../js/storage.js"></script>
   <script src="../js/validacao.js"></script>
   <script src="../js/estoque.js"></script>
-  <script src="../js/ui.js"></script>
-  <script src="../js/produtos.js"></script>
+  <script src="../js/layout.js"></script>
+  <script src="../js/tela-estoque.js"></script>
 </body>
 </html>

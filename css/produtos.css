@@ -84,7 +84,7 @@
   color: var(--k-texto-fraco);
 }
 
-/* Botões criados pelo produtos.js */
+/* Botões criados pelo tela-estoque.js */
 .botao {
   border: 1px solid var(--k-borda);
   background: var(--k-campo);
@@ -194,6 +194,56 @@ dialog .k-campo + .k-campo { margin-top: 16px; }
   gap: 12px;
   margin: 24px 0 0;
 }
+
+/* Dashboard: indicadores (RF15) */
+.indicadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
+}
+
+.indicador { margin: 0; padding: 22px 24px; border-top: 3px solid var(--k-borda); }
+.indicador dt { font-size: 14px; color: var(--k-texto-fraco); }
+.indicador dd { margin: 8px 0 0; font-size: 34px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.indicador--baixo { border-top-color: #f2c14e; }
+.indicador--esgotado { border-top-color: #ff8a8a; }
+.indicador--valor { border-top-color: var(--k-laranja); }
+.indicador--valor dd { font-size: 26px; }
+
+.link-painel { font-weight: 600; color: var(--k-laranja); }
+.link-painel:hover { text-decoration: underline; }
+
+/* Histórico e últimas movimentações: só 4 colunas, não precisa da largura da tabela de peças */
+.tabela.tabela--curta { min-width: 560px; }
+
+/* Garagem: cartões de reposição */
+.reposicao {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reposicao__cartao { padding: 20px 22px; }
+
+.reposicao__topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.reposicao__nome { margin: 10px 0 14px; font-size: 18px; font-weight: 600; }
+
+.reposicao__dados { display: grid; gap: 6px; margin: 0; }
+.reposicao__dados div { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+.reposicao__dados dt { color: var(--k-texto-fraco); }
+.reposicao__dados dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.reposicao__vazio { color: var(--k-texto-fraco); }
 
 /* Telas estreitas */
 @media (max-width: 640px) {
