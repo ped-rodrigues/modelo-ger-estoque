@@ -2,15 +2,16 @@
 
 Os casos de teste do projeto são de dois tipos:
 
-- **Automatizados:** implementados em `js/testes.js` e executados em `pages/testes.html`.
-  Verificam as regras de negócio, a validação e a persistência.
-- **Manuais:** executados na interface pelo integrante responsável, com o resultado anotado na
+- **Regras de negócio (CT):** verificam as regras, a validação e a persistência. Até 17/11/2026
+  rodavam de forma automática em `pages/testes.html`; essa página foi removida e hoje eles são
+  conferidos à mão no painel interno.
+- **Interface (CTM):** executados na interface pelo integrante responsável, com o resultado anotado na
   tabela de execução ao final deste documento. Verificam o que só existe na tela (feedback visual,
   confirmação de exclusão, navegação por teclado, responsividade).
 
 ---
 
-## Casos de teste automatizados
+## Casos de teste das regras de negócio
 
 | Código | Caso de teste | O que verifica | Resultado esperado |
 |--------|---------------|----------------|--------------------|
@@ -31,13 +32,8 @@ Os casos de teste do projeto são de dois tipos:
 
 ### Como executar
 
-1. Abra `pages/testes.html` no navegador.
-2. Clique em **Executar testes**.
-3. O resumo indica quantos casos passaram; a tabela detalha cada caso e, em caso de falha, mostra
-   a diferença entre o valor esperado e o obtido.
-
-Os testes rodam sempre em um estoque vazio e restauram os dados salvos no navegador ao final,
-mesmo se algum caso falhar.
+Entre no painel interno, reproduza os passos de cada caso na tela de Estoque (ou no Histórico e
+no Painel geral) e confira o resultado esperado. Use um estoque vazio para os números baterem.
 
 ### Última execução
 

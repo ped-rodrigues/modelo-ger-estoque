@@ -8,7 +8,7 @@ Documentos relacionados:
 
 - `README.md`: visão geral, como executar e estrutura de pastas.
 - `docs/requisitos.md`: requisitos (RF, RNF), regras de negócio (RN) e modelo de dados originais.
-- `docs/casos-de-teste.md`: roteiro dos testes automatizados e manuais.
+- `docs/casos-de-teste.md`: roteiro dos casos de teste.
 - `docs/diario-do-projeto.md`: histórico das sessões e das decisões D1 a D5.
 
 ---
@@ -65,7 +65,6 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 | `pages/historico.html` | Histórico de movimentações com filtros | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `historico.js` |
 | `pages/produtos.html` | Estoque de peças: CRUD, filtros e movimentações | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `tela-estoque.js` |
 | `pages/painel.html` | Adicionar carro (fotos, prévia, checklist) | `site.css` | `storage.js`, `estoque.js`, `layout.js`, `painel.js` |
-| `pages/testes.html` | Executa os casos de teste CT01 a CT21 | `style.css` | `storage.js`, `validacao.js`, `estoque.js`, `importacao.js`, `loja.js`, `testes.js` |
 
 ### Como as páginas se ligam
 
@@ -395,21 +394,7 @@ peças, não carros, e as fotos não caberiam no `localStorage`.
 - **Publicar:** usa a validação nativa do navegador (`checkValidity`/`reportValidity`) e o
   mínimo de fotos, e no fim mostra o aviso de demonstração.
 
-### 5.10 `js/testes.js` — casos de teste
-
-Objeto `Testes`, sem biblioteca nenhuma.
-
-- `afirmar(condicao, msg)` e `afirmarIgual(obtido, esperado, msg)` lançam erro quando falham.
-- `criarProduto(dados)` é um atalho para preparar uma peça.
-- `casos`: lista de `{ codigo, descricao, executar() }`.
-- `executar()`: **guarda os dados reais do navegador**, roda cada caso num estoque vazio e
-  **devolve os dados no final**, mesmo se algo falhar (`finally`). Rodar os testes não apaga o
-  estoque de ninguém.
-
-A página `testes.html` só exibe o relatório: resumo e uma linha por caso, com "Passou" ou
-"Falhou" em texto, além da cor.
-
-### 5.11 Scripts dentro das páginas
+### 5.10 Scripts dentro das páginas
 
 São pequenos e só servem àquela página:
 
@@ -428,13 +413,10 @@ São pequenos e só servem àquela página:
 
 | Arquivo | Usado por | Conteúdo |
 |---------|-----------|----------|
-| `css/site.css` | Todas as páginas, menos login e testes | Site público e painel interno |
+| `css/site.css` | Todas as páginas, menos login | Site público e painel interno |
 | `css/produtos.css` | `produtos.html` | Filtros, tabela, etiquetas, avisos e janelas do estoque de peças |
 | `css/login.css` | `login.html` | Tela de acesso (desktop e mobile) |
-| `css/style.css` | `testes.html` | Estilo "box de corrida" da primeira versão do sistema |
 
-`style.css` sobrou da primeira versão e hoje só atende a página de testes. Boa parte das regras
-dele (cabeçalho, botões, formulários, janelas) não é mais usada.
 
 ### 6.2 `site.css` por seções
 
@@ -525,7 +507,7 @@ Se algo voltar a "estourar" a página para o lado, provavelmente é uma destas:
 | D2 | A quantidade só muda por movimentação; a carga inicial vira uma ENTRADA |
 | D3 | Excluir uma peça mantém o histórico (com o nome copiado) |
 | D4 | Categoria é uma lista fixa, sem tela própria |
-| D5 | Testes automatizados + roteiro manual |
+| D5 | Roteiro de casos de teste (a página de testes automatizados foi removida) |
 | D6 | Domínio de autopeças (código, fabricante e aplicação na peça) |
 
 ### Site público (valores de exemplo)
@@ -545,7 +527,8 @@ Se algo voltar a "estourar" a página para o lado, provavelmente é uma destas:
 
 ## 8. Testes
 
-Abra `pages/testes.html` e clique em **Executar testes**.
+Não há mais página de testes automatizados: ela foi removida do painel. Os casos estão em
+`docs/casos-de-teste.md` e são conferidos à mão na interface.
 
 | Casos | O que verificam |
 |-------|-----------------|
@@ -553,11 +536,6 @@ Abra `pages/testes.html` e clique em **Executar testes**.
 | CT15 | Total do simulador para o GT-R Nismo (R$ 1.585.700) |
 | CT16 | Parcela, total pago, entrada mínima e limite de renda do financiamento |
 | CT17 | Carrinho: soma de acessórios, veículo limitado a 1, remoção e total |
-
-> **Situação atual:** CT02, CT09, CT15, CT16 e CT17 passam. Os outros 12 falham desde que o
-> domínio mudou para autopeças: os testes ainda cadastram peças sem `codigo` e `fabricante` e com
-> categorias que não existem mais ("Periféricos", "Eletrônicos"). O código das regras está certo;
-> são os dados de teste que precisam ser atualizados.
 
 ---
 
@@ -595,5 +573,4 @@ Convenções seguidas em todas as telas:
 - Impostos, juros e preços do site público são valores de exemplo.
 - Dashboard e tela de histórico de movimentações ainda não existem. As funções
   `calcularIndicadores` e `listarMovimentacoes` já estão prontas para elas.
-- 12 dos testes antigos precisam ser atualizados para o domínio de autopeças (seção 8).
 - `docs/requisitos.md` ainda descreve o modelo de dados anterior (seção 4).

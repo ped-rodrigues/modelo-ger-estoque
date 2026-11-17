@@ -28,7 +28,6 @@ requisitos, modelagem, arquitetura em camadas, testes, versionamento e documenta
 - Persistência no `localStorage`
 - Interface responsiva e com acessibilidade básica
 - Validação de formulários com mensagens de erro claras
-- Página de testes automatizados das regras de negócio
 
 ---
 
@@ -63,8 +62,6 @@ Não é necessário instalar nada nem subir servidor.
 > página é aberta pelo protocolo `file://`. Essa foi a decisão D1 do projeto, registrada em
 > `docs/diario-do-projeto.md`.
 
-Para rodar os testes automatizados, abra `pages/testes.html` e clique em **Executar testes**.
-
 ---
 
 ## Estrutura do projeto
@@ -86,10 +83,8 @@ gerenciador-estoque/
 │   ├── dashboard.html      # Painel geral: indicadores do estoque (só Administrador)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
-│   ├── sobre.html          # Página institucional
-│   └── testes.html         # Execução dos casos de teste automatizados
+│   └── sobre.html          # Página institucional
 ├── css/
-│   ├── style.css           # Base: variáveis, layout, componentes
 │   ├── site.css            # Site público e painel interno (design Kaisen)
 │   ├── login.css
 │   ├── produtos.css        # Telas do estoque de peças (tabela, indicadores)
@@ -105,8 +100,7 @@ gerenciador-estoque/
 │   ├── loja.js             # Loja e carrinho (CT17)
 │   ├── home.js             # Tela do dashboard
 │   ├── tela-estoque.js     # Tela de estoque de peças
-│   ├── historico.js        # Tela de histórico
-│   └── testes.js           # Casos de teste CT01 a CT21
+│   └── historico.js        # Tela de histórico
 ├── docs/
 │   ├── explicacao-do-codigo.md # Como o código funciona, arquivo por arquivo
 │   ├── requisitos.md       # RF, RNF, regras de negócio, casos de uso, modelo de dados
@@ -169,10 +163,7 @@ A lista completa e numerada está em [`docs/requisitos.md`](docs/requisitos.md):
 ## Testes
 
 Os casos de teste estão descritos em [`docs/casos-de-teste.md`](docs/casos-de-teste.md).
-
-Os testes das regras de negócio são automatizados e ficam em `js/testes.js`. Para executá-los,
-abra `pages/testes.html` e clique em **Executar testes**. Os testes rodam em um estoque vazio e
-restauram os dados salvos no navegador ao final.
+São conferidos à mão na interface: a página de testes automatizados foi removida.
 
 ---
 

@@ -157,4 +157,4 @@ com a justificativa de cada uma, está em `docs/diario-do-projeto.md`.
 | D2 | A quantidade só muda por movimentação; a quantidade inicial do cadastro gera uma ENTRADA |
 | D3 | Ao excluir um produto, suas movimentações permanecem no histórico |
 | D4 | Categoria é um campo controlado do produto, com lista fixa |
-| D5 | Testes automatizados em `pages/testes.html` e roteiro manual em `docs/casos-de-teste.md` |
+| D5 | Roteiro de casos de teste em `docs/casos-de-teste.md`, conferidos na interface |
