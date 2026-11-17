@@ -19,15 +19,21 @@
       <a href="index.html" aria-current="page">Início</a>
       <a href="pages/garagem.html">Garagem</a>
       <a href="pages/estoque.html">Estoque</a>
-      <a href="pages/loja.html">Loja</a>
+      <a href="pages/loja.html">Auto-Peças</a>
       <a href="pages/importacao.html">Importação</a>
+      <a href="pages/venda.html">Vender</a>
       <a href="pages/sobre.html">Sobre</a>
       <a href="pages/contato.html">Contato</a>
     </nav>
   </header>
 
   <main class="inicio" id="conteudo">
-    <div class="capa" role="img" aria-label="Nissan Skyline GT-R preto visto de trás"></div>
+    <video class="capa" id="capa" src="assets/home-capa.mp4" poster="assets/home-capa.jpg"
+      autoplay muted loop playsinline aria-label="Nissan Skyline GT-R preto visto de trás"></video>
+    <script>
+      // Quem pede menos movimento no sistema vê só o primeiro quadro.
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.getElementById('capa').pause();
+    </script>
 
     <section class="chamada" id="sobre">
       <div>

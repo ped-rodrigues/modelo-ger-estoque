@@ -65,7 +65,7 @@ const Importacao = {
 // "R$ 950.000,00", "950000" ou "950.000" -> 950000
 const lerDinheiro = (texto) => Number(String(texto).replace(/[^\d,]/g, '').replace(',', '.')) || 0;
 
-// A parte de tela só roda na página do simulador: a Loja e os testes também carregam este arquivo.
+// A parte de tela só roda na página do simulador, que é a única com #form-simulador.
 const formSimulador = typeof document !== 'undefined' && document.getElementById('form-simulador');
 
 if (formSimulador) {

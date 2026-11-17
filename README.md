@@ -75,7 +75,7 @@ gerenciador-estoque/
 │   ├── garagem.html        # Carros personalizados e vendidos, com abas (design Kaisen)
 │   ├── carro.html          # Detalhe do Nissan GT-R Nismo R35 (design Kaisen)
 │   ├── importacao.html     # Simulador do custo de importação e financiamento
-│   ├── loja.html           # Loja: veículos do simulador e acessórios, com carrinho (demonstração)
+│   ├── loja.html           # Auto-Peças: peças e acessórios, com busca e carrinho (demonstração)
 │   ├── pedido.html         # Acompanhamento do pedido #2041 (design Kaisen)
 │   ├── venda.html          # "Venda seu carro para nós" (design Kaisen)
 │   ├── painel.html         # Painel interno: adicionar carro (demonstração, nada é gravado)
@@ -97,7 +97,7 @@ gerenciador-estoque/
 │   ├── login.js            # Tela de acesso
 │   ├── importacao.js       # Simulador de importação e financiamento (CT15 e CT16)
 │   ├── painel.js           # Painel interno: fotos, prévia e checklist
-│   ├── loja.js             # Loja e carrinho (CT17)
+│   ├── loja.js             # Auto-Peças e carrinho (CT17)
 │   ├── home.js             # Tela do dashboard
 │   ├── tela-estoque.js     # Tela de estoque de peças
 │   └── historico.js        # Tela de histórico

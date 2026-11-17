@@ -19,7 +19,7 @@ O projeto tem duas partes que dividem o mesmo repositório:
 
 | Parte | Para quem | Páginas | Dados |
 |-------|-----------|---------|-------|
-| **Site público Kaisen** | Clientes da loja de carros importados | Início, Garagem, Estoque, Loja, Importação, Carro, Pedido, Venda, Contato | Fixos no HTML/JS |
+| **Site público Kaisen** | Clientes da loja de carros importados | Início, Garagem, Estoque, Auto-Peças, Importação, Carro, Pedido, Venda, Contato | Fixos no HTML/JS |
 | **Painel interno** | Funcionários | Login, Painel geral, Estoque de peças, Histórico, Adicionar carro | Peças salvas no `localStorage` |
 
 Não existe servidor nem banco de dados. Tudo roda no navegador, e o único dado que persiste é o
@@ -42,7 +42,7 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 - **Contato e Venda seu carro:** validam os campos e avisam que nada foi enviado.
 - **Pedido:** página fixa, e o "Baixar contrato" só mostra um aviso.
 - **Adicionar carro:** confere tudo, mas não grava.
-- **Carrinho da Loja:** fica só na memória da página e não envia o pedido.
+- **Carrinho da Auto-Peças:** fica só na memória da página e não envia o pedido.
 
 ---
 
@@ -54,7 +54,7 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 | `pages/garagem.html` | Carros personalizados e vendidos, com abas de filtro | `site.css` | inline (abas) |
 | `pages/estoque.html` | Vitrine dos 11 carros com filtro por palavra e marca | `site.css` | inline (filtro) |
 | `pages/carro.html` | Detalhe do Nissan GT-R Nismo R35 com galeria | `site.css` | inline (galeria) |
-| `pages/loja.html` | Loja de veículos e acessórios, com carrinho | `site.css` | `importacao.js`, `loja.js` |
+| `pages/loja.html` | Auto-Peças: peças e acessórios, com busca e carrinho | `site.css` | `loja.js` |
 | `pages/importacao.html` | Simulador do custo de importação e do financiamento | `site.css` | `importacao.js` |
 | `pages/pedido.html` | Acompanhamento do pedido #2041 | `site.css` | inline (aviso) |
 | `pages/venda.html` | Formulário "Venda seu carro para nós" | `site.css` | inline (aviso) |
@@ -68,11 +68,10 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 
 ### Como as páginas se ligam
 
-- O menu das páginas públicas tem: Início, Garagem, Estoque, Loja, Importação, Sobre e Contato.
+- O menu das páginas públicas tem: Início, Garagem, Estoque, Auto-Peças, Importação, Vender, Sobre e Contato.
 - **Estoque → Importação:** cada carro tem "Simular importação", que abre
   `importacao.html?veiculo=<chave>` com o carro já escolhido.
-- **Loja → Importação:** cada veículo tem o mesmo botão, e o carrinho leva ao simulador.
-- **Garagem → Venda:** o botão "Enviar meu carro".
+- **Menu → Venda:** o item "Vender" abre `venda.html` em qualquer página pública.
 - **Carro → Importação e Contato:** "Simular importação" e "Falar com consultor".
 - **Login → Painel:** o Administrador cai no `dashboard.html`; o Funcionário, em `produtos.html`.
   O perfil escolhido fica no `sessionStorage` (chave `gestoque.perfil`) até a aba fechar.
@@ -313,14 +312,13 @@ Objeto `TelaLogin`. A autenticação está fora do escopo: não há usuários ne
 ### 5.7 `js/importacao.js` — simulador de importação e financiamento
 
 Objeto `Importacao`. A parte de cálculo é pura e testada (CT15, CT16). A parte de tela só roda se
-a página tiver o formulário `#form-simulador`, e por isso o arquivo também pode ser carregado na
-Loja e na página de testes.
+a página tiver o formulário `#form-simulador`, e por isso o arquivo pode ser carregado em outras
+páginas sem efeito.
 
 **Dados**
 
 - `VEICULOS`: os 11 carros (`chave → { nome, preco }`). A chave é a mesma do nome da foto em
-  `assets/carros/<chave>.jpg` e do parâmetro `?veiculo=<chave>`. A Loja lê esta mesma lista,
-  então o preço nunca diverge entre Loja e simulador.
+  `assets/carros/<chave>.jpg` e do parâmetro `?veiculo=<chave>`.
 - `ORIGENS`: frete e prazo por país (Japão: R$ 18.500 e 45 a 60 dias; Estados Unidos:
   R$ 12.000 e 30 a 45 dias).
 
@@ -356,27 +354,25 @@ A alíquota de 63% foi escolhida para o GT-R Nismo dar exatamente o total do Fig
 - A mensagem final é verde (cabe na renda), vermelha (entrada abaixo do mínimo, parcela acima de
   30% ou entrada maior que o total) ou neutra (falta informar a renda).
 
-### 5.8 `js/loja.js` — loja e carrinho
+### 5.8 `js/loja.js` — Auto-Peças e carrinho
 
-Objeto `Loja`. Depende de `importacao.js`, que precisa vir antes no HTML.
+Objeto `Loja`. Não depende de outro script.
 
-- `ACESSORIOS`: 9 itens (`id`, `nome`, `descricao`, `preco`, `foto`).
-- `produtos()`: junta os veículos de `Importacao.VEICULOS` (`tipo: 'veiculo'`) com os acessórios
-  (`tipo: 'acessorio'`).
+- `PECAS`: 9 itens (`id`, `nome`, `descricao`, `preco`, `foto`).
 - `adicionar(carrinho, produto, delta)`: **devolve um carrinho novo** em vez de alterar o atual,
   o que facilita testar (CT17). Use `delta = -1` para tirar uma unidade; com zero unidades o item
-  sai do carrinho. **Cada veículo é único**, então a quantidade dele não passa de 1.
+  sai do carrinho. A quantidade vai até 99.
 - `total(carrinho)`: soma `preço × quantidade`.
 
 **Tela**
 
-- Os cartões são montados a partir de `Loja.produtos()`. Nome e descrição entram por
+- Os cartões são montados a partir de `Loja.PECAS`. Nome e descrição entram por
   `textContent`, então nada dos dados é interpretado como HTML.
-- Abas Todos / Veículos / Acessórios escondem os cartões pelo `data-tipo`.
-- Um único ouvinte no `document` trata "Adicionar/Reservar" (`data-adicionar`) e os botões `−`/`+`
+- O campo "Buscar peças" esconde os cartões cujo nome e descrição não têm o texto (sem diferenciar
+  acentos nem maiúsculas); sem resultado, aparece "Nenhum item encontrado".
+- Um único ouvinte no `document` trata "Adicionar ao carrinho" (`data-adicionar`) e os botões `−`/`+`
   do carrinho (`data-mudar`, `data-delta`).
-- O carrinho mostra quantidade total, total em reais e, se houver veículo, o aviso de que o valor
-  não inclui frete e impostos. O `+` do veículo fica desabilitado.
+- O carrinho mostra quantidade total e total em reais.
 - O carrinho vive só na memória: trocar de página o esvazia.
 
 ### 5.9 `js/painel.js` — Adicionar carro
@@ -535,7 +531,7 @@ Não há mais página de testes automatizados: ela foi removida do painel. Os ca
 | CT01 a CT14 | Cadastro, edição, exclusão, entradas, saídas, classificação, pesquisa, filtros, gravação, recuperação e indicadores do estoque |
 | CT15 | Total do simulador para o GT-R Nismo (R$ 1.585.700) |
 | CT16 | Parcela, total pago, entrada mínima e limite de renda do financiamento |
-| CT17 | Carrinho: soma de acessórios, veículo limitado a 1, remoção e total |
+| CT17 | Carrinho: soma de peças, quantidade até 99, remoção e total |
 
 ---
 

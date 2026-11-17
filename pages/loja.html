@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaisen | Loja</title>
+  <title>Kaisen | Auto-Peças</title>
   <link rel="stylesheet" href="../css/fontes.css">
   <link rel="stylesheet" href="../css/site.css">
 </head>
@@ -15,31 +15,30 @@
       <img class="topo__logo" src="../assets/logo.png" alt="">
       <span class="topo__nome" aria-hidden="true">Kaisen</span>
     </a>
-    <span class="topo__divisor" aria-hidden="true"></span>
-    <p class="topo__pagina">Loja</p>
     <nav class="navegacao" aria-label="Navegação principal">
       <a href="../index.html">Início</a>
       <a href="garagem.html">Garagem</a>
       <a href="estoque.html">Estoque</a>
-      <a href="loja.html" aria-current="page">Loja</a>
+      <a href="loja.html" aria-current="page">Auto-Peças</a>
       <a href="importacao.html">Importação</a>
+      <a href="venda.html">Vender</a>
       <a href="sobre.html">Sobre</a>
       <a href="contato.html">Contato</a>
     </nav>
   </header>
 
   <main class="k-pagina loja-pagina" id="conteudo">
-    <h1 class="k-titulo">Loja Kaisen</h1>
-    <p class="k-sub">Carros importados sob encomenda e acessórios para deixar o seu do seu jeito.</p>
+    <h1 class="k-titulo">Auto-Peças Kaisen</h1>
+    <p class="k-sub">Peças e acessórios para deixar o seu carro do seu jeito.</p>
 
-    <div class="abas" role="group" aria-label="Filtrar a loja">
-      <button type="button" class="k-aba" data-filtro="" aria-pressed="true">Todos</button>
-      <button type="button" class="k-aba" data-filtro="veiculo" aria-pressed="false">Veículos</button>
-      <button type="button" class="k-aba" data-filtro="acessorio" aria-pressed="false">Acessórios</button>
+    <div class="k-campo loja__busca" role="search">
+      <label for="busca-loja">Buscar peças</label>
+      <input type="search" id="busca-loja" placeholder="Ex.: turbina, freio, escape" autocomplete="off">
     </div>
+    <p class="k-aviso" id="loja-vazia" role="status" hidden>Nenhum item encontrado com essa busca.</p>
 
     <div class="loja">
-      <!-- Preenchida por js/loja.js a partir dos veículos do simulador e dos acessórios. -->
+      <!-- Preenchida por js/loja.js a partir de Loja.PECAS. -->
       <ul class="loja__lista" id="lista-loja"></ul>
 
       <aside class="k-cartao carrinho" aria-labelledby="titulo-carrinho">
@@ -49,9 +48,6 @@
         <dl class="k-linhas">
           <div class="k-total"><dt>Total</dt><dd id="carrinho-total">R$ 0,00</dd></div>
         </dl>
-        <p class="k-ajuda" id="carrinho-veiculo" hidden>
-          Veículos: valor sem frete e impostos. <a href="importacao.html">Simule a importação</a> para ver o custo até a sua porta.
-        </p>
         <button type="button" class="k-botao" id="finalizar-pedido">Finalizar pedido</button>
         <button type="button" class="k-botao k-botao--escuro" id="esvaziar-carrinho">Esvaziar</button>
         <p class="k-aviso" id="aviso-carrinho" role="status"></p>
@@ -69,7 +65,6 @@
     </p>
   </main>
 
-  <script src="../js/importacao.js"></script>
   <script src="../js/loja.js"></script>
 </body>
 </html>
