@@ -1436,15 +1436,13 @@ h1, h2, h3, p {
 .painel__area { margin: 6px 0 32px; padding: 0 24px; font-size: 14px; color: var(--k-texto-fraco); }
 .painel__menu nav { display: flex; flex-direction: column; padding-bottom: 24px; border-bottom: 1px solid var(--k-borda); }
 
-.painel__menu nav a,
-.painel__menu nav span {
+.painel__menu nav a {
   padding: 14px 24px 14px 21px;
   border-left: 3px solid transparent;
   font-size: 16px;
 }
 
 .painel__menu nav a:hover { background: #1a1a1a; }
-.painel__menu nav span { color: #5c5c5c; }
 
 .painel__menu nav [aria-current="page"] {
   border-left-color: var(--k-laranja);

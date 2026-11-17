@@ -77,7 +77,7 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 - **Login → Painel:** o Administrador cai no `dashboard.html`; o Funcionário, em `produtos.html`.
   O perfil escolhido fica no `sessionStorage` (chave `gestoque.perfil`) até a aba fechar.
 - **Menu lateral do painel:** Painel geral (só Administrador), Estoque, Histórico,
-  Adicionar carro, Pedidos e Sair. "Clientes" aparece apagado porque ainda não tem tela.
+  Adicionar carro, Pedidos e Sair.
 - **Funcionário:** não vê "Painel geral" nem os botões Editar e Excluir (RF06 e RF07).
 
 ---
