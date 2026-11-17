@@ -390,18 +390,12 @@ const Testes = {
 
     {
       codigo: 'CT20',
-      descricao: 'Garagem lista só o que precisa de reposição, esgotados primeiro',
+      descricao: 'Preço no formato brasileiro, com ponto de milhar',
       executar() {
-        Testes.criarProduto({ nome: 'Normal', quantidade: 10, estoqueMinimo: 2 });
-        Testes.criarProduto({ nome: 'Baixo', quantidade: 3, estoqueMinimo: 5 });
-        Testes.criarProduto({ nome: 'Esgotado', quantidade: 0, estoqueMinimo: 4 });
-
-        const itens = Estoque.listarParaReposicao();
-
-        Testes.afirmarIgual(itens.length, 2, 'A peça Normal não entra na Garagem.');
-        Testes.afirmarIgual(itens[0].produto.nome, 'Esgotado', 'O esgotado vem primeiro.');
-        Testes.afirmarIgual(itens[0].repor, 5, 'Esgotado com mínimo 4: repor 5 para voltar a Normal.');
-        Testes.afirmarIgual(itens[1].repor, 3, 'Baixo com 3 e mínimo 5: repor 3 para ficar com 6.');
+        Testes.afirmarIgual(Validacao.paraNumero('1.234,56'), 1234.56, '"1.234,56" deveria virar 1234.56.');
+        Testes.afirmarIgual(Validacao.paraNumero('199,90'), 199.9, '"199,90" deveria virar 199.9.');
+        Testes.afirmarIgual(Validacao.paraNumero('199.90'), 199.9, 'Sem vírgula, o ponto é decimal.');
+        Testes.afirmarIgual(Validacao.paraNumero('1,2,3'), null, 'Duas vírgulas não é número.');
       }
     },
 

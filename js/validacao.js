@@ -5,7 +5,9 @@ const Validacao = {
   paraNumero(valor) {
     if (valor === null || valor === undefined) return null;
 
-    const texto = String(valor).trim().replace(',', '.');
+    let texto = String(valor).trim();
+    // Formato brasileiro: com vírgula, o ponto é milhar ("1.234,56" vira 1234.56).
+    if (texto.includes(',')) texto = texto.replace(/\./g, '').replace(',', '.');
     if (texto === '') return null;
 
     const numero = Number(texto);

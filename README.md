@@ -86,14 +86,13 @@ gerenciador-estoque/
 │   ├── dashboard.html      # Painel geral: indicadores do estoque (só Administrador)
 │   ├── produtos.html       # Listagem, cadastro, edição e movimentações
 │   ├── historico.html      # Histórico de entradas e saídas
-│   ├── garagem-estoque.html# Garagem: peças esgotadas e com estoque baixo
 │   ├── sobre.html          # Página institucional
 │   └── testes.html         # Execução dos casos de teste automatizados
 ├── css/
 │   ├── style.css           # Base: variáveis, layout, componentes
 │   ├── site.css            # Site público e painel interno (design Kaisen)
 │   ├── login.css
-│   ├── produtos.css        # Telas do estoque de peças (tabela, indicadores, garagem)
+│   ├── produtos.css        # Telas do estoque de peças (tabela, indicadores)
 │   └── fontes.css          # Fontes embutidas, para o site abrir sem internet
 ├── js/
 │   ├── storage.js          # Camada de persistência (único ponto de acesso ao localStorage)
@@ -107,7 +106,6 @@ gerenciador-estoque/
 │   ├── home.js             # Tela do dashboard
 │   ├── tela-estoque.js     # Tela de estoque de peças
 │   ├── historico.js        # Tela de histórico
-│   ├── garagem.js          # Tela da garagem (reposição)
 │   └── testes.js           # Casos de teste CT01 a CT21
 ├── docs/
 │   ├── explicacao-do-codigo.md # Como o código funciona, arquivo por arquivo
@@ -127,7 +125,7 @@ A explicação completa do código, arquivo por arquivo, está em
 O projeto separa responsabilidades em três camadas, e a dependência sempre aponta para baixo:
 
 ```text
-Telas (home.js, tela-estoque.js, garagem.js,      -> conhecem o DOM
+Telas (home.js, tela-estoque.js,      -> conhecem o DOM
        historico.js, layout.js)
         |
         v

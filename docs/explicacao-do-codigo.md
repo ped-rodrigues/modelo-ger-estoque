@@ -20,7 +20,7 @@ O projeto tem duas partes que dividem o mesmo repositório:
 | Parte | Para quem | Páginas | Dados |
 |-------|-----------|---------|-------|
 | **Site público Kaisen** | Clientes da loja de carros importados | Início, Garagem, Estoque, Loja, Importação, Carro, Pedido, Venda, Contato | Fixos no HTML/JS |
-| **Painel interno** | Funcionários | Login, Estoque de peças, Adicionar carro, Testes | Peças salvas no `localStorage` |
+| **Painel interno** | Funcionários | Login, Painel geral, Estoque de peças, Histórico, Adicionar carro | Peças salvas no `localStorage` |
 
 Não existe servidor nem banco de dados. Tudo roda no navegador, e o único dado que persiste é o
 estoque de peças do painel interno, gravado no `localStorage`.
@@ -63,7 +63,6 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 | `pages/login.html` | Acesso de funcionários, com escolha do perfil | `login.css` | `storage.js`, `estoque.js`, `layout.js`, `login.js` |
 | `pages/dashboard.html` | Painel geral: indicadores e últimas movimentações (só Administrador) | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `home.js` |
 | `pages/historico.html` | Histórico de movimentações com filtros | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `historico.js` |
-| `pages/garagem-estoque.html` | Garagem: peças esgotadas e com estoque baixo, com quanto repor | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `garagem.js` |
 | `pages/produtos.html` | Estoque de peças: CRUD, filtros e movimentações | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `tela-estoque.js` |
 | `pages/painel.html` | Adicionar carro (fotos, prévia, checklist) | `site.css` | `storage.js`, `estoque.js`, `layout.js`, `painel.js` |
 | `pages/testes.html` | Executa os casos de teste CT01 a CT21 | `style.css` | `storage.js`, `validacao.js`, `estoque.js`, `importacao.js`, `loja.js`, `testes.js` |
@@ -78,8 +77,8 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 - **Carro → Importação e Contato:** "Simular importação" e "Falar com consultor".
 - **Login → Painel:** o Administrador cai no `dashboard.html`; o Funcionário, em `produtos.html`.
   O perfil escolhido fica no `sessionStorage` (chave `gestoque.perfil`) até a aba fechar.
-- **Menu lateral do painel:** Painel geral (só Administrador), Estoque, Histórico, Garagem,
-  Adicionar carro, Pedidos, Testes e Sair. "Clientes" aparece apagado porque ainda não tem tela.
+- **Menu lateral do painel:** Painel geral (só Administrador), Estoque, Histórico,
+  Adicionar carro, Pedidos e Sair. "Clientes" aparece apagado porque ainda não tem tela.
 - **Funcionário:** não vê "Painel geral" nem os botões Editar e Excluir (RF06 e RF07).
 
 ---
@@ -91,7 +90,7 @@ A dependência sempre aponta para baixo:
 
 ```text
 Telas       home.js, tela-estoque.js,   conhecem o DOM; não decidem regras
-            historico.js, garagem.js,
+            historico.js,
             login.js
               │  usam
 Apoio       layout.js                    formata, exibe e aplica o perfil no menu
@@ -245,7 +244,6 @@ Objeto `Estoque`. Usa `Validacao` para validar e `Storage` para salvar.
 | `registrarEntrada` / `registrarSaida` | Atalhos para `registrarMovimentacao`. |
 | `chaveDeBusca(texto)` | Minúsculo, sem acento e só com letras e números. Usada nas pesquisas: `fr4213` acha `FR-4213` (RF04). |
 | `filtrarMovimentacoes(lista, filtros)` | Filtros do histórico: texto no nome da peça e tipo (RF14). |
-| `listarParaReposicao(produtos)` | Para a Garagem: só Baixo e Esgotado, esgotados primeiro, com `repor` = mínimo + 1 − quantidade (o que falta para voltar a Normal). |
 | `ehAdministrador(perfil)` | `true` só para `ADM`. Decide quem vê o Dashboard e os botões Editar e Excluir (RF06, RF07). |
 
 ### 5.4 `js/layout.js` — apoio de tela

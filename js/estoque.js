@@ -134,7 +134,8 @@ const Estoque = {
   },
 
   listarMovimentacoes() {
-    const movimentacoes = Storage.carregarMovimentacoes();
+    // reverse() antes do sort: no mesmo milissegundo, a gravada por último vem primeiro.
+    const movimentacoes = Storage.carregarMovimentacoes().reverse();
     return movimentacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
   },
 
@@ -152,25 +153,6 @@ const Estoque = {
       if (criterios.tipo && item.tipo !== criterios.tipo) return false;
       return true;
     });
-  },
-
-  // Módulo Garagem: só o que não está Normal, esgotados primeiro, depois o mais longe do mínimo.
-  // "repor" é o que falta para a peça sair de Baixo (RN05: passar do mínimo).
-  listarParaReposicao(produtos) {
-    const lista = produtos || this.listarProdutos();
-
-    return lista
-      .map((produto) => ({
-        produto: produto,
-        status: this.classificar(produto),
-        repor: produto.estoqueMinimo + 1 - produto.quantidade
-      }))
-      .filter((item) => item.status !== this.STATUS.NORMAL)
-      .sort((a, b) => {
-        const esgotadoA = a.status === this.STATUS.ESGOTADO ? 0 : 1;
-        const esgotadoB = b.status === this.STATUS.ESGOTADO ? 0 : 1;
-        return esgotadoA - esgotadoB || b.repor - a.repor;
-      });
   },
 
   cadastrarProduto(dados) {

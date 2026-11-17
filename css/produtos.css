@@ -217,34 +217,6 @@ dialog .k-campo + .k-campo { margin-top: 16px; }
 /* Histórico e últimas movimentações: só 4 colunas, não precisa da largura da tabela de peças */
 .tabela.tabela--curta { min-width: 560px; }
 
-/* Garagem: cartões de reposição */
-.reposicao {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 16px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.reposicao__cartao { padding: 20px 22px; }
-
-.reposicao__topo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.reposicao__nome { margin: 10px 0 14px; font-size: 18px; font-weight: 600; }
-
-.reposicao__dados { display: grid; gap: 6px; margin: 0; }
-.reposicao__dados div { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
-.reposicao__dados dt { color: var(--k-texto-fraco); }
-.reposicao__dados dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
-
-.reposicao__vazio { color: var(--k-texto-fraco); }
-
 /* Telas estreitas */
 @media (max-width: 640px) {
   .painel__topo { flex-direction: column; }
