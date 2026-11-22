@@ -233,8 +233,10 @@ a {
   color: #637091;
 }
 
+/* A legenda ocupa a linha toda e as duas opções ficam juntas embaixo. */
 .login__perfil legend {
-  float: left;
+  width: 100%;
+  margin-bottom: 4px;
   padding: 0;
 }
 
@@ -263,7 +265,7 @@ a {
 .login__botoes {
   display: flex;
   gap: 31px;
-  margin: 68px 0 0 13px;
+  margin: 43px 0 0 13px;
 }
 
 .login__entrar,
@@ -422,13 +424,6 @@ a {
 
   .login__perfil {
     margin-left: 18px;
-  }
-
-  /* A legenda ocupa a linha toda e as duas opções ficam juntas embaixo. */
-  .login__perfil legend {
-    float: none;
-    width: 100%;
-    margin-bottom: 4px;
   }
 
   .login__lembrar input {

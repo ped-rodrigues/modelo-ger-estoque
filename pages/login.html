@@ -19,10 +19,10 @@
           <span aria-hidden="true">Kaisen</span>
         </a>
         <h1 id="titulo-login">
-          <span class="login__ola">HELLO,</span>
-          <span class="login__welcome">WELCOME !</span>
+          <span class="login__ola">OLÁ,</span>
+          <span class="login__welcome">BEM-VINDO!</span>
         </h1>
-        <p class="login__sub">You can sign in to access with your<br> existing account</p>
+        <p class="login__sub">Entre com a sua conta<br> para acessar o sistema</p>
       </div>
 
       <div class="login__painel">
@@ -30,43 +30,43 @@
 
         <form id="form-login" novalidate>
           <div class="login__campo">
-            <label for="login-usuario">Email address</label>
+            <label for="login-usuario">E-mail</label>
             <span class="login__erro" id="erro-login-usuario" data-erro-de="usuario"></span>
             <input type="text" id="login-usuario" name="usuario" maxlength="40"
-                   placeholder="KaisenTeste@gmail.com" autocomplete="username" spellcheck="false"
+                   autocomplete="username" spellcheck="false"
                    autofocus aria-describedby="erro-login-usuario" aria-invalid="false">
           </div>
 
           <div class="login__campo">
-            <label for="login-senha">Password</label>
+            <label for="login-senha">Senha</label>
             <span class="login__erro" id="erro-login-senha" data-erro-de="senha"></span>
             <input type="password" id="login-senha" name="senha" maxlength="40"
-                   placeholder="***************" autocomplete="current-password"
+                   autocomplete="current-password"
                    aria-describedby="erro-login-senha" aria-invalid="false">
           </div>
 
           <div class="login__opcoes">
             <label class="login__lembrar">
-              <input type="checkbox" name="lembrar"> Remember me
+              <input type="checkbox" name="lembrar"> Lembrar de mim
             </label>
-            <a href="#" id="link-senha">Forgot password?</a>
+            <a href="#" id="link-senha">Esqueceu a senha?</a>
           </div>
 
           <!-- Seção 1.8 do Documento de Visão: dois perfis. Sem autenticação real, o perfil é escolhido aqui. -->
           <fieldset class="login__perfil">
-            <legend>Sign in as</legend>
+            <legend>Entrar como</legend>
             <label><input type="radio" name="perfil" value="ADM" checked> Administrador</label>
             <label><input type="radio" name="perfil" value="OPR"> Funcionário</label>
           </fieldset>
 
           <div class="login__botoes">
-            <button type="submit" class="login__entrar">Login</button>
-            <a href="#" class="login__cadastro" id="link-cadastro">Sign up</a>
+            <button type="submit" class="login__entrar">Entrar</button>
+            <a href="#" class="login__cadastro" id="link-cadastro">Cadastrar</a>
           </div>
         </form>
 
         <p class="login__seguir">
-          <span>follow</span>
+          <span>siga</span>
           <a href="https://www.instagram.com/" aria-label="Instagram"><img class="login__instagram" src="../assets/instagram.png" alt=""></a>
           <a href="https://twitter.com/" aria-label="Twitter"><img class="login__twitter" src="../assets/twitter.png" alt=""></a>
           <a href="https://www.facebook.com/" aria-label="Facebook"><img class="login__facebook" src="../assets/facebook.png" alt=""></a>
