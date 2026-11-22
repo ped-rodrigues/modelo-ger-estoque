@@ -221,10 +221,6 @@ a {
 }
 
 .login__perfil {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 20px;
   margin: 22px 0 0 5px;
   padding: 0;
   border: 0;
@@ -233,11 +229,15 @@ a {
   color: #637091;
 }
 
-/* A legenda ocupa a linha toda e as duas opções ficam juntas embaixo. */
+/* A legenda fica numa linha e as duas opções ficam juntas na linha de baixo. */
 .login__perfil legend {
-  width: 100%;
   margin-bottom: 4px;
   padding: 0;
+}
+
+.login__perfil-opcoes {
+  display: flex;
+  gap: 20px;
 }
 
 .login__perfil label {

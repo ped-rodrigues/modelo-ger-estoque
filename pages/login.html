@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kaisen | Acesso de funcionários</title>
   <link rel="stylesheet" href="../css/fontes.css">
-  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/login.css?v=3">
 </head>
 <body class="pagina-login">
   <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
@@ -55,8 +55,10 @@
           <!-- Seção 1.8 do Documento de Visão: dois perfis. Sem autenticação real, o perfil é escolhido aqui. -->
           <fieldset class="login__perfil">
             <legend>Entrar como</legend>
-            <label><input type="radio" name="perfil" value="ADM" checked> Administrador</label>
-            <label><input type="radio" name="perfil" value="OPR"> Funcionário</label>
+            <div class="login__perfil-opcoes">
+              <label><input type="radio" name="perfil" value="ADM" checked> Administrador</label>
+              <label><input type="radio" name="perfil" value="OPR"> Funcionário</label>
+            </div>
           </fieldset>
 
           <div class="login__botoes">
