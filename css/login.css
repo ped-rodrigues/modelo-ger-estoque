@@ -276,27 +276,6 @@ a {
   cursor: default;
 }
 
-.login__seguir {
-  display: flex;
-  align-items: center;
-  margin: 38px 0 0 53px;
-  font: 15px '42dot Sans', sans-serif;
-  color: #3c4661;
-}
-
-.login__seguir span {
-  margin-right: 5px;
-}
-
-.login__seguir a {
-  display: block;
-  margin-left: 4px;
-}
-
-.login__instagram { width: 39px; }
-.login__twitter { width: 36px; }
-.login__facebook { width: 27px; margin-left: 4px; }
-
 /* Celular: quadro "tela de login mobile" (518px) */
 @media (max-width: 1060px) {
   body {
@@ -417,18 +396,4 @@ a {
     font: 30px 'Alef', sans-serif;
     color: #575978;
   }
-
-  .login__seguir {
-    justify-content: center;
-    gap: 20px;
-    margin: 64px 0 0;
-  }
-
-  .login__seguir span {
-    display: none;
-  }
-
-  .login__instagram { width: 68px; }
-  .login__twitter { width: 61px; }
-  .login__facebook { width: 48px; }
 }

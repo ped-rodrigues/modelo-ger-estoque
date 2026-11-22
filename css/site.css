@@ -487,6 +487,42 @@ html { scroll-padding-top: 105px; }
   background: rgba(120, 70, 20, 0.2);
 }
 
+/* Rodapé da página inicial: redes sociais (vieram da tela de login) */
+.rodape {
+  padding: 40px 16px;
+  border-top: 1px solid var(--marrom-botao);
+  background: #000000;
+}
+
+.rodape__redes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Akatab', sans-serif;
+  font-size: 24px;
+  color: var(--cinza-nav);
+}
+
+.rodape__redes a {
+  border-radius: 4px;
+}
+
+.rodape__redes a:hover {
+  opacity: 0.75;
+}
+
+.rodape__redes a:focus-visible {
+  outline: 2px solid var(--laranja);
+  outline-offset: 4px;
+}
+
+/* Tamanhos do login: as imagens têm margens internas diferentes. */
+.rodape__instagram { width: 39px; }
+.rodape__twitter { width: 36px; }
+.rodape__facebook { width: 27px; }
+
 /* 5. Estoque */
 .pagina-estoque {
   background: #262626;
