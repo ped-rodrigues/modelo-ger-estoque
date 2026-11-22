@@ -3,33 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kaisen | Pedido #2041</title>
+  <title>Pedido #2041 | Painel Kaisen</title>
   <link rel="stylesheet" href="../css/fontes.css">
   <link rel="stylesheet" href="../css/site.css">
 </head>
 <body class="pagina-k">
   <a class="pular-para-conteudo" href="#conteudo">Pular para o conteúdo</a>
 
-  <header class="topo">
-    <a class="topo__marca" href="../index.html" aria-label="Kaisen — página inicial">
-      <img class="topo__logo" src="../assets/logo.png" alt="">
-      <span class="topo__nome" aria-hidden="true">Kaisen</span>
-    </a>
-    <nav class="navegacao" aria-label="Navegação principal">
-      <a href="../index.html">Início</a>
-      <a href="garagem.html">Garagem</a>
-      <a href="estoque.html">Estoque</a>
-      <a href="loja.html">Auto-Peças</a>
-      <a href="importacao.html">Importação</a>
-      <a href="venda.html">Vender</a>
-      <a href="sobre.html">Sobre</a>
-      <a href="contato.html">Contato</a>
-    </nav>
-  </header>
+  <div class="painel">
+    <aside class="painel__menu">
+      <p class="painel__marca">KAISEN</p>
+      <p class="painel__area">Painel interno</p>
+      <nav aria-label="Painel interno">
+        <a href="dashboard.html" data-perfil="ADM">Painel geral</a>
+        <a href="produtos.html">Estoque</a>
+        <a href="historico.html">Histórico</a>
+        <a href="painel.html">Adicionar carro</a>
+        <a href="pedido.html" aria-current="page">Pedidos</a>
+      </nav>
+      <p class="painel__logado">Logado como <b id="perfil-logado">Funcionário</b> <a href="login.html">Sair</a></p>
+    </aside>
 
-  <main class="k-pagina" id="conteudo">
-    <h1 class="k-titulo">Pedido #2041</h1>
-    <p class="k-sub">Nissan GT-R Nismo R35 · Em transporte marítimo</p>
+  <main class="painel__conteudo" id="conteudo">
+    <div class="painel__topo">
+      <div>
+        <h1 class="k-titulo">Pedido #2041</h1>
+        <p class="k-sub">Nissan GT-R Nismo R35 · Em transporte marítimo</p>
+      </div>
+    </div>
 
     <ol class="etapas" aria-label="Etapas do pedido">
       <li class="feita">Compra</li>
@@ -64,7 +65,11 @@
       </section>
     </div>
   </main>
+  </div>
 
+  <script src="../js/storage.js"></script>
+  <script src="../js/estoque.js"></script>
+  <script src="../js/layout.js"></script>
   <script>
     // Sem servidor não há contrato para baixar.
     document.getElementById('baixar-contrato').addEventListener('click', () => {

@@ -1,11 +1,13 @@
-# Documento de Requisitos — Gerenciador de Estoque
+# Documento de Requisitos — Kaisen, Gerenciador de Estoque
 
-Documento de referência oficial do projeto. Sempre que houver dúvida sobre o comportamento
-esperado do sistema, este arquivo tem a palavra final.
+Resumo técnico dos requisitos do projeto, alinhado ao **Documento de Visão** (versão Requisitos 2.0,
+novembro de 2026), que é o guia oficial de referência. Se este arquivo e o Documento de Visão
+divergirem, vale o Documento de Visão e este arquivo deve ser corrigido.
 
-- **Projeto:** Gerenciador de Estoque
-- **Tipo:** aplicação web sem backend (HTML5, CSS3, JavaScript ES6+, `localStorage`)
-- **Ator principal:** Funcionário/Administrador
+- **Projeto:** Kaisen — Gerenciador de Estoque
+- **Segmento:** veículos e autopeças, com site público de venda de carros importados
+- **Tipo:** aplicação web client-side, sem backend (HTML5, CSS3, JavaScript ES6+, `localStorage` e `sessionStorage`)
+- **Atores:** Administrador (ADM) e Funcionário (OPR)
 
 ---
 
@@ -13,147 +15,185 @@ esperado do sistema, este arquivo tem a palavra final.
 
 ### Dentro do escopo
 
-Dashboard; cadastro, consulta, edição e exclusão de produtos; pesquisa e filtros; registro de
-entradas e saídas; histórico de movimentações; controle de estoque mínimo; classificação
-automática do estoque; persistência em `localStorage`; interface responsiva; acessibilidade
-básica; validação de formulários.
+**Painel interno**
+
+- **Dashboard** (só Administrador): total de peças, itens em estoque, produtos com estoque baixo,
+  produtos esgotados e valor financeiro total investido.
+- **Estoque de peças:** cadastro, consulta, edição e exclusão (as duas últimas só do Administrador),
+  busca por nome ou código e filtros por categoria e situação.
+- **Histórico de movimentações:** entradas e saídas com data e hora em ISO 8601, filtro por nome da
+  peça e por tipo, rastreabilidade mantida mesmo após a exclusão da peça.
+- **Adicionar carro** (demonstração): formulário de veículo com fotos, prévia e checklist.
+- **Pedidos de importação** (demonstração): etapas do pedido (Compra, Documentação, Embarque,
+  Em trânsito, Desembaraço e Entrega), histórico de eventos com data, chegada prevista, porto de
+  destino e situação de pagamento e documentos.
+
+**Acesso**
+
+- **Login** (demonstração) com escolha do perfil Administrador ou Funcionário.
+
+**Site público**
+
+- Início, Garagem de carros, Estoque de carros (busca por palavra-chave e marca), Loja Auto-Peças
+  (acessórios e carrinho), Simulador de importação (com simulação de financiamento), Venda seu
+  carro, Contato e Sobre.
+- O financiamento é só uma simulação de cálculo com valores de exemplo: não faz pagamento nem se
+  conecta a bancos.
+
+**Interface**
+
+- Tema escuro com acento laranja, baseado no protótipo do Figma; barra de navegação fixa no topo;
+  responsiva; navegação por teclado com foco visível; sem dependência de serviços externos.
 
 ### Fora do escopo
 
-Backend; banco de dados; API externa; autenticação real; permissões complexas; múltiplos usuários
-simultâneos; integração fiscal ou com ERP; emissão de nota fiscal; pagamentos.
+Servidores back-end; bancos de dados relacionais/SGBD; APIs externas; autenticação real com
+criptografia ou sessão; integração fiscal; NF-e/ERP; pagamentos reais; sincronização entre
+navegadores ou dispositivos.
 
 ---
 
-## 2. Requisitos funcionais
+## 2. Perfis de acesso
 
-| Código | Requisito | Situação |
-|--------|-----------|----------|
-| RF01 | Cadastrar produtos informando nome, categoria, preço, quantidade e estoque mínimo | Núcleo pronto |
-| RF02 | Gerar um identificador único para cada produto | Núcleo pronto |
-| RF03 | Consultar a lista de produtos cadastrados | Núcleo pronto |
-| RF04 | Pesquisar produtos pelo nome | Núcleo pronto |
-| RF05 | Filtrar produtos por categoria e situação do estoque | Núcleo pronto |
-| RF06 | Editar os dados de um produto | Núcleo pronto |
-| RF07 | Excluir produtos mediante confirmação | Núcleo pronto (confirmação fica na tela) |
-| RF08 | Registrar entradas de estoque | Núcleo pronto |
-| RF09 | Registrar saídas de estoque | Núcleo pronto |
-| RF10 | Atualizar automaticamente a quantidade após uma movimentação | Núcleo pronto |
-| RF11 | Impedir saída superior à quantidade disponível | Núcleo pronto |
-| RF12 | Classificar automaticamente como normal, baixo estoque ou esgotado | Núcleo pronto |
-| RF13 | Registrar data e hora das movimentações | Núcleo pronto |
-| RF14 | Disponibilizar o histórico de entradas e saídas | Núcleo pronto |
-| RF15 | Apresentar no dashboard a quantidade de produtos, o total em estoque, os produtos com estoque baixo e os esgotados | Núcleo pronto |
-| RF16 | Calcular o valor total do estoque com base no preço e na quantidade | Núcleo pronto |
-| RF17 | Armazenar os dados no `localStorage` | Núcleo pronto |
-| RF18 | Recuperar os dados armazenados ao ser iniciado | Núcleo pronto |
+O perfil é escolhido na tela de login e fica na chave `gestoque.perfil` do `sessionStorage`
+(é apagado ao fechar a aba ou ao voltar para o login pelo "Sair"). Sem login, o sistema trata o
+usuário como Funcionário.
 
-> "Núcleo pronto" significa que a regra existe e está testada em `js/estoque.js`; a interface que
-> a expõe ao usuário é construída nas etapas seguintes.
+| Perfil | Valor gravado | Pode |
+|--------|---------------|------|
+| Administrador / Gerente | `ADM` | Tudo: Dashboard, cadastro, edição, exclusão, movimentações, histórico |
+| Funcionário / Operador | `OPR` | Consultar, buscar, cadastrar, registrar entradas e saídas, ver o histórico |
+
+O login é um protótipo demonstrativo: qualquer e-mail (com pelo menos 3 caracteres) e qualquer
+senha preenchidos dão acesso.
 
 ---
 
-## 3. Requisitos não funcionais
+## 3. Requisitos funcionais
 
-| Código | Requisito |
-|--------|-----------|
-| RNF01 | Utilizar HTML5, CSS3 e JavaScript ES6+ |
-| RNF02 | Funcionar em navegadores modernos |
-| RNF03 | Interface responsiva |
-| RNF04 | Permitir navegação por teclado |
-| RNF05 | Contraste adequado |
-| RNF06 | Campos com identificação clara e validação |
-| RNF07 | Feedback visual nas operações |
-| RNF08 | Dados disponíveis após fechar e reabrir o navegador |
-| RNF09 | Funcionalidades principais não dependem de internet |
-| RNF10 | Consistência visual entre as telas |
-| RNF11 | JavaScript modular, evitando duplicação desnecessária |
-| RNF12 | Resposta imediata nas operações normais |
+| Código | Requisito | Usuários aptos | Prioridade |
+|--------|-----------|----------------|------------|
+| RF01 | Cadastrar produtos informando nome, código, fabricante, categoria, preço, quantidade inicial e estoque mínimo | ADM / OPR | Essencial |
+| RF02 | Gerar identificador único automático (ex.: `p_m0x3k1a_7f2q`) para cada produto | Sistema | Essencial |
+| RF03 | Consultar a listagem de peças em tabela na tela Estoque de peças | ADM / OPR | Essencial |
+| RF04 | Pesquisar por nome ou código, ignorando maiúsculas, acentos, hífen, ponto, barra e espaço (`fr4213` encontra `FR-4213`) | ADM / OPR | Essencial |
+| RF05 | Filtrar por categoria automotiva e por situação do estoque (Normal, Baixo, Esgotado) | ADM / OPR | Essencial |
+| RF06 | Editar os dados de um produto, exceto o saldo de quantidade | ADM | Essencial |
+| RF07 | Excluir produtos mediante confirmação em modal (`<dialog>`) | ADM | Essencial |
+| RF08 | Registrar entradas de estoque, atualizando a quantidade | ADM / OPR | Essencial |
+| RF09 | Registrar saídas de estoque, diminuindo a quantidade disponível | ADM / OPR | Essencial |
+| RF10 | Atualizar a classificação e a quantidade após qualquer movimentação | Sistema | Essencial |
+| RF11 | Impedir saídas maiores que a quantidade disponível | Sistema | Essencial |
+| RF12 | Classificar o estoque em Normal (qtd > mínimo), Baixo (1 ≤ qtd ≤ mínimo) e Esgotado (qtd = 0) | Sistema | Essencial |
+| RF13 | Gravar data e hora de cada movimentação em ISO 8601 | Sistema | Essencial |
+| RF14 | Disponibilizar o histórico de movimentações em ordem decrescente e com filtros | ADM / OPR | Essencial |
+| RF15 | Apresentar no Dashboard, exclusivo do Administrador, peças cadastradas, itens em estoque, estoque baixo, esgotados e valor investido | ADM | Importante |
+| RF16 | Calcular o valor financeiro do estoque (preço unitário × quantidade) | Sistema | Importante |
+| RF17 | Salvar produtos e movimentações nas chaves `gestoque.produtos` e `gestoque.movimentacoes` do `localStorage` | Sistema | Essencial |
+| RF18 | Recuperar os dados salvos ao iniciar a aplicação | Sistema | Essencial |
 
 ---
 
-## 4. Regras de negócio
+## 4. Requisitos não funcionais
+
+| Código | Requisito | Tipo | Prioridade |
+|--------|-----------|------|------------|
+| RNF01 | Somente HTML5, CSS3 e JavaScript ES6+ puro, sem frameworks ou bibliotecas | Tecnológico | Essencial |
+| RNF02 | Compatível com Chrome, Edge, Firefox e Safari | Portabilidade | Essencial |
+| RNF03 | Interface responsiva para desktop e celular | Usabilidade | Essencial |
+| RNF04 | Navegação completa por teclado e foco visível | Acessibilidade | Essencial |
+| RNF05 | Contraste adequado no tema escuro, sem depender só de cor para indicar estados | Usabilidade | Essencial |
+| RNF06 | Campos identificados e mensagens explicativas nos erros de validação | Usabilidade | Essencial |
+| RNF07 | Feedback imediato com `role="status"` e `aria-live="polite"` | Usabilidade | Importante |
+| RNF08 | Dados mantidos após fechar e reabrir o navegador | Confiabilidade | Essencial |
+| RNF09 | Sem dependência de rede ou APIs externas (100% offline) | Desempenho | Essencial |
+| RNF10 | Consistência visual entre todas as telas da Relação de Telas | Usabilidade | Importante |
+| RNF11 | Organização modular em camadas, sem duplicação desnecessária (DRY) | Manutenibilidade | Essencial |
+| RNF12 | Resposta imediata, sem latência perceptível nas operações locais | Desempenho | Essencial |
+
+---
+
+## 5. Regras de negócio
 
 | Código | Regra | Onde está implementada |
 |--------|-------|------------------------|
 | RN01 | A quantidade de estoque nunca pode ser negativa | `Estoque.registrarMovimentacao`, `Validacao.validarProduto` |
-| RN02 | Uma saída não pode exceder a quantidade disponível | `Estoque.registrarMovimentacao` |
-| RN03 | Quantidade igual a zero significa "Esgotado" | `Estoque.classificar` |
-| RN04 | Quantidade entre 1 e o estoque mínimo significa "Baixo" | `Estoque.classificar` |
-| RN05 | Quantidade acima do estoque mínimo significa "Normal" | `Estoque.classificar` |
+| RN02 | Uma saída não pode ser maior que a quantidade disponível | `Estoque.registrarMovimentacao` |
+| RN03 | Quantidade igual a zero é "Esgotado" | `Estoque.classificar` |
+| RN04 | Quantidade maior que zero e menor ou igual ao mínimo é "Baixo" | `Estoque.classificar` |
+| RN05 | Quantidade acima do mínimo é "Normal" | `Estoque.classificar` |
 | RN06 | Valor total do produto é `preço × quantidade` | `Estoque.valorTotalProduto` |
-| RN07 | Toda entrada ou saída gera uma movimentação no histórico | `Estoque.registrarMovimentacao` |
-| RN08 | O preço do produto não pode ser negativo | `Validacao.validarProduto` |
+| RN07 | Qualquer alteração no saldo deve vir de uma movimentação registrada no histórico | `Estoque.cadastrarProduto`, `Estoque.registrarMovimentacao` |
+| RN08 | O preço unitário não pode ser negativo | `Validacao.validarProduto` |
 | RN09 | Quantidade e estoque mínimo são inteiros maiores ou iguais a zero | `Validacao.validarProduto` |
+| RN10 | O código do produto é único no cadastro | `Estoque.cadastrarProduto`, `Estoque.editarProduto` |
 
 ---
 
-## 5. Casos de uso
+## 6. Casos de uso
 
-Ator: **Funcionário/Administrador**
-
-| Código | Caso de uso |
-|--------|-------------|
-| UC01 | Cadastrar produto |
-| UC02 | Consultar produtos |
-| UC03 | Editar produto |
-| UC04 | Excluir produto |
-| UC05 | Registrar entrada |
-| UC06 | Registrar saída |
-| UC07 | Consultar histórico |
-| UC08 | Consultar dashboard |
-| UC09 | Pesquisar e filtrar produtos |
+| Código | Caso de uso | Administrador | Funcionário |
+|--------|-------------|:-------------:|:-----------:|
+| UC01 | Cadastrar produto | ✓ | ✓ |
+| UC02 | Consultar produtos | ✓ | ✓ |
+| UC03 | Editar produto | ✓ | |
+| UC04 | Excluir produto | ✓ | |
+| UC05 | Registrar entrada | ✓ | ✓ |
+| UC06 | Registrar saída | ✓ | ✓ |
+| UC07 | Consultar histórico | ✓ | ✓ |
+| UC08 | Consultar dashboard | ✓ | |
+| UC09 | Pesquisar e filtrar produtos | ✓ | ✓ |
 
 O sistema executa automaticamente, sem ação do usuário: cálculo dos indicadores, classificação do
 estoque, atualização das quantidades, armazenamento dos dados e validações.
 
 ---
 
-## 6. Modelo de dados
+## 7. Modelo de dados
 
-Os dados são guardados no `localStorage` em duas chaves, cada uma contendo um array em JSON.
-
-### Produto — chave `gestoque.produtos`
+### Produto — `localStorage`, chave `gestoque.produtos`
 
 | Campo | Tipo | Observação |
 |-------|------|------------|
-| `id` | string | Gerado pelo sistema (RF02). Exemplo: `p_m0x3k1a_7f2qd` |
+| `id` | string | Gerado pelo sistema (RF02) |
+| `codigo` | string | Código de referência da peça, único (RN10) |
 | `nome` | string | 2 a 60 caracteres |
-| `categoria` | string | Um dos valores de `Estoque.CATEGORIAS` |
+| `fabricante` | string | Marca/fabricante |
+| `aplicacao` | string | Compatibilidade / veículos atendidos |
+| `categoria` | string | Uma das 11 categorias abaixo |
 | `preco` | number | Maior ou igual a zero (RN08) |
-| `quantidade` | number | Inteiro maior ou igual a zero (RN01, RN09). Só muda por movimentação |
-| `estoqueMinimo` | number | Inteiro maior ou igual a zero (RN09) |
+| `quantidade` | integer | Maior ou igual a zero (RN01, RN09); só muda por movimentação (RN07) |
+| `estoqueMinimo` | integer | Maior ou igual a zero (RN09) |
 
-### Movimentação — chave `gestoque.movimentacoes`
+**Categorias aceitas** (`Estoque.CATEGORIAS`): Motor, Freios, Suspensão e Direção, Transmissão,
+Filtros, Elétrica, Arrefecimento, Pneus e Rodas, Lubrificantes e Fluidos, Acessórios e Outros.
+
+### Movimentação — `localStorage`, chave `gestoque.movimentacoes`
 
 | Campo | Tipo | Observação |
 |-------|------|------------|
-| `id` | string | Gerado pelo sistema. Exemplo: `m_m0x3k1b_2ka9p` |
+| `id` | string | Gerado pelo sistema |
 | `produtoId` | string | Referência ao produto |
-| `produtoNome` | string | Nome do produto no momento da movimentação (decisão D3) |
+| `produtoNome` | string | Nome no momento da operação, preservado se a peça for excluída (D3) |
 | `tipo` | string | `ENTRADA` ou `SAIDA` |
-| `quantidade` | number | Inteiro maior que zero |
-| `data` | string | Data e hora em formato ISO 8601 (RF13) |
+| `quantidade` | integer | Maior que zero |
+| `data` | string | Data e hora em ISO 8601 (RF13) |
 
-### Categoria
+### Perfil — `sessionStorage`, chave `gestoque.perfil`
 
-Não existe entidade separada para categoria (decisão D4). A categoria é um campo controlado do
-produto, validado contra a lista fixa `Estoque.CATEGORIAS`:
-
-```text
-Eletrônicos, Periféricos, Escritório, Limpeza, Outros
-```
+| Campo | Tipo | Observação |
+|-------|------|------------|
+| `gestoque.perfil` | string | `ADM` (Administrador) ou `OPR` (Funcionário). Apagado ao fechar a aba ou ao voltar ao login |
 
 ---
 
-## 7. Decisões de projeto que afetam o comportamento
+## 8. Decisões de projeto que afetam o comportamento
 
-Estas decisões complementam os requisitos e foram acordadas com a equipe. O registro completo,
-com a justificativa de cada uma, está em `docs/diario-do-projeto.md`.
+O registro completo, com a justificativa de cada decisão, está em `docs/diario-do-projeto.md`.
 
 | Código | Decisão |
 |--------|---------|
-| D1 | Scripts clássicos em vez de módulos ES, para o projeto abrir por duplo clique |
+| D1 | Scripts clássicos em vez de módulos ES, para o projeto abrir por duplo clique (`file://`) |
 | D2 | A quantidade só muda por movimentação; a quantidade inicial do cadastro gera uma ENTRADA |
 | D3 | Ao excluir um produto, suas movimentações permanecem no histórico |
 | D4 | Categoria é um campo controlado do produto, com lista fixa |

@@ -10,6 +10,9 @@ const TelaLogin = {
   MINIMO_USUARIO: 3,
 
   iniciar() {
+    // Chegar ao login (inclusive pelo "Sair" do painel) encerra o perfil anterior.
+    Storage.limparPerfil();
+
     this.el = {
       formulario: document.getElementById('form-login'),
       mensagem: document.getElementById('mensagem-login'),

@@ -77,6 +77,15 @@ const Storage = {
     }
   },
 
+  // "Sair" leva ao login, e abrir o login encerra o perfil da sessão.
+  limparPerfil() {
+    try {
+      sessionStorage.removeItem(this.CHAVE_PERFIL);
+    } catch (erro) {
+      // Sem sessionStorage não há perfil guardado para apagar.
+    }
+  },
+
   limparTudo() {
     try {
       localStorage.removeItem(this.CHAVE_PRODUTOS);
