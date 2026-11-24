@@ -118,9 +118,10 @@ const UI = {
     return linha;
   },
 
-  // Sem login (página aberta direto), vale o menor acesso: Funcionário.
+  // Sem login, vale o menor acesso: Funcionário.
   perfilAtual() {
-    return Estoque.ehAdministrador(Storage.lerPerfil()) ? Estoque.PERFIS.ADM : Estoque.PERFIS.OPR;
+    const conta = Estoque.usuarioAtual();
+    return conta && Estoque.ehAdministrador(conta.perfil) ? Estoque.PERFIS.ADM : Estoque.PERFIS.OPR;
   },
 
   // Menu do painel: mostra quem está logado e esconde do Funcionário o que é do Administrador.
@@ -128,8 +129,15 @@ const UI = {
     const logado = document.getElementById('perfil-logado');
     if (!logado) return; // fora do painel (login)
 
-    const perfil = this.perfilAtual();
-    logado.textContent = Estoque.ROTULOS_PERFIS[perfil];
+    // O painel exige conta: sem ela não há como saber quem fez cada ação.
+    const conta = Estoque.usuarioAtual();
+    if (!conta) {
+      window.location.replace('login.html');
+      return;
+    }
+
+    const perfil = conta.perfil;
+    logado.textContent = conta.nome + ' · ' + Estoque.ROTULOS_PERFIS[perfil];
 
     if (!Estoque.ehAdministrador(perfil)) {
       document.querySelectorAll('[data-perfil="ADM"]').forEach((elemento) => {

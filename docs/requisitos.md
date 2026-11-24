@@ -30,7 +30,7 @@ divergirem, vale o Documento de Visão e este arquivo deve ser corrigido.
 
 **Acesso**
 
-- **Login** (demonstração) com escolha do perfil Administrador ou Funcionário.
+- **Login** com contas de demonstração; o perfil (Administrador ou Funcionário) vem da conta.
 
 **Site público**
 
@@ -55,17 +55,26 @@ navegadores ou dispositivos.
 
 ## 2. Perfis de acesso
 
-O perfil é escolhido na tela de login e fica na chave `gestoque.perfil` do `sessionStorage`
-(é apagado ao fechar a aba ou ao voltar para o login pelo "Sair"). Sem login, o sistema trata o
-usuário como Funcionário.
+O perfil vem da conta usada no login. O e-mail logado fica na chave `gestoque.usuario` do
+`sessionStorage` (apagado ao fechar a aba ou ao voltar para o login pelo "Sair"). Sem login, as
+páginas do painel voltam para o login.
 
 | Perfil | Valor gravado | Pode |
 |--------|---------------|------|
 | Administrador / Gerente | `ADM` | Tudo: Dashboard, cadastro, edição, exclusão, movimentações, histórico |
 | Funcionário / Operador | `OPR` | Consultar, buscar, cadastrar, registrar entradas e saídas, ver o histórico |
 
-O login é um protótipo demonstrativo: qualquer e-mail (com pelo menos 3 caracteres) e qualquer
-senha preenchidos dão acesso.
+Contas de demonstração (`Estoque.USUARIOS`; sem servidor, a senha fica no código):
+
+| E-mail | Senha | Perfil |
+|--------|-------|--------|
+| `admin@kaisen.com` | `admin123` | Administrador |
+| `carla@kaisen.com` | `carla123` | Funcionário |
+| `rafael@kaisen.com` | `rafael123` | Funcionário |
+
+Cada peça cadastrada guarda `cadastradoPor`, cada movimentação guarda `usuario` e `valorUnitario`,
+e cada carro publicado vai para `gestoque.carros` com `usuario`. O Painel geral mostra, por conta:
+peças cadastradas, entradas, vendas (saídas), valor vendido e carros adicionados.
 
 ---
 
@@ -179,11 +188,11 @@ Filtros, Elétrica, Arrefecimento, Pneus e Rodas, Lubrificantes e Fluidos, Acess
 | `quantidade` | integer | Maior que zero |
 | `data` | string | Data e hora em ISO 8601 (RF13) |
 
-### Perfil — `sessionStorage`, chave `gestoque.perfil`
+### Conta logada — `sessionStorage`, chave `gestoque.usuario`
 
 | Campo | Tipo | Observação |
 |-------|------|------------|
-| `gestoque.perfil` | string | `ADM` (Administrador) ou `OPR` (Funcionário). Apagado ao fechar a aba ou ao voltar ao login |
+| `gestoque.usuario` | string | E-mail da conta logada. Apagado ao fechar a aba ou ao voltar ao login |
 
 ---
 

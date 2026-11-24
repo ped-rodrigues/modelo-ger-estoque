@@ -10,8 +10,8 @@ const TelaLogin = {
   MINIMO_USUARIO: 3,
 
   iniciar() {
-    // Chegar ao login (inclusive pelo "Sair" do painel) encerra o perfil anterior.
-    Storage.limparPerfil();
+    // Chegar ao login (inclusive pelo "Sair" do painel) encerra a sessão anterior.
+    Storage.limparUsuario();
 
     this.el = {
       formulario: document.getElementById('form-login'),
@@ -22,23 +22,18 @@ const TelaLogin = {
 
     this.el.formulario.addEventListener('submit', (evento) => this.aoEnviar(evento));
 
-    // Não há autenticação no projeto: estes links explicam isso em vez de quebrar.
+    // Sem servidor não há recuperação nem cadastro: os links mostram as contas de demonstração.
+    const contas = 'Contas de demonstração: ' +
+      Estoque.USUARIOS.map((conta) => conta.email + ' / ' + conta.senha).join(' · ') + '.';
+
     this.el.linkSenha.addEventListener('click', (evento) => {
       evento.preventDefault();
-      UI.mostrarMensagem(
-        this.el.mensagem,
-        'Recuperação de senha não faz parte deste projeto. Use qualquer usuário e senha para entrar.',
-        'erro'
-      );
+      UI.mostrarMensagem(this.el.mensagem, contas, 'erro');
     });
 
     this.el.linkCadastro.addEventListener('click', (evento) => {
       evento.preventDefault();
-      UI.mostrarMensagem(
-        this.el.mensagem,
-        'Cadastro de usuários não faz parte deste projeto. Use qualquer e-mail e senha para entrar.',
-        'erro'
-      );
+      UI.mostrarMensagem(this.el.mensagem, 'As contas são criadas pelo administrador. ' + contas, 'erro');
     });
   },
 
@@ -75,10 +70,17 @@ const TelaLogin = {
 
     UI.limparErros(formulario);
 
-    // Administrador abre no Dashboard; Funcionário vai direto ao estoque (seção 1.8).
-    const perfil = formulario.elements.perfil.value;
-    Storage.salvarPerfil(perfil);
-    const adm = Estoque.ehAdministrador(perfil);
+    const conta = Estoque.autenticar(usuario, senha);
+    if (!conta) {
+      UI.mostrarMensagem(this.el.mensagem, 'E-mail ou senha incorretos.', 'erro');
+      formulario.elements.senha.value = '';
+      formulario.elements.senha.focus();
+      return;
+    }
+
+    // O perfil vem da conta. Administrador abre no Dashboard; Funcionário vai ao estoque (seção 1.8).
+    Storage.salvarUsuario(conta.email);
+    const adm = Estoque.ehAdministrador(conta.perfil);
 
     UI.mostrarMensagem(
       this.el.mensagem,

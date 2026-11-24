@@ -32,7 +32,7 @@ requisitos, modelagem, arquitetura em camadas, testes, versionamento e documenta
 - Persistência no `localStorage`
 - Interface responsiva e com acessibilidade básica
 - Validação de formulários com mensagens de erro claras
-- Perfis de acesso Administrador e Funcionário, escolhidos no login
+- Contas com perfil Administrador ou Funcionário, e desempenho de cada conta no Painel geral
 - Painel interno complementar: Adicionar carro e Pedidos de importação (demonstração)
 - Site público: Início, Garagem, Estoque de carros, Auto-Peças com carrinho, Simulador de
   importação e financiamento, Venda seu carro, Sobre e Contato
@@ -44,7 +44,7 @@ requisitos, modelagem, arquitetura em camadas, testes, versionamento e documenta
 - HTML5
 - CSS3
 - JavaScript ES6+ (sem frameworks e sem bibliotecas externas)
-- `localStorage` do navegador (dados) e `sessionStorage` (só o perfil de acesso da sessão)
+- `localStorage` do navegador (dados) e `sessionStorage` (só a conta logada na sessão)
 - Git e GitHub para versionamento
 
 ---
@@ -61,10 +61,16 @@ Não é necessário instalar nada nem subir servidor.
 > `pages/login.html`: o Administrador entra no Painel geral (`pages/dashboard.html`) e o
 > Funcionário entra direto no Estoque de peças (`pages/produtos.html`).
 
-> **A tela de acesso é uma demonstração.** Autenticação real está fora do escopo do projeto:
-> não há cadastro de usuários nem senha guardada. Qualquer e-mail (com pelo menos 3 caracteres) e
-> qualquer senha abrem o sistema. O perfil escolhido fica em `gestoque.perfil` no
-> `sessionStorage` e é apagado ao fechar a aba ou ao clicar em "Sair".
+> **Contas de demonstração.** O perfil vem da conta (lista `Estoque.USUARIOS` em `js/estoque.js`).
+> Sem servidor, a senha fica no código: separa os perfis e identifica quem fez cada ação, mas não
+> é segurança de verdade. O e-mail logado fica em `gestoque.usuario` no `sessionStorage` e é
+> apagado ao fechar a aba ou ao clicar em "Sair".
+>
+> | E-mail | Senha | Perfil |
+> |--------|-------|--------|
+> | `admin@kaisen.com` | `admin123` | Administrador |
+> | `carla@kaisen.com` | `carla123` | Funcionário |
+> | `rafael@kaisen.com` | `rafael123` | Funcionário |
 
 > **Por que funciona sem servidor?** O projeto usa tags `<script>` clássicas em vez de módulos ES
 > (`import`/`export`). Módulos ES são bloqueados pela política de segurança do navegador quando a

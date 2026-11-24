@@ -105,7 +105,14 @@ form.addEventListener('submit', (evento) => {
     aviso('Envie pelo menos ' + MIN_FOTOS + ' fotos antes de publicar.');
     return;
   }
-  aviso('Demonstração: tudo certo, mas o carro não foi publicado.');
+  const campos = form.elements;
+  const nome = (campos.marca.value + ' ' + campos.modelo.value).trim();
+  Estoque.registrarCarro(nome, lerDinheiro(campos.preco.value));
+  form.reset();
+  fotos = [];
+  desenharFotos();
+  atualizar();
+  aviso('"' + nome + '" registrado no painel. Demonstração: as fotos não são salvas e o carro não aparece no site.');
 });
 
 desenharFotos();

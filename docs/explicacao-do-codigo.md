@@ -38,7 +38,7 @@ decisão **D1**. A consequência é que cada arquivo JS cria **um objeto global*
 
 Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não há servidor:
 
-- **Login:** qualquer usuário e senha entram.
+- **Login:** contas de demonstração em `Estoque.USUARIOS` (senha no código, sem servidor).
 - **Contato e Venda seu carro:** validam os campos e avisam que nada foi enviado.
 - **Pedido:** página fixa, e o "Baixar contrato" só mostra um aviso.
 - **Adicionar carro:** confere tudo, mas não grava.
@@ -60,7 +60,7 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 | `pages/venda.html` | Formulário "Venda seu carro para nós" | `site.css` | inline (aviso) |
 | `pages/contato.html` | Formulário "Fale conosco" | `site.css` | inline (aviso) |
 | `pages/sobre.html` | Página institucional: projeto e equipe | `site.css` | nenhum |
-| `pages/login.html` | Acesso de funcionários, com escolha do perfil | `login.css` | `storage.js`, `estoque.js`, `layout.js`, `login.js` |
+| `pages/login.html` | Acesso por conta (e-mail e senha); o perfil vem da conta | `login.css` | `storage.js`, `estoque.js`, `layout.js`, `login.js` |
 | `pages/dashboard.html` | Painel geral: indicadores e últimas movimentações (só Administrador) | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `home.js` |
 | `pages/historico.html` | Histórico de movimentações com filtros | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `historico.js` |
 | `pages/produtos.html` | Estoque de peças: CRUD, filtros e movimentações | `site.css`, `produtos.css` | `storage.js`, `validacao.js`, `estoque.js`, `layout.js`, `tela-estoque.js` |
@@ -74,7 +74,7 @@ Várias telas fazem tudo do lado do navegador mas não enviam nada, porque não 
 - **Menu → Venda:** o item "Vender" abre `venda.html` em qualquer página pública.
 - **Carro → Importação e Contato:** "Simular importação" e "Falar com consultor".
 - **Login → Painel:** o Administrador cai no `dashboard.html`; o Funcionário, em `produtos.html`.
-  O perfil escolhido fica no `sessionStorage` (chave `gestoque.perfil`) até a aba fechar.
+  O e-mail da conta fica no `sessionStorage` (chave `gestoque.usuario`) até a aba fechar.
 - **Menu lateral do painel:** Painel geral (só Administrador), Estoque, Histórico,
   Adicionar carro, Pedidos e Sair.
 - **Funcionário:** não vê "Painel geral" nem os botões Editar e Excluir (RF06 e RF07).
@@ -126,14 +126,14 @@ projetos abertos no mesmo endereço.
 
 ```js
 {
-  id: 'p_m0x3k1a_7f2qd',     // gerado por Estoque.gerarId('p')
-  codigo: 'FR-4213',         // código do catálogo, maiúsculo e único (RN10)
+  id: 'p_m0x3k1a_7f2qd',     
+  codigo: 'FR-4213',         
   nome: 'Pastilha de freio dianteira',
   fabricante: 'Fras-le',
-  aplicacao: 'Gol G5 1.0 2008-2014',   // opcional; '' quando vazio
-  categoria: 'Freios',       // um item de Estoque.CATEGORIAS
+  aplicacao: 'Gol G5 1.0 2008-2014',   
+  categoria: 'Freios',       
   preco: 189.9,
-  quantidade: 12,            // só muda por movimentação (D2)
+  quantidade: 12,            
   estoqueMinimo: 4
 }
 ```

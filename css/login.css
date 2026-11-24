@@ -199,44 +199,6 @@ a {
   color: #637091;
 }
 
-.login__perfil {
-  margin: 22px 0 0 5px;
-  padding: 0;
-  border: 0;
-  font-size: 18px;
-  line-height: 21px;
-  color: #637091;
-}
-
-/* A legenda fica numa linha e as duas opções ficam juntas na linha de baixo. */
-.login__perfil legend {
-  margin-bottom: 4px;
-  padding: 0;
-}
-
-.login__perfil-opcoes {
-  display: flex;
-  gap: 20px;
-}
-
-.login__perfil label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.login__perfil input {
-  width: 16px;
-  height: 16px;
-  margin: 0;
-  accent-color: #637091;
-}
-
-.login__perfil input:focus-visible {
-  outline: 2px solid #8a96b5;
-  outline-offset: 2px;
-}
-
 .login__opcoes a:hover {
   color: #8a96b5;
 }
@@ -373,10 +335,6 @@ a {
     margin-top: -13px;
     font-size: 20px;
     line-height: 24px;
-  }
-
-  .login__perfil {
-    margin-left: 18px;
   }
 
   .login__botoes {

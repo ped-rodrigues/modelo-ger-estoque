@@ -56,33 +56,44 @@ const Storage = {
     return this.escrever(this.CHAVE_MOVIMENTACOES, movimentacoes);
   },
 
-  // Perfil escolhido no login (ADM ou OPR). Fica no sessionStorage: fechar a aba é sair.
-  CHAVE_PERFIL: 'gestoque.perfil',
+  // Carros publicados em "Adicionar carro" (sem as fotos, que não cabem no localStorage).
+  CHAVE_CARROS: 'gestoque.carros',
 
-  lerPerfil() {
+  carregarCarros() {
+    return this.ler(this.CHAVE_CARROS);
+  },
+
+  salvarCarros(carros) {
+    return this.escrever(this.CHAVE_CARROS, carros);
+  },
+
+  // E-mail da conta logada. Fica no sessionStorage: fechar a aba é sair.
+  CHAVE_USUARIO: 'gestoque.usuario',
+
+  lerUsuario() {
     try {
-      return sessionStorage.getItem(this.CHAVE_PERFIL);
+      return sessionStorage.getItem(this.CHAVE_USUARIO);
     } catch (erro) {
       return null;
     }
   },
 
-  salvarPerfil(perfil) {
+  salvarUsuario(email) {
     try {
-      sessionStorage.setItem(this.CHAVE_PERFIL, perfil);
+      sessionStorage.setItem(this.CHAVE_USUARIO, email);
       return true;
     } catch (erro) {
-      console.error('[Storage] Não foi possível gravar o perfil.', erro);
+      console.error('[Storage] Não foi possível gravar o usuário.', erro);
       return false;
     }
   },
 
-  // "Sair" leva ao login, e abrir o login encerra o perfil da sessão.
-  limparPerfil() {
+  // "Sair" leva ao login, e abrir o login encerra a sessão.
+  limparUsuario() {
     try {
-      sessionStorage.removeItem(this.CHAVE_PERFIL);
+      sessionStorage.removeItem(this.CHAVE_USUARIO);
     } catch (erro) {
-      // Sem sessionStorage não há perfil guardado para apagar.
+      // Sem sessionStorage não há usuário guardado para apagar.
     }
   },
 
@@ -90,6 +101,7 @@ const Storage = {
     try {
       localStorage.removeItem(this.CHAVE_PRODUTOS);
       localStorage.removeItem(this.CHAVE_MOVIMENTACOES);
+      localStorage.removeItem(this.CHAVE_CARROS);
       return true;
     } catch (erro) {
       console.error('[Storage] Não foi possível limpar os dados.', erro);

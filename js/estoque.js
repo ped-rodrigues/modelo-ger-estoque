@@ -41,9 +41,66 @@ const Estoque = {
     OPR: 'Funcionário'
   },
 
+  // Contas de demonstração. Sem servidor, a senha fica no código: isto separa os perfis e
+  // identifica quem fez cada ação, mas não é segurança de verdade.
+  USUARIOS: [
+    { email: 'admin@kaisen.com', senha: 'admin123', nome: 'Administrador', perfil: 'ADM' },
+    { email: 'carla@kaisen.com', senha: 'carla123', nome: 'Carla Souza', perfil: 'OPR' },
+    { email: 'rafael@kaisen.com', senha: 'rafael123', nome: 'Rafael Lima', perfil: 'OPR' }
+  ],
+
   // RF06, RF07 e Dashboard (seção 1.8) são só do Administrador.
   ehAdministrador(perfil) {
     return perfil === this.PERFIS.ADM;
+  },
+
+  autenticar(email, senha) {
+    const conta = this.USUARIOS.find((item) => item.email === email.toLowerCase());
+    return conta && conta.senha === senha ? conta : null;
+  },
+
+  usuarioAtual() {
+    const email = Storage.lerUsuario();
+    return this.USUARIOS.find((item) => item.email === email) || null;
+  },
+
+  // E-mail de quem está logado, gravado em cada ação para o desempenho por funcionário.
+  emailAtual() {
+    const conta = this.usuarioAtual();
+    return conta ? conta.email : null;
+  },
+
+  // Painel geral: o que cada conta fez. Registros sem usuário (anteriores às contas) não contam.
+  desempenhoPorUsuario() {
+    const movimentacoes = Storage.carregarMovimentacoes();
+    const produtos = this.listarProdutos();
+    const carros = Storage.carregarCarros();
+
+    return this.USUARIOS.map((conta) => {
+      const linha = {
+        nome: conta.nome,
+        perfil: conta.perfil,
+        pecasCadastradas: produtos.filter((p) => p.cadastradoPor === conta.email).length,
+        entradas: 0,
+        vendas: 0,
+        unidadesVendidas: 0,
+        valorVendido: 0,
+        carrosAdicionados: carros.filter((c) => c.usuario === conta.email).length
+      };
+
+      movimentacoes.forEach((m) => {
+        if (m.usuario !== conta.email) return;
+        if (m.tipo === this.TIPOS.ENTRADA) {
+          linha.entradas += m.quantidade;
+        } else {
+          linha.vendas += 1;
+          linha.unidadesVendidas += m.quantidade;
+          linha.valorVendido += (m.valorUnitario || 0) * m.quantidade;
+        }
+      });
+
+      return linha;
+    });
   },
 
   gerarId(prefixo) {
@@ -181,7 +238,8 @@ const Estoque = {
       categoria: resultado.produto.categoria,
       preco: resultado.produto.preco,
       quantidade: 0,
-      estoqueMinimo: resultado.produto.estoqueMinimo
+      estoqueMinimo: resultado.produto.estoqueMinimo,
+      cadastradoPor: this.emailAtual()
     };
 
     const produtos = this.listarProdutos();
@@ -235,7 +293,8 @@ const Estoque = {
       categoria: resultado.produto.categoria,
       preco: resultado.produto.preco,
       quantidade: produtos[indice].quantidade, // D2: só muda por movimentação
-      estoqueMinimo: resultado.produto.estoqueMinimo
+      estoqueMinimo: resultado.produto.estoqueMinimo,
+      cadastradoPor: produtos[indice].cadastradoPor
     };
 
     Storage.salvarProdutos(produtos);
@@ -306,6 +365,8 @@ const Estoque = {
       produtoNome: produto.nome, // guardado para o histórico sobreviver à exclusão (D3)
       tipo: tipo,
       quantidade: quantidade,
+      valorUnitario: produto.preco, // preço no momento da saída, para o valor vendido
+      usuario: this.emailAtual(),
       data: new Date().toISOString()
     };
 
@@ -322,5 +383,11 @@ const Estoque = {
 
   registrarSaida(produtoId, quantidade) {
     return this.registrarMovimentacao(produtoId, this.TIPOS.SAIDA, quantidade);
+  },
+
+  registrarCarro(nome, preco) {
+    const carros = Storage.carregarCarros();
+    carros.push({ id: this.gerarId('c'), nome, preco, usuario: this.emailAtual(), data: new Date().toISOString() });
+    return Storage.salvarCarros(carros);
   }
 };
